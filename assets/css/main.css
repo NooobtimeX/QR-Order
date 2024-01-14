@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  color: black;
+  @apply text-lg;
+}
+h1 {
+  @apply text-4xl;
+}
+h2 {
+  @apply text-3xl;
+}
+h3 {
+  @apply text-2xl;
+}
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+body {
+  color: rgb(var(--foreground-rgb));
+  background: white;
+}
+img {
+  @apply rounded-xl;
+}
+.scaleup {
+  @apply transition-transform duration-200 hover:scale-105;
+}
+button {
+  @apply transition-transform duration-200 hover:scale-105;
+}
+button {
+  @apply bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-xl;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
