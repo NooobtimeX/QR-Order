@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
-  
   devtools: {
     enabled: true,
     timeline: {
@@ -20,6 +19,4 @@ export default defineNuxtConfig({
     "nuxt-schema-org",
     "nuxt-simple-sitemap",
   ],
- 
- 
 });
