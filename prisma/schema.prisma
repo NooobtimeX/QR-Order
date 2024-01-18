@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   output   = "./generated/client"
@@ -9,4 +6,70 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model USER {
+  user_id                 Int        @id @unique
+  user_name               String
+  user_email              String
+  user_password           String
+  user_role               String
+  user_phone_number       String
+  user_gender             String
+  RESTAURANT              RESTAURANT @relation(fields: [rESTAURANTRestaurant_id], references: [restaurant_id])
+  create_date             DateTime
+  update_date             DateTime
+  rESTAURANTRestaurant_id Int
+}
+
+model RESTAURANT {
+  restaurant_id   Int       @id @unique
+  restaurant_name String
+  owner_id        USER      @relation(fields: [uSERUser_id], references: [user_id])
+  course_id       COURSE[]
+  staff_id        USER[]
+  create_date     DateTime
+  update_date     DateTime
+  PRODUCT         PRODUCT[]
+  uSERUser_id     Int
+}
+
+model COURSE {
+  couese_id     Int          @id
+  couese_name   String
+  course_price  Float
+  restaurant_id RESTAURANT[]
+}
+
+model PRODUCT {
+  product_id              Int        @id @unique
+  product_name            String
+  restaurant_id           RESTAURANT @relation(fields: [rESTAURANTRestaurant_id], references: [restaurant_id])
+  create_date             DateTime
+  update_date             DateTime
+  rESTAURANTRestaurant_id Int
+}
+
+model QRCODE {
+  qr_code_id   Int      @id @unique
+  create_by_id String
+  create_date  DateTime
+  update_date  DateTime
+}
+
+model ORDER {
+  order_id     Int      @id @unique
+  order_status String
+  create_date  DateTime
+  update_date  DateTime
+}
+
+model RATING {
+  rating_id     Int      @id @unique
+  user_id       String
+  restaurant_id String
+  star          String
+  feedback      String
+  create_date   DateTime
+  update_date   DateTime
 }
