@@ -9,7 +9,7 @@
 
       <!-- Main container div: holds the entire content of the footer, including four sections (TW elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. -->
       <div class="mx-6 py-10 text-center md:text-left">
-        <div class="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div class="grid-1 grid gap-8 md:grid-cols-2">
           <!-- TW elements section -->
           <div class="">
             <h6
