@@ -30,31 +30,31 @@
 							<div class="relative h-56 overflow-hidden rounded-lg md:h-96">
 								<!-- Item 1 -->
 								<div class="hidden duration-200 ease-linear" data-carousel-item>
-									<img src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?cs=srgb&dl=pexels-jaime-reimer-2662116.jpg&fm=jpg"
+									<img src="https://tecdn.b-cdn.net/img/new/standard/city/062.jpg"
 										class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
 										alt="...">
 								</div>
 								<!-- Item 2 -->
 								<div class="hidden duration-200 ease-linear" data-carousel-item>
-									<img src="https://img.freepik.com/premium-photo/breathtaking-view-sunset-fusine-lake-with-mangart-peak-background_761071-1117.jpg?size=626&ext=jpg&ga=GA1.1.632798143.1705622400&semt=ais"
+									<img src="https://tecdn.b-cdn.net/img/new/standard/city/062.jpg"
 										class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
 										alt="...">
 								</div>
 								<!-- Item 3 -->
 								<div class="hidden duration-200 ease-linear" data-carousel-item="active">
-									<img src="https://images.unsplash.com/photo-1589670301572-734d642c53d2?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmF0dXJlJTIwdmlld3xlbnwwfHwwfHx8MA%3D%3D"
+									<img src="https://tecdn.b-cdn.net/img/new/standard/city/062.jpg"
 										class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
 										alt="...">
 								</div>
 								<!-- Item 4 -->
 								<div class="hidden duration-200 ease-linear" data-carousel-item>
-									<img src="https://assets-global.website-files.com/63d2b478db5869f15ce40d81/641b2b496047282488dcbb69_Skamania%20Lodge_Exterior_River%20View.webp"
+									<img src="https://tecdn.b-cdn.net/img/new/standard/city/062.jpg"
 										class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
 										alt="...">
 								</div>
 								<!-- Item 5 -->
 								<div class="hidden duration-200 ease-linear" data-carousel-item>
-									<img src="https://a.travel-assets.com/findyours-php/viewfinder/images/res40/481000/481689-Ocean-View-Norfolk.jpg"
+									<img src="https://tecdn.b-cdn.net/img/new/standard/city/062.jpg"
 										class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
 										alt="...">
 								</div>
