@@ -18,21 +18,22 @@
         </button>
       </div>
       <!-- Navbar -->
+      <a href="/" class="hidden md:block">
+        <img width="50px" height="50px" src="/logo/test.png" />
+      </a>
       <div class="hidden md:block mx-auto">
         <ul class="flex space-x-8 text-sm font-sans">
           <!-- Use v-for to iterate over an array of navigation items -->
           <li v-for="(item, index) in navigationItems" :key="index">
             <a :href="item.link">{{ item.label }}</a>
           </li>
-          <li>
-            <a
-              href="#"
-              class="cta bg-blue-500 hover:bg-blue-600 px-3 py-2 rounded text-white font-semibold"
-              >Sign Up</a
-            >
-          </li>
         </ul>
       </div>
+      <a
+        href="#"
+        class="cta bg-blue-500 hover:bg-blue-600 px-3 py-2 rounded text-white font-semibold"
+        >Sign Up</a
+      >
       <!-- Dark Background Transition -->
       <transition
         enter-class="opacity-0"
@@ -77,6 +78,9 @@
             </svg>
           </button>
         </div>
+        <a href="/" class="block md:hidden">
+          <img width="50px" height="50px" src="/logo/test.png" />
+        </a>
         <span
           @click="isOpen = false"
           class="flex w-full items-center p-4 border-b"
