@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model restaurant {
+  id          Int    @id @default(autoincrement())
+  name        String
+  email       String @unique
+  password    String
+  phoneNumber String
+  no          String
+  street      String
+  subdistrict String
+  district    String
+  province    String  
+  zipCode     String
+  staffs         staff[]
+  menuCategories menuCategory[]
+  menus          menu[]
+  tables         table[]
+  receipts       receipt[]
+}
+
+model staff {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  password     String
+  restaurantId Int
+  restaurant   restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model menuCategory {
+  id           Int        @id @default(autoincrement())
+  name         String
+  menus        menu[]
+  restaurantId Int
+  restaurant   restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model menu {
+  id             Int           @id @default(autoincrement())
+  name           String
+  description    String
+  price          Float
+  imageUrl       String
+  sections       menuSection[]
+  orderItem      orderItem[]
+  restaurantId   Int
+  restaurant     restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  menuCategoryId Int
+  menuCategory   menuCategory  @relation(fields: [menuCategoryId], references: [id], onDelete: Cascade)
+}
+
+model menuSection {
+  id         Int          @id @default(autoincrement())
+  name       String
+  menuOption menuOption[]
+  menuId     Int
+  menu       menu         @relation(fields: [menuId], references: [id], onDelete: Cascade)
+}
+
+model menuOption {
+  id            Int         @id @default(autoincrement())
+  name          String
+  price         Float
+  menuSectionId Int
+  menuSection   menuSection @relation(fields: [menuSectionId], references: [id], onDelete: Cascade)
+  orderItems    orderItem[]
+}
+
+model table {
+  id           Int        @id @default(autoincrement())
+  name         String
+  capacity     Int
+  status       String
+  qrCodes      qrCode[]
+  notification String
+  restaurantId Int
+  restaurant   restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+model orderItem {
+  id          Int          @id @default(autoincrement())
+  status      String
+  description String
+  menuId      Int
+  menu        menu         @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  menuOption  menuOption[]
+  createdAt   DateTime     @default(now())
+  qrCodeId    Int
+  qrCode      qrCode       @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  quantity    Int
+}
+
+model qrCode {
+  id         Int         @id @default(autoincrement())
+  imageUrl   String
+  createdAt  DateTime    @default(now())
+  orderItems orderItem[]
+  tableId    Int
+  table      table       @relation(fields: [tableId], references: [id], onDelete: Cascade)
+}
+
+model receipt {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  restaurantId Int
+  restaurant   restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}

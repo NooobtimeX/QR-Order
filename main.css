@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: white;
+}
+
+* {
+  @apply text-lg;
+}
+
+h1 {
+  @apply text-center text-4xl font-bold text-violet-700;
+}
+
+h2 {
+  @apply text-3xl font-bold text-violet-700;
+}
+
+h3 {
+  @apply text-2xl text-violet-700;
+}
+
+input {
+  @apply block w-full rounded-lg border-0 bg-white px-3 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6;
+}
+
+table,
+th,
+tbody,
+tr {
+  @apply border-none text-center;
+}
+
+thead {
+  @apply bg-violet-600;
+}
+
+th {
+  @apply p-2 text-white;
+}
+
+th:first-child {
+  @apply rounded-tl-lg;
+}
+
+th:last-child {
+  @apply rounded-tr-lg;
+}
+
+td {
+  @apply px-3 py-1;
+}
+tbody tr:nth-child(odd) {
+  @apply bg-violet-200 hover:bg-violet-300;
+}
+
+tbody tr:nth-child(even) {
+  @apply bg-violet-100 hover:bg-violet-300;
+}
+img {
+  @apply rounded-lg;
+}
+
+button {
+  @apply m-1 rounded-lg bg-violet-600 px-3 py-2 font-bold text-white hover:bg-violet-700 active:bg-violet-800;
+}
+
+.scaleup {
+  @apply transition-transform duration-200 hover:scale-105;
+}
