@@ -9,9 +9,9 @@
           :key="category.name"
           class="px-2 py-4"
         >
-          <a :href="'#' + category.name" class="text-violet-900">{{
-            category.name
-          }}</a>
+          <a :href="'#' + category.name" class="text-green-900">
+            {{ category.name }}
+          </a>
         </div>
       </nav>
       <div class="mt-4">

@@ -9,14 +9,14 @@
     <!-- Notification Button -->
     <button
       @click="showPopup = true"
-      class="flex h-12 w-12 items-center justify-center rounded-full bg-violet-500"
+      class="flex h-12 w-12 items-center justify-center rounded-full bg-green-500"
     >
       <img src="/icon/notification.svg" class="h-7 w-7" />
     </button>
     <!-- Cart Button -->
     <a href="/cart">
       <button
-        class="flex h-12 w-12 items-center justify-center rounded-full bg-violet-500"
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-500"
       >
         <img src="/icon/clipboard.png" class="h-7 w-7" />
       </button>

@@ -18,15 +18,15 @@ body {
 }
 
 h1 {
-  @apply text-center text-4xl font-bold text-violet-700;
+  @apply text-center text-4xl font-bold text-green-700;
 }
 
 h2 {
-  @apply text-3xl font-bold text-violet-700;
+  @apply text-3xl font-bold text-green-700;
 }
 
 h3 {
-  @apply text-2xl text-violet-700;
+  @apply text-2xl text-green-700;
 }
 
 input {
@@ -41,7 +41,7 @@ tr {
 }
 
 thead {
-  @apply bg-violet-600;
+  @apply bg-green-600;
 }
 
 th {
@@ -60,18 +60,18 @@ td {
   @apply px-3 py-1;
 }
 tbody tr:nth-child(odd) {
-  @apply bg-violet-200 hover:bg-violet-300;
+  @apply bg-green-200 hover:bg-green-300;
 }
 
 tbody tr:nth-child(even) {
-  @apply bg-violet-100 hover:bg-violet-300;
+  @apply bg-green-100 hover:bg-green-300;
 }
 img {
   @apply rounded-lg;
 }
 
 button {
-  @apply m-1 rounded-lg bg-violet-600 px-3 py-2 font-bold text-white hover:bg-violet-700 active:bg-violet-800;
+  @apply m-1 rounded-lg bg-green-600 px-3 py-2 font-bold text-white hover:bg-green-700 active:bg-green-800;
 }
 
 .scaleup {

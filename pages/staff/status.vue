@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <h1 class="mb-8">STATUS</h1>
       <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-violet-700">
+        <thead class="bg-green-700">
           <tr>
             <th>โต๊ะอาหาร</th>
             <th>อาหาร</th>

@@ -11,7 +11,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-violet-100 transition duration-150 hover:bg-violet-300">
+          <tr class="bg-green-100 transition duration-150 hover:bg-green-300">
             <td>
               <div class="flex justify-center">
                 <input
