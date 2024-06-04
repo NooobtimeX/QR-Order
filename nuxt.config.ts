@@ -5,19 +5,14 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-
-  css: ["assets/main.css"],
-
+  css: ["../../main.css"],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
-
   devServer: {
     port: 3000,
   },
-
-  modules: ["@nuxt/eslint"],
 });

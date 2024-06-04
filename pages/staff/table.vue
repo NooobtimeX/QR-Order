@@ -4,7 +4,7 @@
     <div class="mx-auto w-full px-3">
       <table class="w-full border-collapse bg-white shadow-md">
         <thead>
-          <tr class="bg-green-600">
+          <tr class="bg-violet-600">
             <th>Table</th>
             <th>Seats</th>
             <th>Action</th>
@@ -19,18 +19,18 @@
             <td>
               <span v-if="index !== editedIndex">{{ table.number }}</span>
               <input
-                v-if="index === editedIndex"
-                v-model="editedTable.number"
                 type="text"
+                v-model="editedTable.number"
+                v-if="index === editedIndex"
                 @keyup.enter="updateTable"
               />
             </td>
             <td>
               <span v-if="index !== editedIndex">{{ table.seats }}</span>
               <input
-                v-if="index === editedIndex"
-                v-model="editedTable.seats"
                 type="text"
+                v-model="editedTable.seats"
+                v-if="index === editedIndex"
                 @keyup.enter="updateTable"
               />
             </td>

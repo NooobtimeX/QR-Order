@@ -22,11 +22,21 @@
               <p class="text-gray-500">{{ product.price }} ฿</p>
             </div>
             <div class="flex items-center">
-              <IconDecrease @click="updateQuantity(index, -1)" />
-              <span class="w-8 text-center text-gray-700">
-                {{ product.quantity }}
-              </span>
-              <IconIncrease @click="updateQuantity(index, 1)" />
+              <button
+                class="flex h-8 w-8 items-center justify-center"
+                @click="updateQuantity(index, -1)"
+              >
+                -
+              </button>
+              <span class="w-8 text-center text-gray-700">{{
+                product.quantity
+              }}</span>
+              <button
+                class="flex h-8 w-8 items-center justify-center"
+                @click="updateQuantity(index, 1)"
+              >
+                +
+              </button>
             </div>
           </div>
         </div>
@@ -100,9 +110,9 @@ const updateQuantity = (index: number, amount: number) => {
 };
 
 const statusClass = (status: string) => ({
-  "bg-green-200 text-green-800": status === "done",
-  "bg-yellow-200 text-yellow-800": status === "preparing",
-  "bg-red-200 text-red-800": status === "cancel",
+  "bg-green-200 text-green-800": status === "จัดส่งแล้ว",
+  "bg-yellow-200 text-yellow-800": status === "กำลังจัดเตรียม",
+  "bg-red-200 text-red-800": status === "ยกเลิก",
 });
 
 const buy = ref([
@@ -110,21 +120,21 @@ const buy = ref([
     name: "ไก่ทอด",
     description: "Deep fried chicken",
     price: 200,
-    status: "done",
+    status: "จัดส่งแล้ว",
     quantity: 1,
   },
   {
     name: "ไอศกรีม",
     description: "Vanilla ice cream",
     price: 200,
-    status: "preparing",
+    status: "กำลังจัดเตรียม",
     quantity: 1,
   },
   {
     name: "ก๊วยเตี๋ยว",
     description: "Noodle soup",
     price: 200,
-    status: "cancel",
+    status: "ยกเลิก",
     quantity: 1,
   },
 ]);

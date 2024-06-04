@@ -27,14 +27,14 @@
                   class="rounded-md border border-gray-300 px-2 py-1"
                 />
                 <button
-                  class="h-auto w-auto rounded-lg text-white"
                   @click="saveField(index)"
+                  class="h-auto w-auto rounded-lg text-white"
                 >
                   บันทึก
                 </button>
                 <button
-                  class="h-auto w-auto rounded-lg text-white"
                   @click="cancelEdit(index)"
+                  class="h-auto w-auto rounded-lg text-white"
                 >
                   ยกเลิก
                 </button>

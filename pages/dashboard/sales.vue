@@ -6,24 +6,24 @@
         <div class="m-1 items-center md:flex">
           <label for="start-date" class="whitespace-nowrap">START END:</label>
           <input
-            id="start-date"
-            v-model="startDate"
             type="date"
+            v-model="startDate"
+            id="start-date"
             class="border"
           />
         </div>
         <div class="m-1 items-center md:flex">
           <label for="end-date" class="whitespace-nowrap">END DATE:</label>
-          <input id="end-date" v-model="endDate" type="date" class="border" />
+          <input type="date" v-model="endDate" id="end-date" class="border" />
         </div>
         <IconFilter @click="filterSales" />
       </div>
 
-      <div class="m-auto" />
+      <div class="m-auto"></div>
 
       <table class="my-2 w-full table-auto">
         <thead>
-          <tr class="bg-green-600">
+          <tr class="bg-violet-600">
             <th>DATE</th>
             <th>NAME</th>
             <th>QUANTITY</th>

@@ -47,6 +47,7 @@ model menu {
   name           String
   description    String
   price          Float
+  imageUrl       String
   sections       menuSection[]
   orderItem      orderItem[]
   restaurantId   Int

@@ -2,19 +2,18 @@
   <NuxtLayout name="customer">
     <div>
       <section class="overflow-hidden rounded-lg border text-gray-700">
-        <div class="container mx-auto p-4">
+        <div class="container mx-auto px-6 py-12">
           <div class="mx-auto grid grid-cols-1 gap-x-8 md:grid-cols-2 lg:w-4/5">
             <img
               alt="ecommerce"
               class="m-auto w-full rounded-lg border border-gray-200 object-cover object-center"
               :src="menuItem.img"
             />
-            <div class="mt-4 lg:mt-0 lg:p-2">
-              <h1 class="mb-2 text-left font-semibold tracking-wide">
+            <div class="mt-6 lg:mt-0 lg:py-6">
+              <h1 class="mb-2 font-semibold tracking-wide">
                 {{ menuItem.name }}
               </h1>
               <span class="font-bold">{{ totalPrice }} ฿</span>
-
               <div>
                 <div
                   v-for="(option, index) in menuItem.options"
@@ -26,20 +25,23 @@
                     <label
                       v-for="(subOption, subIndex) in option.choices"
                       :key="subIndex"
-                      class="mb-1 mr-2 flex cursor-pointer items-center justify-center rounded-lg border border-green-600 p-2 text-sm text-green-700 hover:shadow-lg"
+                      class="mb-1 mr-2 flex cursor-pointer items-center justify-center rounded-lg border border-violet-500 p-2 text-sm text-violet-700 hover:shadow-lg"
                       :class="{
-                        'bg-green-600 text-white':
-                          selectedOptions[index] === subIndex,
+                        'bg-violet-500': selectedOptions[index] === subIndex,
                       }"
                     >
                       <input
-                        v-model="selectedOptions[index]"
                         type="radio"
                         :name="String(index)"
                         :value="subIndex"
+                        v-model="selectedOptions[index]"
                         class="hidden"
                       />
-                      <span>
+                      <span
+                        :class="{
+                          'text-white': selectedOptions[index] === subIndex,
+                        }"
+                      >
                         {{ subOption.name }} {{ subOption.price }} ฿
                       </span>
                     </label>
@@ -47,15 +49,48 @@
                 </div>
               </div>
               <div class="flex items-center space-x-2">
-                Quantity:
-                <IconDecrease
-                  class="disabled:opacity-50"
-                  :disabled="quantity <= 1"
+                <button
+                  class="flex items-center rounded-lg border px-2 py-1 disabled:opacity-50"
                   @click="decrementQuantity"
-                />
-
+                  :disabled="quantity <= 1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      class="text-white"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 12H4"
+                    />
+                  </svg>
+                </button>
                 <div class="rounded-lg px-3 py-1">{{ quantity }}</div>
-                <IconIncrease @click="incrementQuantity" />
+                <button
+                  class="flex items-center rounded-lg border px-2 py-1"
+                  @click="incrementQuantity"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      class="text-white"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -68,7 +103,7 @@
               rows="4"
               class="block w-full rounded-lg border p-2.5 text-sm"
               placeholder=""
-            />
+            ></textarea>
           </div>
           <div class="mt-6 flex">
             <button
