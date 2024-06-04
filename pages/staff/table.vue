@@ -4,7 +4,7 @@
     <div class="mx-auto w-full px-3">
       <table class="w-full border-collapse bg-white shadow-md">
         <thead>
-          <tr class="bg-violet-600">
+          <tr class="bg-green-600">
             <th>Table</th>
             <th>Seats</th>
             <th>Action</th>

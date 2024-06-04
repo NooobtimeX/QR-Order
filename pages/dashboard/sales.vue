@@ -23,7 +23,7 @@
 
       <table class="my-2 w-full table-auto">
         <thead>
-          <tr class="bg-violet-600">
+          <tr class="bg-green-600">
             <th>DATE</th>
             <th>NAME</th>
             <th>QUANTITY</th>

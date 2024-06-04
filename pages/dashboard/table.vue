@@ -5,7 +5,7 @@
       <table class="w-full border-collapse bg-white shadow-md">
         <!-- Table Header -->
         <thead>
-          <tr class="bg-violet-600">
+          <tr class="bg-green-600">
             <th>TABLE</th>
             <th>SEAT</th>
             <th>ACTION</th>
@@ -14,7 +14,7 @@
         <!-- Table Body -->
         <tbody>
           <!-- New Table Row -->
-          <tr class="bg-violet-100 transition duration-150 hover:bg-violet-300">
+          <tr class="bg-green-100 transition duration-150 hover:bg-green-300">
             <td>
               <input type="text" v-model="newTable.number" placeholder="name" />
             </td>

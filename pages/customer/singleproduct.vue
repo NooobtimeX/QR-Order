@@ -25,9 +25,9 @@
                     <label
                       v-for="(subOption, subIndex) in option.choices"
                       :key="subIndex"
-                      class="mb-1 mr-2 flex cursor-pointer items-center justify-center rounded-lg border border-violet-500 p-2 text-sm text-violet-700 hover:shadow-lg"
+                      class="mb-1 mr-2 flex cursor-pointer items-center justify-center rounded-lg border border-green-500 p-2 text-sm text-green-700 hover:shadow-lg"
                       :class="{
-                        'bg-violet-500': selectedOptions[index] === subIndex,
+                        'bg-green-500': selectedOptions[index] === subIndex,
                       }"
                     >
                       <input

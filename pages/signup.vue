@@ -111,7 +111,7 @@
       </div>
 
       <button type="submit" class="mx-auto w-full p-2">Sign Up</button>
-      Already a member? <a href="/signin" class="text-violet-700">SIGN IN</a>
+      Already a member? <a href="/signin" class="text-green-700">SIGN IN</a>
     </form>
   </div>
 </template>

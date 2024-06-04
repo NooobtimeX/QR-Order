@@ -16,7 +16,7 @@
           </button>
           <button
             @click="showRestaurantForm = false"
-            class="border border-violet-700 bg-white text-center text-2xl text-violet-700 hover:text-white"
+            class="border border-green-700 bg-white text-center text-2xl text-green-700 hover:text-white"
           >
             STAFF
           </button>
@@ -50,7 +50,7 @@
         <div class="grid grid-cols-2">
           <button
             @click="showRestaurantForm = true"
-            class="border border-violet-700 bg-white text-center text-2xl text-violet-700 hover:text-white"
+            class="border border-green-700 bg-white text-center text-2xl text-green-700 hover:text-white"
           >
             RESTAURANT
           </button>
@@ -85,7 +85,7 @@
           {{ errorMessage }}
         </div>
       </form>
-      Not a member yet? <a href="/signup" class="text-violet-700">SIGN UP</a>
+      Not a member yet? <a href="/signup" class="text-green-700">SIGN UP</a>
     </div>
   </div>
 </template>

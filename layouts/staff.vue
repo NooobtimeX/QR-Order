@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="sticky z-50 mx-auto mb-2 w-full items-center rounded-b-lg bg-transparent bg-violet-700 p-6"
+    class="sticky z-50 mx-auto mb-2 w-full items-center rounded-b-lg bg-green-700 bg-transparent p-6"
   >
     <div class="mx-auto flex max-w-5xl items-center justify-between">
       <div class="md:hidden">
