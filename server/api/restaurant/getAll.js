@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { defineEventHandler } from "h3";
-
-const prisma = new PrismaClient();
+import prisma from "~/lib/prisma";
 
 export default defineEventHandler(async (event) => {
   try {

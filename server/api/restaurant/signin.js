@@ -1,25 +1,33 @@
-import { PrismaClient } from "@prisma/client";
 import { createError, readBody } from "h3";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import prisma from "~/lib/prisma";
 
-const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET;
+
 export default defineEventHandler(async (event) => {
+  let body;
   try {
-    const body = await readBody(event);
+    body = await readBody(event);
+  } catch (error) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid request body",
+    });
+  }
 
-    if (!body || !body.email || !body.password) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: "Email and password are required",
-      });
-    }
+  const { email, password } = body || {};
 
-    const { email, password } = body;
+  if (!email || !password) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Email and password are required",
+    });
+  }
 
+  try {
     const user = await prisma.restaurant.findUnique({
-      where: {
-        email,
-      },
+      where: { email },
     });
 
     if (!user) {
@@ -29,31 +37,33 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       throw createError({
         statusCode: 401,
         statusMessage: "Invalid email or password",
       });
     }
 
+    const token = jwt.sign(
+      { email: user.email },
+      JWT_SECRET,
+      { expiresIn: "24h" }, // Token expires in 24 hours
+    );
+
     return {
       statusCode: 200,
       body: {
         message: "Sign-in successful",
+        token,
       },
     };
   } catch (error) {
     console.error("Error signing in:", error);
-
-    if (error.statusCode) {
-      throw error;
-    } else {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Internal server error",
-      });
-    }
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal server error",
+    });
   } finally {
     await prisma.$disconnect();
   }

@@ -1,33 +1,33 @@
 <template>
   <NuxtLayout name="customer">
     <div>
-      <nav
-        class="sticky top-0 z-50 flex overflow-x-auto rounded-lg border bg-white"
-      >
-        <div
-          v-for="category in categories"
-          :key="category.name"
-          class="px-2 py-4"
-        >
-          <a :href="'#' + category.name" class="text-violet-900">{{
-            category.name
-          }}</a>
+      <nav class="sticky top-0 z-50 overflow-x-auto rounded-lg border bg-white">
+        <div class="flex">
+          <div
+            v-for="category in categories"
+            :key="category.name"
+            class="px-2 py-4"
+          >
+            <a :href="'#' + category.name" class="font-bold text-green-900">{{
+              category.name
+            }}</a>
+          </div>
         </div>
       </nav>
-      <div class="mt-4">
+      <div class="mt-2">
         <div
           v-for="category in categories"
+          :id="category.name"
           :key="category.name"
           class="mb-2 rounded-lg border p-2"
-          :id="category.name"
         >
           <h2 class="text-2xl font-semibold">{{ category.name }}</h2>
           <div class="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
             <router-link
-              :to="`/customer/singleproduct`"
-              class="block rounded-lg border bg-white p-2 transition-shadow duration-300 hover:shadow-lg"
               v-for="menu in category.menus"
               :key="menu.id"
+              :to="`/customer/singleproduct`"
+              class="block rounded-lg border bg-white p-2 transition-shadow duration-300 hover:shadow-lg"
             >
               <img :src="menu.src" class="c-t-lg h-32 w-full object-cover" />
               <div class="p-1">

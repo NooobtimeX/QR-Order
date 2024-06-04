@@ -1,23 +1,23 @@
 <template>
   <div class="mx-auto my-10 max-w-xl items-center justify-center">
     <h1 class="">Restaurant SIGN UP</h1>
-    <form @submit.prevent="submitForm" class="space-y-4">
+    <form class="space-y-4" @submit.prevent="submitForm">
       <div class="grid gap-2 rounded-lg border p-2 md:grid-cols-2">
         <div>
           <label for="name" class="block text-sm font-medium">Name</label>
           <input
-            type="text"
-            v-model="form.name"
             id="name"
+            v-model="form.name"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
         <div>
           <label for="email" class="block text-sm font-medium">Email</label>
           <input
-            type="email"
-            v-model="form.email"
             id="email"
+            v-model="form.email"
+            type="email"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -26,9 +26,9 @@
             >Password</label
           >
           <input
-            type="password"
-            v-model="form.password"
             id="password"
+            v-model="form.password"
+            type="password"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -38,9 +38,9 @@
             >Phone Number</label
           >
           <input
-            type="text"
-            v-model="form.phoneNumber"
             id="phoneNumber"
+            v-model="form.phoneNumber"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -49,18 +49,18 @@
         <div>
           <label for="no" class="block text-sm font-medium">No</label>
           <input
-            type="text"
-            v-model="form.no"
             id="no"
+            v-model="form.no"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
         <div>
           <label for="street" class="block text-sm font-medium">Street</label>
           <input
-            type="text"
-            v-model="form.street"
             id="street"
+            v-model="form.street"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -69,9 +69,9 @@
             >Subdistrict</label
           >
           <input
-            type="text"
-            v-model="form.subdistrict"
             id="subdistrict"
+            v-model="form.subdistrict"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -80,9 +80,9 @@
             >District</label
           >
           <input
-            type="text"
-            v-model="form.district"
             id="district"
+            v-model="form.district"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -91,9 +91,9 @@
             >Province</label
           >
           <input
-            type="text"
-            v-model="form.province"
             id="province"
+            v-model="form.province"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -102,16 +102,16 @@
             >Zip Code</label
           >
           <input
-            type="text"
-            v-model="form.zipCode"
             id="zipCode"
+            v-model="form.zipCode"
+            type="text"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
       </div>
 
       <button type="submit" class="mx-auto w-full p-2">Sign Up</button>
-      Already a member? <a href="/signin" class="text-violet-700">SIGN IN</a>
+      Already a member? <a href="/signin" class="text-green-700">SIGN IN</a>
     </form>
   </div>
 </template>
@@ -138,6 +138,7 @@ const submitForm = async () => {
     const response = await axios.post("/api/restaurant/signup", form.value);
     alert("Restaurant created successfully!");
     console.log(response.data);
+    //auto login
   } catch (error) {
     console.error("Error:", error);
     alert("An error occurred while creating the restaurant.");

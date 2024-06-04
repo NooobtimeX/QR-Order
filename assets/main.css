@@ -17,16 +17,22 @@ body {
   @apply text-lg;
 }
 
+h1,
+h2,
+h3 {
+  @apply font-bold text-green-700;
+}
+
 h1 {
-  @apply text-center text-4xl font-bold text-violet-700;
+  @apply text-center text-4xl;
 }
 
 h2 {
-  @apply text-3xl font-bold text-violet-700;
+  @apply text-3xl;
 }
 
 h3 {
-  @apply text-2xl text-violet-700;
+  @apply text-2xl;
 }
 
 input {
@@ -41,39 +47,29 @@ tr {
 }
 
 thead {
-  @apply bg-violet-600;
+  @apply bg-green-600;
 }
 
 th {
-  @apply p-2 text-white;
-}
-
-th:first-child {
-  @apply rounded-tl-lg;
-}
-
-th:last-child {
-  @apply rounded-tr-lg;
+  @apply p-2 text-white first:rounded-tl-lg last:rounded-tr-lg;
 }
 
 td {
   @apply px-3 py-1;
 }
+
 tbody tr:nth-child(odd) {
-  @apply bg-violet-200 hover:bg-violet-300;
+  @apply bg-green-200 hover:bg-green-300;
 }
 
 tbody tr:nth-child(even) {
-  @apply bg-violet-100 hover:bg-violet-300;
+  @apply bg-green-100 hover:bg-green-300;
 }
+
 img {
   @apply rounded-lg;
 }
 
 button {
-  @apply m-1 rounded-lg bg-violet-600 px-3 py-2 font-bold text-white hover:bg-violet-700 active:bg-violet-800;
-}
-
-.scaleup {
-  @apply transition-transform duration-200 hover:scale-105;
+  @apply m-1 rounded-lg bg-green-600 px-3 py-2 font-bold text-white hover:bg-green-700 active:bg-green-800;
 }

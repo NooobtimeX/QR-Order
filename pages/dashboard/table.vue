@@ -5,7 +5,7 @@
       <table class="w-full border-collapse bg-white shadow-md">
         <!-- Table Header -->
         <thead>
-          <tr class="bg-violet-600">
+          <tr class="bg-green-600">
             <th>TABLE</th>
             <th>SEAT</th>
             <th>ACTION</th>
@@ -14,12 +14,12 @@
         <!-- Table Body -->
         <tbody>
           <!-- New Table Row -->
-          <tr class="bg-violet-100 transition duration-150 hover:bg-violet-300">
+          <tr class="bg-green-100 transition duration-150 hover:bg-green-300">
             <td>
-              <input type="text" v-model="newTable.number" placeholder="name" />
+              <input v-model="newTable.number" type="text" placeholder="name" />
             </td>
             <td>
-              <input type="text" v-model="newTable.seats" placeholder="seats" />
+              <input v-model="newTable.seats" type="text" placeholder="seats" />
             </td>
             <td>
               <div class="flex items-center justify-center">
@@ -36,18 +36,18 @@
             <td>
               <span v-if="index !== editedIndex">{{ table.number }}</span>
               <input
-                type="text"
-                v-model="editedTable.number"
                 v-if="index === editedIndex"
+                v-model="editedTable.number"
+                type="text"
                 @keyup.enter="updateTable"
               />
             </td>
             <td>
               <span v-if="index !== editedIndex">{{ table.seats }}</span>
               <input
-                type="text"
-                v-model="editedTable.seats"
                 v-if="index === editedIndex"
+                v-model="editedTable.seats"
+                type="text"
                 @keyup.enter="updateTable"
               />
             </td>
@@ -56,7 +56,7 @@
                 v-if="index !== editedIndex"
                 @click="editTable(index)"
               />
-              <button @click="updateTable" v-if="index === editedIndex">
+              <button v-if="index === editedIndex" @click="updateTable">
                 OK
               </button>
               <IconDelete @click="removeTable(index)" />

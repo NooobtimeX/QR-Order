@@ -3,7 +3,7 @@
     <h1>MENU</h1>
     <div class="p-2">
       <nav class="sticky top-0 z-40 flex overflow-x-auto border bg-white">
-        <IconAdd @click="addNewCategory" class="p-2" />
+        <IconAdd class="p-2" @click="addNewCategory" />
         <div
           v-for="category in categories"
           :key="category.name"
@@ -15,9 +15,9 @@
       <div class="mt-4">
         <div
           v-for="category in categories"
+          :id="category.name"
           :key="category.name"
           class="mb-2 rounded-lg border p-2"
-          :id="category.name"
         >
           <div class="flex items-center">
             <h2 class="text-2xl font-semibold">{{ category.name }}</h2>
@@ -26,9 +26,9 @@
 
           <div class="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
             <div
-              class="block rounded-lg border bg-white p-2 transition-shadow duration-300 hover:shadow-lg"
               v-for="menu in category.menus"
               :key="menu.id"
+              class="block rounded-lg border bg-white p-2 transition-shadow duration-300 hover:shadow-lg"
             >
               <img :src="menu.src" class="h-32 w-full object-cover" />
               <div class="p-1">
@@ -46,12 +46,12 @@
       </div>
     </div>
     <div v-if="showPopup" class="popup relative z-50 w-11/12 overflow-y-auto">
-      <button @click="togglePopup" class="absolute right-0 top-0 m-2">
+      <button class="absolute right-0 top-0 m-2" @click="togglePopup">
         close
       </button>
       <creteMenu />
     </div>
-    <div v-if="showPopup" class="overlay" @click="togglePopup"></div>
+    <div v-if="showPopup" class="overlay" @click="togglePopup" />
   </NuxtLayout>
 </template>
 

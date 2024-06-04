@@ -4,19 +4,19 @@
     <div class="w-full rounded-lg border bg-white p-2">
       <form
         v-if="showRestaurantForm"
-        @submit.prevent="handleSubmitRestaurant"
         class="p-2"
+        @submit.prevent="handleSubmitRestaurant"
       >
         <div class="grid grid-cols-2">
           <button
-            @click="showRestaurantForm = true"
             class="text-center text-2xl"
+            @click="showRestaurantForm = true"
           >
             RESTAURANT
           </button>
           <button
+            class="border border-green-700 bg-white text-center text-2xl text-green-700 hover:text-white"
             @click="showRestaurantForm = false"
-            class="border border-violet-700 bg-white text-center text-2xl text-violet-700 hover:text-white"
           >
             STAFF
           </button>
@@ -46,17 +46,17 @@
           {{ errorMessage }}
         </div>
       </form>
-      <form v-else @submit.prevent="handleSubmitStaff" class="p-2">
+      <form v-else class="p-2" @submit.prevent="handleSubmitStaff">
         <div class="grid grid-cols-2">
           <button
+            class="border border-green-700 bg-white text-center text-2xl text-green-700 hover:text-white"
             @click="showRestaurantForm = true"
-            class="border border-violet-700 bg-white text-center text-2xl text-violet-700 hover:text-white"
           >
             RESTAURANT
           </button>
           <button
-            @click="showRestaurantForm = false"
             class="text-center text-2xl"
+            @click="showRestaurantForm = false"
           >
             STAFF
           </button>
@@ -85,7 +85,7 @@
           {{ errorMessage }}
         </div>
       </form>
-      Not a member yet? <a href="/signup" class="text-violet-700">SIGN UP</a>
+      Not a member yet? <a href="/signup" class="text-green-700">SIGN UP</a>
     </div>
   </div>
 </template>
@@ -113,6 +113,7 @@ const handleSubmitRestaurant = async () => {
 
     if (response.status === 200) {
       router.push("/dashboard");
+      localStorage.setItem("token", response.data.token);
     } else {
       errorMessage.value = response.data.statusMessage;
     }
@@ -128,7 +129,6 @@ const handleSubmitStaff = async () => {
       email: emailStaff.value,
       password: passwordStaff.value,
     });
-
     if (response.status === 200) {
       router.push("/staff");
     } else {
