@@ -1,12 +1,12 @@
 <template>
   <NuxtLayout name="customer">
     <div>
-      <section class="overflow-hidden rounded-lg border text-gray-700">
+      <section class="overflow-hidden rounded-xl border text-gray-700">
         <div class="container mx-auto px-6 py-12">
           <div class="mx-auto grid grid-cols-1 gap-x-8 md:grid-cols-2 lg:w-4/5">
             <img
               alt="ecommerce"
-              class="m-auto w-full rounded-lg border border-gray-200 object-cover object-center"
+              class="m-auto w-full rounded-xl border border-gray-200 object-cover object-center"
               :src="menuItem.img"
             />
             <div class="mt-6 lg:mt-0 lg:py-6">
@@ -25,7 +25,7 @@
                     <label
                       v-for="(subOption, subIndex) in option.choices"
                       :key="subIndex"
-                      class="mb-1 mr-2 flex cursor-pointer items-center justify-center rounded-lg border border-green-500 p-2 text-sm text-green-700 hover:shadow-lg"
+                      class="mb-1 mr-2 flex cursor-pointer items-center justify-center rounded-xl border border-green-500 p-2 text-sm text-green-700 hover:shadow-lg"
                       :class="{
                         'bg-green-500': selectedOptions[index] === subIndex,
                       }"
@@ -50,7 +50,7 @@
               </div>
               <div class="flex items-center space-x-2">
                 <button
-                  class="flex items-center rounded-lg border px-2 py-1 disabled:opacity-50"
+                  class="flex items-center rounded-xl border px-2 py-1 disabled:opacity-50"
                   @click="decrementQuantity"
                   :disabled="quantity <= 1"
                 >
@@ -70,9 +70,9 @@
                     />
                   </svg>
                 </button>
-                <div class="rounded-lg px-3 py-1">{{ quantity }}</div>
+                <div class="rounded-xl px-3 py-1">{{ quantity }}</div>
                 <button
-                  class="flex items-center rounded-lg border px-2 py-1"
+                  class="flex items-center rounded-xl border px-2 py-1"
                   @click="incrementQuantity"
                 >
                   <svg
@@ -101,7 +101,7 @@
             <textarea
               id="message"
               rows="4"
-              class="block w-full rounded-lg border p-2.5 text-sm"
+              class="block w-full rounded-xl border p-2.5 text-sm"
               placeholder=""
             ></textarea>
           </div>

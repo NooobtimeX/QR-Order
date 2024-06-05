@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="customer">
     <div>
-      <div v-if="cart.length > 0" class="w-full rounded-lg border bg-white p-2">
+      <div v-if="cart.length > 0" class="w-full rounded-xl border bg-white p-2">
         <h1 class="text-3xl font-bold">CART</h1>
         <div class="mb-4">
           <div
@@ -10,7 +10,7 @@
             class="flex items-center border-b py-4 last:border-none"
           >
             <img
-              class="mr-4 h-16 w-16 rounded-lg object-cover"
+              class="mr-4 h-16 w-16 rounded-xl object-cover"
               :src="product.image"
               alt="Product image"
             />
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="my-4">
-        <div class="rounded-lg border bg-white p-4">
+        <div class="rounded-xl border bg-white p-4">
           <div class="mb-6 flex items-center justify-between">
             <h2 class="text-2xl font-bold">ORDER HISTORY</h2>
           </div>
@@ -67,11 +67,17 @@
             </thead>
             <tbody>
               <tr v-for="(item, index) in buy" :key="index">
-                <td class="border p-3">{{ item.name }}</td>
-                <td class="border p-3 text-center">{{ item.price }} ฿</td>
-                <td class="border p-3 text-right">
+                <td class="border">{{ item.name }}</td>
+                <td class="border text-center">{{ item.price }} ฿</td>
+                <td class="border text-right">
                   <span
-                    :class="statusClass(item.status)"
+                    :class="{
+                      'bg-green-300 text-green-900':
+                        item.status === 'เสร็จสิ้น',
+                      'bg-yellow-300 text-yellow-900':
+                        item.status === 'กำลังจัดเตรียม',
+                      'bg-red-300 text-red-900': item.status === 'ยกเลิก',
+                    }"
                     class="rounded-full px-2 py-1 text-sm font-medium"
                     >{{ item.status }}</span
                   >
@@ -108,12 +114,6 @@ const updateQuantity = (index: number, amount: number) => {
     cart.value[index].quantity = newQuantity;
   }
 };
-
-const statusClass = (status: string) => ({
-  "bg-green-200 text-green-800": status === "จัดส่งแล้ว",
-  "bg-yellow-200 text-yellow-800": status === "กำลังจัดเตรียม",
-  "bg-red-200 text-red-800": status === "ยกเลิก",
-});
 
 const buy = ref([
   {

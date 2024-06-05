@@ -2,7 +2,7 @@
   <NuxtLayout name="customer">
     <div>
       <nav
-        class="sticky top-0 z-50 flex overflow-x-auto rounded-lg border bg-white"
+        class="sticky top-0 z-50 flex overflow-x-auto rounded-xl border bg-white"
       >
         <div
           v-for="category in categories"
@@ -18,14 +18,14 @@
         <div
           v-for="category in categories"
           :key="category.name"
-          class="mb-2 rounded-lg border p-2"
+          class="mb-2 rounded-xl border p-2"
           :id="category.name"
         >
           <h2 class="text-2xl font-semibold">{{ category.name }}</h2>
           <div class="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
             <router-link
               :to="`/customer/singleproduct`"
-              class="block rounded-lg border bg-white p-2 transition-shadow duration-300 hover:shadow-lg"
+              class="block rounded-xl border bg-white p-2 transition-shadow duration-300 hover:shadow-lg"
               v-for="menu in category.menus"
               :key="menu.id"
             >
@@ -38,13 +38,12 @@
           </div>
         </div>
       </div>
-    </div></NuxtLayout
-  >
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-
 const categories = ref([
   {
     name: "Burger",

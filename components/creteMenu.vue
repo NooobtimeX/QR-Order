@@ -13,7 +13,7 @@
           id="menuPhoto"
           accept="image/*"
           @change="handleFileUpload"
-          class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none"
+          class="block w-full cursor-pointer rounded-xl border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none"
         />
       </div>
 
@@ -33,7 +33,7 @@
               type="text"
               placeholder="ชื่ออาหาร"
               required
-              class="block w-full rounded-lg border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+              class="block w-full rounded-xl border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
           </div>
           <div class="w-full">
@@ -48,7 +48,7 @@
               type="number"
               placeholder="ราคา"
               required
-              class="block w-full rounded-lg border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+              class="block w-full rounded-xl border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
           </div>
         </div>
@@ -64,7 +64,7 @@
             type="text"
             placeholder="คำอธิบาย"
             required
-            class="block w-full rounded-lg border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+            class="block w-full rounded-xl border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
           />
         </div>
       </div>
@@ -89,14 +89,14 @@
               type="text"
               placeholder="ประเภทตัวเลือก"
               required
-              class="block w-full rounded-lg border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+              class="block w-full rounded-xl border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
           </div>
           <div class="flex items-end">
             <button
               @click="removesection(index)"
               type="button"
-              class="rounded-lg bg-red-500 px-4 py-2 text-white shadow-md transition hover:bg-red-600"
+              class="rounded-xl bg-red-500 px-4 py-2 text-white shadow-md transition hover:bg-red-600"
             >
               ลบประเภทตัวเลือก
             </button>
@@ -120,7 +120,7 @@
               type="text"
               placeholder="ชื่อตัวเลือก"
               required
-              class="block w-full rounded-lg border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+              class="block w-full rounded-xl border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -135,14 +135,14 @@
               type="number"
               placeholder="ราคาตัวเลือก"
               required
-              class="block w-full rounded-lg border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+              class="block w-full rounded-xl border border-gray-300 p-1 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
           </div>
           <div class="flex items-end">
             <button
               @click="removeoption(index, sIndex)"
               type="button"
-              class="rounded-lg bg-red-500 px-4 py-2 text-white shadow-md transition hover:bg-red-600"
+              class="rounded-xl bg-red-500 px-4 py-2 text-white shadow-md transition hover:bg-red-600"
             >
               ลบตัวเลือก
             </button>
@@ -152,7 +152,7 @@
           <button
             @click="addoption(index)"
             type="button"
-            class="rounded-lg bg-green-500 px-4 py-2 text-white shadow-md transition hover:bg-green-600"
+            class="rounded-xl bg-green-500 px-4 py-2 text-white shadow-md transition hover:bg-green-600"
           >
             เพิ่มตัวเลือก
           </button>
@@ -163,13 +163,13 @@
         <button
           @click="addsection"
           type="button"
-          class="rounded-lg bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600"
+          class="rounded-xl bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600"
         >
           เพิ่มประเภทตัวเลือก
         </button>
         <button
           type="submit"
-          class="rounded-lg bg-green-500 px-6 py-2 text-white shadow-md transition hover:bg-green-600"
+          class="rounded-xl bg-green-500 px-6 py-2 text-white shadow-md transition hover:bg-green-600"
         >
           เพิ่มเมนูอาหาร
         </button>

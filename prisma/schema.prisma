@@ -4,32 +4,38 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
+}
+
+model user {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  password   String 
+  restaurant restaurant[]
 }
 
 model restaurant {
-  id          Int    @id @default(autoincrement())
-  name        String
-  email       String @unique
-  password    String
-  phoneNumber String
-  no          String
-  street      String
-  subdistrict String
-  district    String
-  province    String  
-  zipCode     String
+  id             Int            @id @default(autoincrement())
+  name           String
+  phoneNumber    String
+  no             String
+  street         String
+  subdistrict    String
+  district       String
+  province       String
+  zipCode        String
   staffs         staff[]
   menuCategories menuCategory[]
   menus          menu[]
   tables         table[]
   receipts       receipt[]
+  userId         Int
+  user           user           @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model staff {
   id           Int        @id @default(autoincrement())
-  email        String     @unique
-  password     String
+  email        String
   restaurantId Int
   restaurant   restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }
@@ -49,11 +55,10 @@ model menu {
   price          Float
   imageUrl       String
   sections       menuSection[]
-  orderItem      orderItem[]
   restaurantId   Int
-  restaurant     restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurant     restaurant    @relation(fields: [restaurantId], references: [id])
   menuCategoryId Int
-  menuCategory   menuCategory  @relation(fields: [menuCategoryId], references: [id], onDelete: Cascade)
+  menuCategory   menuCategory  @relation(fields: [menuCategoryId], references: [id])
 }
 
 model menuSection {
@@ -88,12 +93,11 @@ model orderItem {
   id          Int          @id @default(autoincrement())
   status      String
   description String
-  menuId      Int
-  menu        menu         @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  menu        String
   menuOption  menuOption[]
   createdAt   DateTime     @default(now())
   qrCodeId    Int
-  qrCode      qrCode       @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  qrCode      qrCode       @relation(fields: [qrCodeId], references: [id])
   quantity    Int
 }
 
@@ -109,6 +113,10 @@ model qrCode {
 model receipt {
   id           Int        @id @default(autoincrement())
   createdAt    DateTime   @default(now())
+  tableName    Int
+  menu         String
+  quantity     Int
+  price        Float
   restaurantId Int
   restaurant   restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }

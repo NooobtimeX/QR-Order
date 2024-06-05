@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { createError, readBody } from "h3";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
+const secret = "secret";
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
@@ -16,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
     const { email, password } = body;
 
-    const user = await prisma.restaurant.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -36,11 +38,12 @@ export default defineEventHandler(async (event) => {
         statusMessage: "Invalid email or password",
       });
     }
-
+    const token = jwt.sign({ email }, secret, { expiresIn: "24h" });
     return {
       statusCode: 200,
       body: {
         message: "Sign-in successful",
+        token,
       },
     };
   } catch (error) {

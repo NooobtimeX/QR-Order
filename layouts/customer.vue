@@ -14,7 +14,7 @@
       <img src="/icon/notification.svg" class="h-7 w-7" />
     </button>
     <!-- Cart Button -->
-    <a href="/cart">
+    <a href="/customer/cart">
       <button
         class="flex h-12 w-12 items-center justify-center rounded-full bg-green-500"
       >
@@ -26,7 +26,7 @@
       v-if="showPopup"
       class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75"
     >
-      <div class="rounded-lg bg-white p-4 shadow-lg">
+      <div class="rounded-xl bg-white p-4 shadow-lg">
         <p class="text-gray-800">Call the staff?</p>
         <button @click="showPopup = false" class="mt-2">Confirm</button>
         <button @click="showPopup = false" class="mt-2">Cancel</button>
