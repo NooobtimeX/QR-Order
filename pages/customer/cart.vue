@@ -78,7 +78,7 @@
                         item.status === 'กำลังจัดเตรียม',
                       'bg-red-300 text-red-900': item.status === 'ยกเลิก',
                     }"
-                    class="rounded-full px-2 py-1 text-sm font-medium"
+                    class="rounded-xl px-2 py-1 text-sm font-medium"
                     >{{ item.status }}</span
                   >
                 </td>
