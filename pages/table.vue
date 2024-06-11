@@ -10,6 +10,7 @@
           :class="[getTableClass(table)]"
           @click="selectTable(table)"
         >
+          <img src="/table.png" />
           <p>โต๊ะ {{ table.tableName }}</p>
           <p>{{ table.seat }} ที่นั่ง</p>
         </button>

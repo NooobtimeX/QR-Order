@@ -52,7 +52,7 @@
       <select
         v-model="selectedOrder.status"
         @change="updateOrderStatus"
-        class="rounded-xl text-black"
+        class="mb-1 w-full rounded-xl text-black"
       >
         <option value="เสร็จสิ้น">เสร็จสิ้น</option>
         <option value="กำลังจัดเตรียม">กำลังจัดเตรียม</option>
@@ -61,13 +61,13 @@
       <div
         v-for="(item, index) in selectedOrder.items || []"
         :key="index"
-        class="mb-4 rounded border border-gray-500 bg-green-300 p-4 text-black transition duration-150"
+        class="mb-1 rounded-xl border border-gray-500 bg-green-300 p-2 text-black transition duration-150"
       >
         {{ item.name }} {{ item.price }}
         <div
           v-for="(option, index) in item.options"
           :key="index"
-          class="mt-2 text-gray-700"
+          class="-mt-1 text-gray-700"
         >
           &nbsp;{{ option }}
         </div>
