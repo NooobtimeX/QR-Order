@@ -53,7 +53,7 @@ th:first-child {
 }
 
 th:last-child {
-  @apply rounded-tr-lg;
+  @apply rounded-tr-xl;
 }
 
 td {
