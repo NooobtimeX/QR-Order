@@ -6,13 +6,13 @@
         <button
           v-for="table in tables"
           :key="table.tableId"
-          class="max-w-30 h-28 w-full"
+          class="flex flex-col items-center justify-center max-w-30 h-28 w-full"
           :class="[getTableClass(table)]"
           @click="selectTable(table)"
         >
-          <img src="/table.png" />
-          <p>โต๊ะ {{ table.tableName }}</p>
-          <p>{{ table.seat }} ที่นั่ง</p>
+          <img src="/table.png" class="w-14 h-14"/>
+          <p class="text-sm" >โต๊ะ {{ table.tableName }}</p>
+          <p class="text-sm" >{{ table.seat }} ที่นั่ง</p>
         </button>
       </div>
     </div>
@@ -169,3 +169,12 @@ const getTableClass = (table) => {
   }
 };
 </script>
+
+<style scoped>
+button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
