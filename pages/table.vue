@@ -1,18 +1,18 @@
 <template>
   <NuxtLayout>
     <div class="sm:mr-64">
-      <h1>จัดการโต๊ะ</h1>
+      <h1>โต๊ะอาหาร</h1>
       <div class="grid grid-cols-4 gap-1 md:grid-cols-8">
         <button
           v-for="table in tables"
           :key="table.tableId"
-          class="flex flex-col items-center justify-center max-w-30 h-28 w-full"
+          class="max-w-30 flex h-28 w-full flex-col items-center justify-center"
           :class="[getTableClass(table)]"
           @click="selectTable(table)"
         >
-          <img src="/table.png" class="w-14 h-14"/>
-          <p class="text-sm" >โต๊ะ {{ table.tableName }}</p>
-          <p class="text-sm" >{{ table.seat }} ที่นั่ง</p>
+          <img src="/table.png" class="h-14 w-14" />
+          <p class="text-sm">โต๊ะ {{ table.tableName }}</p>
+          <p class="text-sm">{{ table.seat }} ที่นั่ง</p>
         </button>
       </div>
     </div>

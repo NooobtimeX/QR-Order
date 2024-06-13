@@ -55,7 +55,7 @@ const menuItems = ref([
     icon: "/icon/",
   },
   {
-    text: "จัดการโต๊ะ",
+    text: "โต๊ะอาหาร",
     link: "/table",
     icon: "/icon/",
   },
@@ -65,13 +65,23 @@ const menuItems = ref([
     icon: "/icon/",
   },
   {
+    text: "เมนู",
+    link: "/menu",
+    icon: "/icon/",
+  },
+  {
     text: "ใบเสร็จ",
     link: "/receipt",
     icon: "/icon/",
   },
   {
-    text: "การตั้งค่า",
-    link: "/setting",
+    text: "ที่อยู่ร้านอาหาร",
+    link: "/address",
+    icon: "/icon/",
+  },
+  {
+    text: "พนักงาน",
+    link: "/staff",
     icon: "/icon/",
   },
 ]);

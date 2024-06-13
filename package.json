@@ -27,6 +27,8 @@
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",
-    "vuedraggable": "^2.24.3"
+    "vuedraggable": "^2.24.3",
+    "chart.js": "^4.4.3",
+    "vue-chartjs": "^5.3.1"
   }
 }
