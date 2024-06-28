@@ -1,36 +1,38 @@
 <template>
   <NuxtLayout>
-    <h1>ที่อยู่ร้านอาหาร</h1>
-    <div class="overflow-hidden rounded-xl border bg-white">
-      <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-        <dl class="sm:divide-y sm:divide-gray-200">
+    <h1 class="text-2xl font-semibold text-center my-4">ที่อยู่ร้านอาหาร</h1>
+    <div class="overflow-hidden rounded-lg border bg-white shadow-md">
+      <div class="border-t border-gray-200 p-3">
+        <dl class="divide-y divide-gray-200">
           <div
             v-for="(field, index) in profileFields"
             :key="index"
-            class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5"
+            class="py-2 grid grid-cols-3 gap-2 px-4"
           >
-            <dt class="text-sm font-medium text-gray-500">
-              {{ field.label }} &nbsp;
+            <dt class="text-sm font-medium text-gray-700">
+              {{ field.label }}
             </dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              <template v-if="!field.editing" class="text-center">
-                {{ field.value }}
-                <IconEdit @click="editField(index)" />
+            <dd class="mt-1 text-sm text-gray-900 col-span-2 mt-0">
+              <template v-if="!field.editing">
+                <div class="flex justify-between items-center">
+                  <span class="text-base">{{ field.value }}</span>
+                  <IconEdit @click="editField(index)" class="cursor-pointer text-blue-500" />
+                </div>
               </template>
               <template v-else>
                 <input
                   v-model="field.editedValue"
-                  class="rounded-md border border-gray-300 px-2 py-1"
+                  class="rounded-md border border-gray-300 px-2 py-1 mr-2 text-sm flex-1"
                 />
                 <button
                   @click="saveField(index)"
-                  class="h-auto w-auto rounded-xl text-white"
+                  class="h-auto w-auto rounded-md bg-green-500 text-white text-sm px-2 py-1 mr-2 hover:bg-green-600 transition-colors"
                 >
                   บันทึก
                 </button>
                 <button
                   @click="cancelEdit(index)"
-                  class="h-auto w-auto rounded-xl text-white"
+                  class="h-auto w-auto rounded-md bg-red-500 text-white text-sm px-2 py-1 hover:bg-red-600 transition-colors"
                 >
                   ยกเลิก
                 </button>
@@ -39,8 +41,8 @@
           </div>
         </dl>
       </div>
-    </div></NuxtLayout
-  >
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup>
@@ -54,49 +56,49 @@ const profileFields = ref([
     editedValue: "",
   },
   {
-    label: "email",
+    label: "อีเมล",
     value: "johndoe@example.com",
     editing: false,
     editedValue: "",
   },
   {
-    label: "phoneNumber",
+    label: "เบอร์โทร",
     value: "(123) 456-7890",
     editing: false,
     editedValue: "",
   },
   {
-    label: "no",
+    label: "ที่อยู่",
     value: "123",
     editing: false,
     editedValue: "",
   },
   {
-    label: "street",
+    label: "ถนน",
     value: "Main St",
     editing: false,
     editedValue: "",
   },
   {
-    label: "subdistrict",
+    label: "ตำบล",
     value: "Anytown",
     editing: false,
     editedValue: "",
   },
   {
-    label: "district",
+    label: "อำเภอ",
     value: "Anytown",
     editing: false,
     editedValue: "",
   },
   {
-    label: "province",
+    label: "จังหวัด",
     value: "USA",
     editing: false,
     editedValue: "",
   },
   {
-    label: "zipCode",
+    label: "ไปรษณีย์",
     value: "12345",
     editing: false,
     editedValue: "",
