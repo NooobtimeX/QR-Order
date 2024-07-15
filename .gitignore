@@ -4,9 +4,7 @@ node_modules
 dist
 package-lock.json
 pnpm-lock.yaml
-prisma/dev.db
 dev.db-journal
 .env
 package-lock.json
-dev.db
 migrations
