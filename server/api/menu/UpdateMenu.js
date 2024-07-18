@@ -7,14 +7,32 @@ export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
 
-    if (!body || !body.id || !body.name || !body.description || !body.price || !body.restaurantId || !body.menuCategoryId || !body.sections) {
+    if (
+      !body ||
+      !body.id ||
+      !body.name ||
+      !body.description ||
+      !body.price ||
+      !body.restaurantId ||
+      !body.menuCategoryId ||
+      !body.sections
+    ) {
       throw createError({
         statusCode: 400,
         statusMessage: "Missing required fields",
       });
     }
 
-    const { id, name, description, price, imageUrl, restaurantId, menuCategoryId, sections } = body;
+    const {
+      id,
+      name,
+      description,
+      price,
+      imageUrl,
+      restaurantId,
+      menuCategoryId,
+      sections,
+    } = body;
 
     // Check if the menu exists
     const existingMenu = await prisma.menu.findUnique({
@@ -41,7 +59,7 @@ export default defineEventHandler(async (event) => {
       create: {
         name: section.name,
         menuOption: {
-          create: section.options.map(option => ({
+          create: section.options.map((option) => ({
             name: option.name,
             price: option.price,
           })),
@@ -52,10 +70,12 @@ export default defineEventHandler(async (event) => {
         menuOption: {
           deleteMany: {
             id: {
-              notIn: section.options.map(option => option.id).filter(id => id !== undefined), // Delete options not in the update list
+              notIn: section.options
+                .map((option) => option.id)
+                .filter((id) => id !== undefined), // Delete options not in the update list
             },
           },
-          upsert: section.options.map(option => ({
+          upsert: section.options.map((option) => ({
             where: { id: option.id || 0 }, // `id` or default `0` for new options
             create: {
               name: option.name,
@@ -83,7 +103,9 @@ export default defineEventHandler(async (event) => {
         sections: {
           deleteMany: {
             id: {
-              notIn: sections.map(section => section.id).filter(id => id !== undefined), // Delete sections not in the update list
+              notIn: sections
+                .map((section) => section.id)
+                .filter((id) => id !== undefined), // Delete sections not in the update list
             },
           },
           upsert: updatedSections,

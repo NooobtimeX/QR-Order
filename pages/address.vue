@@ -12,7 +12,7 @@
             <dt class="text-sm font-medium text-gray-700">
               {{ field.label }}
             </dt>
-            <dd class="col-span-2 mt-0 mt-1 text-sm text-gray-900">
+            <dd class="col-span-2 mt-1 text-sm text-gray-900">
               <template v-if="!field.editing">
                 <div class="flex items-center justify-between">
                   <span class="text-base">{{ field.value }}</span>

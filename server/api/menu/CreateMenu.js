@@ -7,14 +7,30 @@ export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
 
-    if (!body || !body.name || !body.description || !body.price || !body.restaurantId || !body.menuCategoryId || !body.sections) {
+    if (
+      !body ||
+      !body.name ||
+      !body.description ||
+      !body.price ||
+      !body.restaurantId ||
+      !body.menuCategoryId ||
+      !body.sections
+    ) {
       throw createError({
         statusCode: 400,
         statusMessage: "Missing required fields",
       });
     }
 
-    const { name, description, price, imageUrl, restaurantId, menuCategoryId, sections } = body;
+    const {
+      name,
+      description,
+      price,
+      imageUrl,
+      restaurantId,
+      menuCategoryId,
+      sections,
+    } = body;
 
     // Create the new menu
     const menu = await prisma.menu.create({
@@ -26,10 +42,10 @@ export default defineEventHandler(async (event) => {
         restaurantId,
         menuCategoryId,
         sections: {
-          create: sections.map(section => ({
+          create: sections.map((section) => ({
             name: section.name,
             menuOption: {
-              create: section.options.map(option => ({
+              create: section.options.map((option) => ({
                 name: option.name,
                 price: option.price,
               })),

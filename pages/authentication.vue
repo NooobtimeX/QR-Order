@@ -62,14 +62,31 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import Cookies from "js-cookie";
+
 const errorMessage = ref(null);
 const showSignUp = ref(true);
 const email = ref("");
 const password = ref("");
 const router = useRouter();
+
+const getUserIdByEmail = async (email) => {
+  try {
+    const response = await axios.post("/api/user/getUserIdByEmail", { email });
+    if (response.status === 200) {
+      console.log("getUserIdByEmail response:", response.data); // Log the response
+      return response.data.body.userId; // Access userId from the body
+    } else {
+      throw new Error(response.data.statusMessage);
+    }
+  } catch (error) {
+    console.error("Error fetching user ID:", error); // Log the error
+    throw new Error("Failed to fetch user ID");
+  }
+};
 
 const handleSignin = async () => {
   try {
@@ -80,7 +97,13 @@ const handleSignin = async () => {
     });
 
     if (response.status === 200) {
-      router.push("/dashboard");
+      const userId = await getUserIdByEmail(email.value);
+      if (userId) {
+        Cookies.set("userId", userId); // Set userId in cookies
+        router.push("/select");
+      } else {
+        errorMessage.value = "Failed to retrieve user ID";
+      }
     } else {
       errorMessage.value = response.data.statusMessage;
     }
@@ -98,7 +121,13 @@ const handleSignup = async () => {
     });
 
     if (response.status === 200) {
-      router.push("/dashboard");
+      const userId = await getUserIdByEmail(email.value);
+      if (userId) {
+        Cookies.set("userId", userId); // Set userId in cookies
+        router.push("/select");
+      } else {
+        errorMessage.value = "Failed to retrieve user ID";
+      }
     } else {
       errorMessage.value = response.data.statusMessage;
     }
@@ -106,4 +135,12 @@ const handleSignup = async () => {
     errorMessage.value = "An unexpected error occurred";
   }
 };
+
+onMounted(() => {
+  const userId = Cookies.get("userId");
+  alert("Already signed in");
+  if (userId) {
+    router.push("/select");
+  }
+});
 </script>

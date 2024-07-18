@@ -5,14 +5,19 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+
   css: ["~/assets/main.css"],
+
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
+
   devServer: {
     port: 4000,
   },
+
+  modules: ["@pinia/nuxt"],
 });

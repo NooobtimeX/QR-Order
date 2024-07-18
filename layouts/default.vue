@@ -47,6 +47,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import Cookies from "js-cookie";
 
 const menuItems = ref([
   {
@@ -90,6 +91,7 @@ const router = useRouter();
 const isSidebarOpen = ref(false);
 
 function signOut() {
+  Cookies.remove("userId"); // Remove the user ID cookie
   router.push("/authentication");
 }
 function toggleSidebar() {
