@@ -18,12 +18,6 @@ model restaurant {
   id             Int            @id @default(autoincrement())
   name           String
   phoneNumber    String
-  no             String
-  street         String
-  subdistrict    String
-  district       String
-  province       String
-  zipCode        String
   staffs         staff[]
   menuCategories menuCategory[]
   menus          menu[]

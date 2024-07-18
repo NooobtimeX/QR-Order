@@ -18,12 +18,6 @@ export default defineEventHandler(async (event) => {
       data: {
         name: body.name,
         phoneNumber: body.phoneNumber,
-        no: body.no || "",
-        street: body.street || "",
-        subdistrict: body.subdistrict || "",
-        district: body.district || "",
-        province: body.province || "",
-        zipCode: body.zipCode || "",
         userId: body.userId,
       },
     });
