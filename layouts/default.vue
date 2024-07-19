@@ -13,7 +13,7 @@
       <div class="relative h-full overflow-y-auto bg-green-900 px-3 py-4">
         <div class="items-center justify-center text-white">
           <img width="50px" src="/logo/logo.png" />
-          <div>Pizza Store</div>
+          <div>{{ restaurantName }}</div>
         </div>
         <IconClose @click="toggleSidebar" />
         <ul class="mt-2 space-y-2 font-medium">
@@ -45,8 +45,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 import Cookies from "js-cookie";
 
 const menuItems = ref([
@@ -89,12 +90,38 @@ const menuItems = ref([
 
 const router = useRouter();
 const isSidebarOpen = ref(false);
+const restaurantName = ref("Loading...");
+
+async function fetchRestaurantName() {
+  try {
+    const resId = Cookies.get("resId");
+    if (!resId) {
+      throw new Error("Restaurant ID not found in cookies");
+    }
+
+    const response = await axios.post("/api/restaurant/getById", { id: resId });
+    if (response.status === 200) {
+      restaurantName.value = response.data.body.name;
+    } else {
+      restaurantName.value = "Restaurant not found";
+    }
+  } catch (error) {
+    console.error("Error fetching restaurant name:", error);
+    restaurantName.value = "Error loading restaurant name";
+  }
+}
 
 function signOut() {
-  Cookies.remove("userId"); // Remove the user ID cookie
+  Cookies.remove("resId"); // Remove the restaurant ID cookie
+  Cookies.remove("userId"); // Remove the restaurant ID cookie
   router.push("/authentication");
 }
+
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
 }
+
+onMounted(() => {
+  fetchRestaurantName();
+});
 </script>
