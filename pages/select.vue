@@ -7,6 +7,7 @@
           v-for="item in ownerAccess"
           :key="item.id"
           class="rounded-lg bg-white p-4 shadow-md"
+          @click="saveResId(item.id)"
         >
           <p class="text-gray-700">
             <span class="font-semibold">ID:</span> {{ item.id }}
@@ -47,12 +48,6 @@ export default defineComponent({
       id: 0,
       name: "",
       phoneNumber: "",
-      no: "",
-      street: "",
-      subdistrict: "",
-      district: "",
-      province: "",
-      zipCode: "",
       userId: userId, // Set userId from cookies
     });
 
@@ -71,6 +66,11 @@ export default defineComponent({
         console.error("Error fetching owner access:", error);
       }
     };
+
+    const saveResId = (id) => {
+      Cookies.set("resId", id); // Save id to js-cookie with name "resId"
+    };
+
     onMounted(() => {
       fetchOwnerAccess();
     });
@@ -80,6 +80,7 @@ export default defineComponent({
       showModal,
       newRestaurant,
       fetchOwnerAccess,
+      saveResId,
     };
   },
 });
