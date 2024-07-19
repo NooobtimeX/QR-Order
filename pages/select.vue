@@ -53,12 +53,9 @@ export default defineComponent({
 
     const fetchOwnerAccess = async () => {
       try {
-        const response = await axios.get(
-          "/api/restaurant/getrestaurantsbyowner",
-          {
-            params: { userId: userId }, // Pass userId from cookies
-          },
-        );
+        const response = await axios.get("/api/restaurant/getByUserId", {
+          params: { userId: userId }, // Pass userId from cookies
+        });
         const { body } = response.data;
         console.log("Owner access data:", body);
         ownerAccess.value = body;
