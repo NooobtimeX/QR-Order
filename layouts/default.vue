@@ -51,41 +51,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const menuItems = ref([
-  {
-    text: "แดชบอร์ด",
-    link: "/dashboard",
-    icon: "/icon/",
-  },
-  {
-    text: "โต๊ะอาหาร",
-    link: "/table",
-    icon: "/icon/",
-  },
-  {
-    text: "ออเดอร์",
-    link: "/order",
-    icon: "/icon/",
-  },
-  {
-    text: "เมนู",
-    link: "/menu",
-    icon: "/icon/",
-  },
-  {
-    text: "ใบเสร็จ",
-    link: "/receipt",
-    icon: "/icon/",
-  },
-  {
-    text: "ที่อยู่ร้านอาหาร",
-    link: "/address",
-    icon: "/icon/",
-  },
-  {
-    text: "พนักงาน",
-    link: "/staff",
-    icon: "/icon/",
-  },
+  { text: "แดชบอร์ด", link: "/dashboard", icon: "/icon/dashboard.png" },
+  { text: "โต๊ะอาหาร", link: "/table", icon: "/icon/table.png" },
+  { text: "ออเดอร์", link: "/order", icon: "/icon/order.png" },
+  { text: "เมนู", link: "/menu", icon: "/icon/menu.png" },
+  { text: "ใบเสร็จ", link: "/receipt", icon: "/icon/receipt.png" },
+  { text: "พนักงาน", link: "/staff", icon: "/icon/staff.png" },
+  { text: "สลับร้านอาหาร", link: "/select", icon: "/icon/staff.png" },
 ]);
 
 const router = useRouter();
@@ -98,7 +70,7 @@ async function fetchRestaurantName() {
     if (!resId) {
       throw new Error("Restaurant ID not found in cookies");
     }
-
+    console.log("Fetching restaurant name for resId:", resId); // Debugging log
     const response = await axios.post("/api/restaurant/getById", { id: resId });
     if (response.status === 200) {
       restaurantName.value = response.data.body.name;
@@ -112,8 +84,8 @@ async function fetchRestaurantName() {
 }
 
 function signOut() {
-  Cookies.remove("resId"); // Remove the restaurant ID cookie
-  Cookies.remove("userId"); // Remove the restaurant ID cookie
+  Cookies.remove("resId");
+  Cookies.remove("userId");
   router.push("/authentication");
 }
 
@@ -122,6 +94,12 @@ function toggleSidebar() {
 }
 
 onMounted(() => {
-  fetchRestaurantName();
+  const userId = Cookies.get("userId");
+  if (!userId) {
+    alert("Need to sign in to access this page");
+    router.push("/authentication");
+  } else {
+    fetchRestaurantName();
+  }
 });
 </script>

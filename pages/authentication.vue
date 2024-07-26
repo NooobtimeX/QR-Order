@@ -138,8 +138,8 @@ const handleSignup = async () => {
 
 onMounted(() => {
   const userId = Cookies.get("userId");
-  alert("Already signed in");
   if (userId) {
+    alert("Already signed in");
     router.push("/select");
   }
 });

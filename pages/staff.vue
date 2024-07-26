@@ -10,12 +10,6 @@
           :key="staff.id"
           class="flex flex-col items-center justify-center rounded-xl border p-4 hover:bg-gray-50"
         >
-          <img
-            v-if="staff.picture && staff.picture.thumbnail"
-            class="h-16 w-16 rounded-full object-cover"
-            :src="staff.picture.thumbnail"
-            alt="staff Thumbnail"
-          />
           <div
             class="mt-2 flex flex-col justify-center text-center text-sm text-gray-600"
           >
@@ -23,7 +17,6 @@
             <button @click="deletestaff(staff.id)">delete</button>
           </div>
         </div>
-
         <div
           class="flex cursor-pointer flex-col items-center justify-center rounded-xl border p-4 hover:bg-gray-50"
           @click="showAddModal = true"
@@ -43,7 +36,6 @@
           <p class="mt-2 text-sm text-gray-600">Add Employee</p>
         </div>
       </div>
-
       <div
         class="fixed inset-0 z-50 flex items-center justify-center"
         v-if="showAddModal"
@@ -64,19 +56,7 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
               />
             </div>
-            <div class="mb-4">
-              <label
-                for="picture"
-                class="block text-sm font-medium text-gray-700"
-                >Picture URL</label
-              >
-              <input
-                type="url"
-                id="picture"
-                v-model="newEmployee.picture"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-              />
-            </div>
+
             <div class="flex justify-end">
               <button
                 type="button"
@@ -100,42 +80,56 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const staffs = ref([
-  {
-    id: 1,
-    email: "john.doe@example.com",
-    picture: { thumbnail: "https://randomuser.me/api/portraits/men/1.jpg" },
-  },
-  {
-    id: 2,
-    email: "jane.smith@example.com",
-    picture: { thumbnail: "https://randomuser.me/api/portraits/women/2.jpg" },
-  },
-]);
-
+const staffs = ref<Array<{ id: number; email: string }>>([]);
 const showAddModal = ref(false);
 const newEmployee = ref({
   email: "",
   picture: "",
 });
 
-const addEmployee = () => {
-  staffs.value.push({
-    id: staffs.value.length + 1,
-    email: newEmployee.value.email,
-    picture: { thumbnail: newEmployee.value.picture },
-  });
-  newEmployee.value.email = "";
-  newEmployee.value.picture = "";
-  showAddModal.value = false;
+const restaurantId = parseInt(Cookies.get("resId") || "0", 10);
+
+const fetchStaffs = async () => {
+  try {
+    const response = await axios.get("/api/restaurant/getStaffById", {
+      params: { restaurantId }, // Use the restaurant ID from the cookie
+    });
+    staffs.value = response.data.body || [];
+  } catch (error) {
+    console.error("Error fetching staff:", error);
+  }
 };
 
-const deletestaff = (id: number) => {
-  const index = staffs.value.findIndex((staff) => staff.id === id);
-  if (index !== -1) {
-    staffs.value.splice(index, 1);
+onMounted(() => {
+  fetchStaffs();
+});
+
+const addEmployee = async () => {
+  try {
+    const response = await axios.post(`/api/restaurant/addStaff`, {
+      email: newEmployee.value.email,
+      restaurantId, // Use the restaurant ID from the cookie
+    });
+    showAddModal.value = false;
+    newEmployee.value.email = "";
+    fetchStaffs();
+  } catch (error) {
+    console.error("Error adding employee:", error);
+  }
+};
+
+const deletestaff = async (id: number) => {
+  try {
+    await axios.delete(`/api/restaurant/deleteStaff`, {
+      params: { id },
+    });
+    fetchStaffs();
+  } catch (error) {
+    console.error("Error deleting staff:", error);
   }
 };
 </script>

@@ -5,14 +5,14 @@
       <div class="grid grid-cols-4 gap-1 md:grid-cols-8">
         <button
           v-for="table in tables"
-          :key="table.tableId"
+          :key="table.id"
           class="max-w-30 flex h-28 w-full flex-col items-center justify-center"
           :class="[getTableClass(table)]"
           @click="selectTable(table)"
         >
           <img src="/table.png" class="h-14 w-14" />
-          <p class="text-sm">โต๊ะ {{ table.tableName }}</p>
-          <p class="text-sm">{{ table.seat }} ที่นั่ง</p>
+          <p class="text-sm">โต๊ะ {{ table.name }}</p>
+          <p class="text-sm">{{ table.capacity }} ที่นั่ง</p>
         </button>
       </div>
     </div>
@@ -54,7 +54,7 @@
             Show photo
           </button>
           <button
-            @click=""
+            @click="orderFood"
             class="rounded bg-yellow-600 px-2 py-1 text-lg text-white"
           >
             สั้งอาหาร
@@ -78,81 +78,42 @@
           </button>
         </div>
       </div>
-
       <div v-else class="text-center">กรุณาเลือกโต๊ะอาหาร</div>
     </aside>
   </NuxtLayout>
 </template>
+<script setup>
+import { ref, onMounted } from "vue";
+import Cookies from "js-cookie";
+import axios from "axios";
 
-<script setup lang="ts">
-import { ref } from "vue";
-
-const tables = ref([
-  {
-    tableId: "1",
-    tableName: "1",
-    status: "isOpen",
-    seat: 4,
-  },
-  {
-    tableId: "2",
-    tableName: "2",
-    status: "isOpen",
-    seat: 4,
-  },
-  {
-    tableId: "3",
-    tableName: "3",
-    status: "isOpen",
-    seat: 4,
-  },
-  {
-    tableId: "4",
-    tableName: "4",
-    status: "isReserved",
-    seat: 4,
-  },
-  {
-    tableId: "5",
-    tableName: "5",
-    status: "isReserved",
-    seat: 4,
-  },
-  {
-    tableId: "6",
-    tableName: "6",
-    status: "isUnavailable",
-    seat: 4,
-  },
-  {
-    tableId: "7",
-    tableName: "7",
-    status: "isUnavailable",
-    seat: 4,
-  },
-  {
-    tableId: "8",
-    tableName: "8",
-    status: "isUnavailable",
-    seat: 4,
-  },
-  {
-    tableId: "9",
-    tableName: "9",
-    status: "isUnavailable",
-    seat: 4,
-  },
-  {
-    tableId: "10",
-    tableName: "10",
-    status: "isUnavailable",
-    seat: 4,
-  },
-]);
-
+const tables = ref([]);
 const selectedTable = ref(null);
 
-const selectTable = (table: null) => {
+const fetchTables = async () => {
+  const restaurantId = Cookies.get("resId");
+  console.log("Restaurant ID:", restaurantId); // Log the restaurant ID
+
+  try {
+    const response = await axios.get(`/api/restaurant/getTableById`, {
+      params: { restaurantId },
+    });
+    console.log(
+      "Request URL:",
+      `/api/restaurant/getTableById?restaurantId=${restaurantId}`,
+    ); // Log the request URL
+    tables.value = response.data.body || [];
+    console.log("Tables fetched:", tables.value); // Debugging log
+  } catch (error) {
+    console.error("Error fetching tables:", error);
+  }
+};
+
+onMounted(() => {
+  fetchTables();
+});
+
+const selectTable = (table) => {
   selectedTable.value = table;
 };
 
@@ -188,18 +149,9 @@ const getTableClass = (table) => {
   if (table.status === "isUnavailable") {
     return "bg-red-600 hover:bg-red-800"; // Red background when the table is unavailable
   } else if (table.status === "isReserved") {
-    return "bg-green-600 hover:bg-green-800"; // Gray background when the table is reserved
+    return "bg-green-600 hover:bg-green-800"; // Green background when the table is reserved
   } else {
-    return "bg-gray-600 hover:bg-gray-800 "; // Green background when the table is available
+    return "bg-gray-600 hover:bg-gray-800"; // Gray background when the table is available
   }
 };
 </script>
-
-<style scoped>
-button {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-</style>
