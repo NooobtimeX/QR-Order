@@ -10,7 +10,8 @@ export default defineEventHandler(async (event) => {
   if (!name || !capacity || !status || !notification || !restaurantId) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Name, capacity, status, notification, and restaurant ID are required",
+      statusMessage:
+        "Name, capacity, status, notification, and restaurant ID are required",
     });
   }
 

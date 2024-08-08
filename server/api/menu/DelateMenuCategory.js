@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     console.error("Error deleting menu category:", error);
 
-    if (error.code === 'P2025') {
+    if (error.code === "P2025") {
       throw createError({
         statusCode: 404,
         statusMessage: "Menu category not found",

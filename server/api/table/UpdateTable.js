@@ -20,7 +20,8 @@ export default defineEventHandler(async (event) => {
   if (!name && !capacity && !status && !notification) {
     throw createError({
       statusCode: 400,
-      statusMessage: "At least one field (name, capacity, status, or notification) is required to update",
+      statusMessage:
+        "At least one field (name, capacity, status, or notification) is required to update",
     });
   }
 
@@ -45,7 +46,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     console.error("Error updating table:", error);
 
-    if (error.code === 'P2025') {
+    if (error.code === "P2025") {
       throw createError({
         statusCode: 404,
         statusMessage: "Table not found",
