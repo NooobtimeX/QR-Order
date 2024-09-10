@@ -1,0 +1,190 @@
+<template>
+  <NuxtLayout name="customer">
+    <div>
+      <div v-if="cart.length > 0" class="w-full rounded-xl border bg-white p-2">
+        <h1 class="text-3xl font-bold">CART</h1>
+        <div class="mb-4">
+          <div
+            v-for="(product, index) in cart"
+            :key="index"
+            class="flex items-center border-b py-4 last:border-none"
+          >
+            <img
+              class="mr-4 h-16 w-16 rounded-xl object-cover"
+              :src="product.image || '/default-image.png'"
+              alt="Product image"
+            />
+            <div class="flex-1">
+              <h2 class="text-lg font-semibold">{{ product.name }}</h2>
+              <div
+                v-if="
+                  product.selectedOptions && product.selectedOptions.length > 0
+                "
+              >
+                <div v-for="(option, i) in product.selectedOptions" :key="i">
+                  <p class="text-sm text-black">
+                    {{ option.optionName }}: {{ option.selectedChoice }} (+{{
+                      option.choicePrice
+                    }}
+                    ฿)
+                  </p>
+                </div>
+              </div>
+              <p class="text-gray-500">
+                {{ calculateProductPrice(product) }} ฿
+              </p>
+            </div>
+            <div class="flex items-center">
+              <button
+                class="flex h-8 w-8 items-center justify-center"
+                @click="updateQuantity(index, -1)"
+              >
+                -
+              </button>
+              <span class="w-8 text-center text-gray-700">{{
+                product.quantity
+              }}</span>
+              <button
+                class="flex h-8 w-8 items-center justify-center"
+                @click="updateQuantity(index, 1)"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="my-auto mb-4 flex justify-between text-lg font-bold text-black"
+        >
+          <span>Total {{ cartTotal }} ฿</span>
+        </div>
+      </div>
+      <div class="grid gap-2 md:grid-cols-2">
+        <button class="py-3 text-lg text-white" @click="orderMore">
+          ORDER MORE
+        </button>
+        <button class="py-3 text-lg text-white" @click="confirmOrder">
+          ORDER
+        </button>
+      </div>
+      <useFetchOrders />
+    </div>
+  </NuxtLayout>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import Cookies from "js-cookie";
+import { useRoute } from "vue-router";
+import useFetchOrders from "~/components/useFetchOrders.vue";
+import axios from "axios";
+const router = useRouter();
+
+interface CartItem {
+  menuId: string;
+  name: string;
+  image: string;
+  price: number;
+  quantity: number;
+  note?: string;
+  selectedOptions: Array<{
+    optionName: string;
+    selectedChoice: string;
+    choicePrice: number;
+  }>;
+}
+
+const cart = ref<CartItem[]>([]);
+
+onMounted(() => {
+  const cartData = Cookies.get("cart");
+  if (cartData) {
+    try {
+      const parsedCart = JSON.parse(cartData);
+      cart.value = parsedCart.map((item: any) => ({
+        menuId: item.menuId,
+        name: item.name,
+        image: item.image || "",
+        price: item.price,
+        quantity: item.quantity,
+        note: item.note || "",
+        selectedOptions:
+          item.options?.map((option: any) => ({
+            optionName: option.optionName,
+            selectedChoice: option.selectedChoice,
+            choicePrice: option.choicePrice,
+          })) || [],
+      }));
+    } catch (error) {}
+  }
+});
+
+const updateQuantity = (index: number, amount: number) => {
+  const newQuantity = cart.value[index].quantity + amount;
+  if (newQuantity < 1) {
+    cart.value.splice(index, 1);
+  } else {
+    cart.value[index].quantity = newQuantity;
+  }
+  Cookies.set("cart", JSON.stringify(cart.value), { expires: 7 });
+};
+
+const calculateProductPrice = (product: CartItem) => {
+  const optionsTotal = product.selectedOptions.reduce(
+    (sum, option) => sum + option.choicePrice,
+    0,
+  );
+  return (product.price + optionsTotal) * product.quantity;
+};
+
+const cartTotal = computed(() => {
+  return cart.value.reduce((total, product) => {
+    return total + calculateProductPrice(product);
+  }, 0);
+});
+
+const route = useRoute();
+const qrCodeId = route.params.table || "defaultTable";
+
+const orderMore = () => {
+  window.location.replace(`/${qrCodeId}/`);
+};
+
+const confirmOrder = async () => {
+  console.log("Order button clicked");
+
+  const orderData = cart.value.map((product) => ({
+    qrCodeId,
+    menuId: product.menuId,
+    name: product.name,
+    price: product.price,
+    quantity: product.quantity,
+    note: product.note || "",
+    options: product.selectedOptions.map((option) => ({
+      optionName: option.optionName,
+      selectedChoice: option.selectedChoice,
+      choicePrice: option.choicePrice,
+    })),
+  }));
+
+  try {
+    const response = await axios.post("/api/user/order", {
+      qrCodeId,
+      cart: orderData,
+    });
+    if (response.status === 201) {
+      console.log("All orders placed successfully");
+      Cookies.remove("cart");
+      window.location.reload(); // Refresh the page
+    } else {
+      console.error(`Error placing orders: ${response.statusText}`);
+      Cookies.remove("cart");
+      window.location.reload(); // Refresh the page
+    }
+  } catch (error) {
+    console.error("Error placing orders:", error);
+    Cookies.remove("cart");
+    window.location.reload(); // Refresh the page
+  }
+};
+</script>

@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Body Styling */
+body {
+  @apply bg-white text-black;
+}
+
+/* Input Field Styling */
+input {
+  @apply block w-full rounded-lg border px-3 py-1 text-gray-900 shadow-sm;
+}
+
+/* Main Content Styling */
+main {
+  color: rgb(var(--foreground-rgb));
+  background-color: white; /* Ensure the background is consistent */
+}
+
+/* Headings Styling */
+h1 {
+  @apply text-center text-4xl font-bold text-green-04;
+}
+
+h2 {
+  @apply text-3xl font-bold text-green-04;
+}
+
+h3 {
+  @apply text-2xl text-green-04;
+}
+
+/* Table Styling */
+table,
+th,
+tbody,
+tr {
+  @apply border-none text-center;
+}
+
+thead {
+  @apply bg-green-05;
+}
+
+th {
+  @apply p-2 text-white;
+}
+
+th:first-child {
+  @apply rounded-tl-lg;
+}
+
+th:last-child {
+  @apply rounded-tr-lg;
+}
+
+td {
+  @apply px-3 py-2 text-sm;
+}
+
+/* Alternate Row Colors */
+tbody tr:nth-child(odd) {
+  @apply bg-green-04 hover:bg-green-05;
+}
+
+tbody tr:nth-child(even) {
+  @apply bg-green-03 hover:bg-green-05;
+}
+
+/* Image Styling */
+img {
+  @apply rounded-lg;
+}
+
+/* Button Styling */
+button {
+  @apply m-1 rounded-lg bg-green-03 px-4 py-2 font-bold text-white hover:bg-green-04;
+}
+
+/* Scale-Up Animation */
+.scaleup {
+  @apply transition-transform duration-200 hover:scale-105;
+}
