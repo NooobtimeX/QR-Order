@@ -47,7 +47,6 @@
           <div>{{ restaurantName }}</div>
           <div>{{ branchName }}</div>
         </div>
-
         <!-- Close Button (Mobile) -->
         <button
           type="button"
@@ -88,9 +87,10 @@
         </button>
       </div>
     </aside>
-
     <!-- Dynamic Component -->
-    <div class="p-1 md:ml-64">
+    <div
+      class="ml-0 overflow-hidden p-2 px-6 sm:ml-2 md:ml-56 lg:ml-60 xl:ml-64"
+    >
       <component v-if="currentComponent" :is="currentComponent" />
     </div>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mb-8">ออเดอร์</h1>
+    <h1 class="pb-6 text-center text-5xl font-bold text-orange-04">Order</h1>
     <div class="mb-4 flex flex-wrap items-center">
       <label
         v-for="status in availableStatuses"
@@ -16,25 +16,25 @@
         {{ status }}
       </label>
     </div>
-    <table class="min-w-full">
+    <table class="min-w-full rounded-md bg-gray-300">
       <thead>
         <tr>
-          <th>Table</th>
-          <th>Menu</th>
-          <th>Date</th>
-          <th>Status</th>
+          <th class="text-lg text-black">Table</th>
+          <th class="text-lg text-black">Menu</th>
+          <th class="text-lg text-black">Date</th>
+          <th class="text-lg text-black">Status</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="bg-gray-200 text-black">
         <tr
           v-for="order in filteredOrders"
-          :key="order.table + order.time"
+          :key="order.id"
           @click="selectOrder(order)"
         >
-          <td>{{ order.table }}</td>
-          <td>{{ order.menuName }}</td>
-          <td>{{ formatDate(order.time) }}</td>
-          <td>
+          <td class="text-base">{{ order.table }}</td>
+          <td class="text-base">{{ order.menuName }}</td>
+          <td class="text-base">{{ formatDate(order.time) }}</td>
+          <td class="text-base">
             <span
               class="rounded-xl px-2 py-1"
               :class="statusClass(order.status)"
@@ -52,22 +52,26 @@
     v-if="selectedOrder"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
-    <div class="w-64 rounded-lg bg-green-05 p-4 text-white">
-      <h2 class="text-center">โต๊ะ {{ selectedOrder.table }}</h2>
+    <div class="w-64 rounded-lg bg-white p-4 text-black">
+      {{ selectedOrder.id }}
+      <h2 class="text-center">Table: {{ selectedOrder.table }}</h2>
       <select
         v-model="selectedOrder.status"
-        @change="updateOrderStatus"
-        class="mb-1 w-full rounded-xl"
+        class="mb-1 w-full rounded-xl border-2 bg-gray-200"
       >
-        <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+        <option value="finish">finish</option>
         <option value="pending">pending</option>
-        <option value="ยกเลิก">ยกเลิก</option>
+        <option value="cancel">cancel</option>
       </select>
 
       <!-- Display menu name and price -->
       <div v-if="selectedOrder.menuName && selectedOrder.menuPrice">
-        <div class="font-bold">เมนู: {{ selectedOrder.menuName }}</div>
-        <div>ราคา: {{ selectedOrder.menuPrice }}฿</div>
+        <div class="font-bold">
+          เมนู: <span class="font-normal">{{ selectedOrder.menuName }}</span>
+        </div>
+        <div class="font-bold">
+          ราคา: <span class="font-normal">{{ selectedOrder.menuPrice }}฿</span>
+        </div>
       </div>
 
       <!-- Display order items and options -->
@@ -82,7 +86,19 @@
         <div>• {{ item.selectedChoice }}</div>
       </div>
 
-      <button @click="closePopup" class="mt-2 w-full rounded-xl bg-red-600 p-2">
+      <!-- OK button to update order status -->
+      <button
+        @click="updateOrderStatus"
+        class="mt-2 w-full rounded-xl bg-blue-500 p-2 hover:bg-blue-700"
+      >
+        OK
+      </button>
+
+      <!-- Close button -->
+      <button
+        @click="closePopup"
+        class="mt-2 w-full rounded-xl bg-red-500 p-2 hover:bg-red-700"
+      >
         Close
       </button>
     </div>
@@ -94,7 +110,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-type OrderStatus = "pending" | "เสร็จสิ้น" | "ยกเลิก";
+type OrderStatus = "pending" | "finish" | "cancel";
 
 interface OrderOption {
   name: string;
@@ -103,12 +119,16 @@ interface OrderOption {
 }
 
 interface OrderItem {
+  selectedChoice: string;
+  choicePrice: string;
+  optionName: string;
   name: string;
   options: OrderOption[];
   price: number;
 }
 
 interface Order {
+  id: number; // Ensure each order has a unique ID
   table: string;
   status: OrderStatus;
   items?: OrderItem[];
@@ -118,7 +138,7 @@ interface Order {
 }
 
 const orders = ref<Order[]>([]);
-const availableStatuses: OrderStatus[] = ["pending", "เสร็จสิ้น", "ยกเลิก"];
+const availableStatuses: OrderStatus[] = ["pending", "finish", "cancel"];
 const selectedOrder = ref<Order | null>(null);
 const selectedStatuses = ref<OrderStatus[]>([]);
 
@@ -130,7 +150,7 @@ const fetchOrders = async () => {
   try {
     const response = await axios.post("/api/restaurant/getOrders", {
       branchId,
-    }); // Send branchId in the body
+    });
     orders.value = response.data;
     console.log(orders.value); // Debug API response
     sortOrders();
@@ -144,27 +164,32 @@ onMounted(fetchOrders);
 
 const selectOrder = (order: Order) => {
   selectedOrder.value = order;
+  console.log("Selected order ID:", order.id); // Ensure that the selected order has a valid ID
 };
 
-const updateOrderStatus = () => {
-  if (selectedOrder.value) {
-    const order = orders.value.find(
-      (o) =>
-        o.table === selectedOrder.value!.table &&
-        o.time === selectedOrder.value!.time,
-    );
-    if (order) {
-      order.status = selectedOrder.value.status;
-      sortOrders();
-    }
+const updateOrderStatus = async () => {
+  if (!selectedOrder.value) return;
+
+  try {
+    console.log("Updating order with ID:", selectedOrder.value.id); // Debug log
+    // Call API to update the order status
+    const response = await axios.post("/api/orders/updateStatus", {
+      orderMenuId: selectedOrder.value.id, // Pass the ID to the backend as orderMenuId
+      status: selectedOrder.value.status, // Pass the status to the backend
+    });
+
+    console.log("Order status updated successfully:", response.data);
+    closePopup(); // Close the popup after a successful update
+  } catch (error) {
+    console.error("Failed to update order status:", error);
   }
 };
 
 const sortOrders = () => {
   const orderPriority: Record<OrderStatus, number> = {
     pending: 1,
-    เสร็จสิ้น: 2,
-    ยกเลิก: 3,
+    finish: 2,
+    cancel: 3,
   };
   orders.value.sort(
     (a, b) => orderPriority[a.status] - orderPriority[b.status],
@@ -181,9 +206,9 @@ const filteredOrders = computed(() => {
 
 const statusClass = (status: OrderStatus) => {
   return {
-    "bg-green-300 text-green-900": status === "เสร็จสิ้น",
-    "bg-yellow-300 text-yellow-900": status === "pending",
-    "bg-red-300 text-red-900": status === "ยกเลิก",
+    "bg-green-400 text-green-900": status === "finish",
+    "bg-yellow-400 text-yellow-900": status === "pending",
+    "bg-red-400 text-red-900": status === "cancel",
   };
 };
 

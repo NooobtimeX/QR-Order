@@ -131,7 +131,7 @@
       class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75"
     >
       <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-        <h3 class="mb-4 text-center text-xl font-bold text-gray-800">
+        <h3 class="mb-4 text-center text-xl font-bold text-black">
           Create New Branch
         </h3>
         <div class="mb-4">
@@ -169,6 +169,12 @@
           </select>
         </div>
         <div class="flex justify-end">
+          <button
+            @click="cancelBranchCreation"
+            class="mr-2 bg-red-500 pl-2 pr-2 text-white hover:bg-red-02"
+          >
+            Cancel
+          </button>
           <button
             @click="createBranch"
             class="bg-green-500 pl-2 pr-2 text-white hover:bg-green-700"

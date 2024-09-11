@@ -1,7 +1,10 @@
 <template>
   <NuxtLayout name="customer">
     <div>
-      <div v-if="cart.length > 0" class="w-full rounded-xl border bg-white p-2">
+      <div
+        v-if="cart.length > 0"
+        class="w-full rounded-xl border-2 border-gray-300 bg-white p-2 shadow-xl"
+      >
         <h1 class="text-3xl font-bold">CART</h1>
         <div class="mb-4">
           <div
@@ -15,7 +18,9 @@
               alt="Product image"
             />
             <div class="flex-1">
-              <h2 class="text-lg font-semibold">{{ product.name }}</h2>
+              <h2 class="text-lg font-semibold text-black">
+                {{ product.name }}
+              </h2>
               <div
                 v-if="
                   product.selectedOptions && product.selectedOptions.length > 0
@@ -30,22 +35,20 @@
                   </p>
                 </div>
               </div>
-              <p class="text-gray-500">
-                {{ calculateProductPrice(product) }} ฿
-              </p>
+              <p class="text-black">{{ calculateProductPrice(product) }} ฿</p>
             </div>
             <div class="flex items-center">
               <button
-                class="flex h-8 w-8 items-center justify-center"
+                class="flex h-8 w-8 items-center justify-center bg-red-500"
                 @click="updateQuantity(index, -1)"
               >
                 -
               </button>
-              <span class="w-8 text-center text-gray-700">{{
+              <span class="w-8 text-center text-black">{{
                 product.quantity
               }}</span>
               <button
-                class="flex h-8 w-8 items-center justify-center"
+                class="flex h-8 w-8 items-center justify-center bg-green-500"
                 @click="updateQuantity(index, 1)"
               >
                 +
@@ -60,10 +63,13 @@
         </div>
       </div>
       <div class="grid gap-2 md:grid-cols-2">
-        <button class="py-3 text-lg text-white" @click="orderMore">
+        <button class="bg-orange-02 py-3 text-lg text-white" @click="orderMore">
           ORDER MORE
         </button>
-        <button class="py-3 text-lg text-white" @click="confirmOrder">
+        <button
+          class="bg-green-500 py-3 text-lg text-white"
+          @click="confirmOrder"
+        >
           ORDER
         </button>
       </div>

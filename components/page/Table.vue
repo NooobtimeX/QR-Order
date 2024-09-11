@@ -1,11 +1,11 @@
 <template>
-  <div class="sm:mr-64">
+  <div>
     <h1 class="pb-6 text-center text-5xl font-bold text-orange-04">Table</h1>
-    <div class="grid grid-cols-4 gap-1 md:grid-cols-8">
+    <div class="grid grid-cols-2 gap-1 sm:grid-cols-4 md:grid-cols-6">
       <button
         v-for="table in tables"
         :key="table.id"
-        class="max-w-30 flex h-32 w-32 flex-col items-center justify-center bg-gray-300 hover:bg-gray-500"
+        class="max-w-30 flex h-32 w-32 flex-col items-center justify-center bg-gray-200 shadow-md hover:bg-gray-400"
         :class="getTableClass(table)"
         @click="selectTable(table)"
       >
@@ -118,28 +118,28 @@
     class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
   >
     <div class="rounded-lg bg-white p-4">
-      <h2 class="mb-4 text-lg font-bold">Create New Table</h2>
+      <h2 class="mb-4 text-lg font-bold text-black">Create New Table</h2>
       <input
         v-model="newTableName"
         placeholder="Table Name"
-        class="mb-2 block w-full rounded-md border-gray-300 bg-gray-200 shadow-sm focus:outline-none focus:ring-2 sm:text-base"
+        class="mb-2 block w-full rounded-md border-gray-400 bg-white shadow-sm focus:outline-none focus:ring-2 sm:text-base"
       />
       <input
         v-model.number="newTableCapacity"
         placeholder="Capacity"
         type="number"
-        class="mb-4 block w-full rounded-md border-gray-300 bg-gray-200 shadow-sm focus:outline-none focus:ring-2 sm:text-base"
+        class="mb-4 block w-full rounded-md border-gray-400 bg-white shadow-sm focus:outline-none focus:ring-2 sm:text-base"
       />
       <div class="flex justify-end">
         <button
           @click="createTable"
-          class="rounded-mb mr-2 border border-transparent bg-green-03 px-4 py-2 text-sm text-white hover:bg-green-04"
+          class="rounded-mb mr-2 border border-transparent bg-green-500 px-4 py-2 text-sm text-white hover:bg-green-700"
         >
           Create
         </button>
         <button
           @click="cancelCreateTable"
-          class="rounded-mb mr-2 rounded-md border bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 active:bg-red-700"
+          class="rounded-mb mr-2 rounded-md border bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-02"
         >
           Cancel
         </button>
@@ -334,11 +334,11 @@ const cancelCreateTable = () => {
 const getTableClass = (table) => {
   switch (table.status) {
     case "isUnavailable":
-      return "bg-red-600 hover:bg-red-800";
+      return "bg-red-200 hover:bg-red-500";
     case "isReserved":
-      return "bg-green-04 hover:bg-green-05";
+      return "bg-green-200 hover:bg-green-500";
     default:
-      return "bg-gray-600 hover:bg-gray-800";
+      return "bg-gray-300 hover:bg-gray-500";
   }
 };
 
