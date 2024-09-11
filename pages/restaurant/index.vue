@@ -131,7 +131,7 @@
       class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75"
     >
       <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-        <h3 class="mb-4 text-center text-xl font-bold text-gray-800">
+        <h3 class="mb-4 text-center text-xl font-bold text-black">
           Create New Branch
         </h3>
         <div class="mb-4">

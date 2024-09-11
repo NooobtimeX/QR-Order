@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mb-8">ออเดอร์</h1>
+    <h1 class="pb-6 text-center text-5xl font-bold text-orange-04">Order</h1>
     <div class="mb-4 flex flex-wrap items-center">
       <label
         v-for="status in availableStatuses"
@@ -16,7 +16,7 @@
         {{ status }}
       </label>
     </div>
-    <table class="min-w-full">
+    <table class="min-w-full bg-gray-200">
       <thead>
         <tr>
           <th>Table</th>
@@ -94,7 +94,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-type OrderStatus = "pending" | "เสร็จสิ้น" | "ยกเลิก";
+type OrderStatus = "pending" | "finish" | "cancel";
 
 interface OrderOption {
   name: string;
@@ -118,7 +118,7 @@ interface Order {
 }
 
 const orders = ref<Order[]>([]);
-const availableStatuses: OrderStatus[] = ["pending", "เสร็จสิ้น", "ยกเลิก"];
+const availableStatuses: OrderStatus[] = ["pending", "finish", "cancel"];
 const selectedOrder = ref<Order | null>(null);
 const selectedStatuses = ref<OrderStatus[]>([]);
 
@@ -181,9 +181,9 @@ const filteredOrders = computed(() => {
 
 const statusClass = (status: OrderStatus) => {
   return {
-    "bg-green-300 text-green-900": status === "เสร็จสิ้น",
+    "bg-green-300 text-green-900": status === "finish",
     "bg-yellow-300 text-yellow-900": status === "pending",
-    "bg-red-300 text-red-900": status === "ยกเลิก",
+    "bg-red-300 text-red-900": status === "cancel",
   };
 };
 
