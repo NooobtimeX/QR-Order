@@ -1,8 +1,8 @@
 <template>
   <NuxtLayout name="customer">
     <div>
-      <section class="overflow-hidden rounded-lg border text-white">
-        <div class="container mx-auto px-6 py-12">
+      <section class="overflow-hidden rounded-xl border-2 text-white border-gray-300 shadow-xl">
+        <div class="container mx-auto px-6 py-12 ">
           <div class="mx-auto grid grid-cols-1 gap-x-8 md:grid-cols-2 lg:w-4/5">
             <img
               v-if="menuItem"
@@ -11,10 +11,10 @@
               :src="menuItem?.img"
             />
             <div v-if="menuItem" class="mt-6 lg:mt-0 lg:py-6">
-              <h1 class="mb-2 font-semibold tracking-wide">
+              <h1 class="mb-2 font-semibold tracking-wide text-black text-2xl">
                 {{ menuItem?.name }}
               </h1>
-              <span class="font-bold">{{ totalPrice }} ฿</span>
+              <span class="font-bold text-black">{{ totalPrice }} ฿</span>
               <div v-if="menuItem?.options">
                 <div
                   v-for="(option, index) in menuItem?.options"
@@ -51,7 +51,7 @@
               </div>
               <div class="flex items-center space-x-2">
                 <button
-                  class="flex items-center rounded-lg border px-2 py-1 disabled:opacity-50"
+                  class="flex items-center rounded-lg border px-2 py-1 disabled:opacity-50 bg-red-500"
                   @click="decrementQuantity"
                   :disabled="quantity <= 1"
                 >
@@ -71,9 +71,9 @@
                     />
                   </svg>
                 </button>
-                <div class="rounded-lg px-3 py-1">{{ quantity }}</div>
+                <div class="rounded-lg px-3 py-1 text-black ">{{ quantity }}</div>
                 <button
-                  class="flex items-center rounded-lg border px-2 py-1"
+                  class="flex items-center rounded-lg border px-2 py-1 bg-green-400"
                   @click="incrementQuantity"
                 >
                   <svg
@@ -103,13 +103,13 @@
               id="message"
               rows="4"
               v-model="note"
-              class="block w-full rounded-lg border p-2.5 text-sm"
+              class="block w-full rounded-lg border-2 p-2.5 text-sm border-gray-300"
               placeholder="Leave a note"
             ></textarea>
           </div>
           <div v-if="menuItem" class="mt-6 flex">
             <button
-              class="flex w-full justify-center bg-green-04 disabled:opacity-50"
+              class="flex w-full justify-center bg-green-500 disabled:opacity-50"
               @click="addToCart"
               :disabled="!menuItem || quantity < 1"
             >

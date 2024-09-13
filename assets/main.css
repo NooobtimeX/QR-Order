@@ -20,15 +20,15 @@ main {
 
 /* Headings Styling */
 h1 {
-  @apply text-center text-4xl font-bold text-green-04;
+  @apply text-center text-4xl font-bold ;
 }
 
 h2 {
-  @apply text-3xl font-bold text-green-04;
+  @apply text-3xl font-bold ;
 }
 
 h3 {
-  @apply text-2xl text-green-04;
+  @apply text-2xl ;
 }
 
 /* Table Styling */
@@ -39,9 +39,7 @@ tr {
   @apply border-none text-center;
 }
 
-thead {
-  @apply bg-green-05;
-}
+
 
 th {
   @apply p-2 text-white;
@@ -59,14 +57,6 @@ td {
   @apply px-3 py-2 text-sm;
 }
 
-/* Alternate Row Colors */
-tbody tr:nth-child(odd) {
-  @apply bg-green-04 hover:bg-green-05;
-}
-
-tbody tr:nth-child(even) {
-  @apply bg-green-03 hover:bg-green-05;
-}
 
 /* Image Styling */
 img {
@@ -75,7 +65,7 @@ img {
 
 /* Button Styling */
 button {
-  @apply m-1 rounded-lg bg-green-03 px-4 py-2 font-bold text-white hover:bg-green-04;
+  @apply m-1 rounded-lg  px-4 py-2 font-bold text-white ;
 }
 
 /* Scale-Up Animation */

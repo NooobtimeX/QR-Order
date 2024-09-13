@@ -9,7 +9,7 @@
     <!-- Notification Button -->
     <button
       @click="showPopup = true"
-      class="flex h-12 w-12 items-center justify-center rounded-full bg-green-03"
+      class="flex h-12 w-12 items-center justify-center rounded-full bg-orange-04"
     >
       <img src="/icon/notification.svg" class="h-7 w-7" />
     </button>
@@ -17,7 +17,7 @@
     <a :href="`/${table}/cart`">
       <!-- Use dynamic route for table/cart -->
       <button
-        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-03"
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-orange-04"
       >
         <img src="/icon/clipboard.svg" class="h-7 w-7" />
       </button>

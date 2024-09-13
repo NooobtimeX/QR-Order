@@ -5,7 +5,7 @@
       <button
         v-for="table in tables"
         :key="table.id"
-        class="max-w-30 flex h-32 w-32 flex-col items-center justify-center bg-gray-200 hover:bg-gray-400"
+        class="max-w-30 flex h-32 w-32 flex-col items-center justify-center bg-gray-200 hover:bg-gray-400 shadow-md"
         :class="getTableClass(table)"
         @click="selectTable(table)"
       >
@@ -334,11 +334,11 @@ const cancelCreateTable = () => {
 const getTableClass = (table) => {
   switch (table.status) {
     case "isUnavailable":
-      return "bg-red-600 hover:bg-red-800";
+      return "bg-red-200 hover:bg-red-500";
     case "isReserved":
-      return "bg-green-04 hover:bg-green-05";
+      return "bg-green-200 hover:bg-green-500";
     default:
-      return "bg-gray-600 hover:bg-gray-800";
+      return "bg-gray-300 hover:bg-gray-500";
   }
 };
 

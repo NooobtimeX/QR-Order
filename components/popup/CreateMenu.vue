@@ -109,7 +109,7 @@
               id="description"
               v-model="description"
               class="mt-1 block w-full rounded-lg border border-gray-400 p-2 text-black shadow-sm"
-              placeholder="Enter description"
+              placeholder="Enter description e.g. Have shrimp"
               aria-required="true"
               required
             ></textarea>
