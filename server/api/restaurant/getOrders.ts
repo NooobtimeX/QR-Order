@@ -32,6 +32,7 @@ export default defineEventHandler(async (event) => {
 
     // Map and return only the important data
     const importantData = orders.map((order) => ({
+      id: order.id,
       table: order.bill?.table?.name || "Unknown", // Get table name, default to 'Unknown' if not found
       status: order.status,
       time: order.createdAt, // Assuming createdAt is the order time

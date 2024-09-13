@@ -16,19 +16,19 @@
         {{ status }}
       </label>
     </div>
-    <table class="min-w-full bg-gray-300  rounded-md">
+    <table class="min-w-full rounded-md bg-gray-300">
       <thead>
-        <tr >
-          <th class="text-black text-lg">Table</th>
-          <th class="text-black text-lg">Menu</th>
-          <th class="text-black text-lg">Date</th>
-          <th class="text-black text-lg">Status</th>
+        <tr>
+          <th class="text-lg text-black">Table</th>
+          <th class="text-lg text-black">Menu</th>
+          <th class="text-lg text-black">Date</th>
+          <th class="text-lg text-black">Status</th>
         </tr>
       </thead>
-      <tbody class="text-black bg-gray-200">
+      <tbody class="bg-gray-200 text-black">
         <tr
           v-for="order in filteredOrders"
-          :key="order.table + order.time"
+          :key="order.id"
           @click="selectOrder(order)"
         >
           <td class="text-base">{{ order.table }}</td>
@@ -53,11 +53,11 @@
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
     <div class="w-64 rounded-lg bg-white p-4 text-black">
+      {{ selectedOrder.id }}
       <h2 class="text-center">Table: {{ selectedOrder.table }}</h2>
       <select
         v-model="selectedOrder.status"
-        @change="updateOrderStatus"
-        class="mb-1 w-full rounded-xl bg-gray-200 border-2"
+        class="mb-1 w-full rounded-xl border-2 bg-gray-200"
       >
         <option value="finish">finish</option>
         <option value="pending">pending</option>
@@ -66,8 +66,12 @@
 
       <!-- Display menu name and price -->
       <div v-if="selectedOrder.menuName && selectedOrder.menuPrice">
-        <div class="font-bold">เมนู: <span class="font-normal">{{ selectedOrder.menuName }}</span></div>
-        <div class="font-bold">ราคา: <span class="font-normal">{{ selectedOrder.menuPrice }}฿</span></div>
+        <div class="font-bold">
+          เมนู: <span class="font-normal">{{ selectedOrder.menuName }}</span>
+        </div>
+        <div class="font-bold">
+          ราคา: <span class="font-normal">{{ selectedOrder.menuPrice }}฿</span>
+        </div>
       </div>
 
       <!-- Display order items and options -->
@@ -82,7 +86,19 @@
         <div>• {{ item.selectedChoice }}</div>
       </div>
 
-      <button @click="closePopup" class="mt-2 w-full rounded-xl bg-red-500 p-2 hover:bg-red-700">
+      <!-- OK button to update order status -->
+      <button
+        @click="updateOrderStatus"
+        class="mt-2 w-full rounded-xl bg-blue-500 p-2 hover:bg-blue-700"
+      >
+        OK
+      </button>
+
+      <!-- Close button -->
+      <button
+        @click="closePopup"
+        class="mt-2 w-full rounded-xl bg-red-500 p-2 hover:bg-red-700"
+      >
         Close
       </button>
     </div>
@@ -103,12 +119,16 @@ interface OrderOption {
 }
 
 interface OrderItem {
+  selectedChoice: string;
+  choicePrice: string;
+  optionName: string;
   name: string;
   options: OrderOption[];
   price: number;
 }
 
 interface Order {
+  id: number; // Ensure each order has a unique ID
   table: string;
   status: OrderStatus;
   items?: OrderItem[];
@@ -130,7 +150,7 @@ const fetchOrders = async () => {
   try {
     const response = await axios.post("/api/restaurant/getOrders", {
       branchId,
-    }); // Send branchId in the body
+    });
     orders.value = response.data;
     console.log(orders.value); // Debug API response
     sortOrders();
@@ -144,19 +164,24 @@ onMounted(fetchOrders);
 
 const selectOrder = (order: Order) => {
   selectedOrder.value = order;
+  console.log("Selected order ID:", order.id); // Ensure that the selected order has a valid ID
 };
 
-const updateOrderStatus = () => {
-  if (selectedOrder.value) {
-    const order = orders.value.find(
-      (o) =>
-        o.table === selectedOrder.value!.table &&
-        o.time === selectedOrder.value!.time,
-    );
-    if (order) {
-      order.status = selectedOrder.value.status;
-      sortOrders();
-    }
+const updateOrderStatus = async () => {
+  if (!selectedOrder.value) return;
+
+  try {
+    console.log("Updating order with ID:", selectedOrder.value.id); // Debug log
+    // Call API to update the order status
+    const response = await axios.post("/api/orders/updateStatus", {
+      orderMenuId: selectedOrder.value.id, // Pass the ID to the backend as orderMenuId
+      status: selectedOrder.value.status, // Pass the status to the backend
+    });
+
+    console.log("Order status updated successfully:", response.data);
+    closePopup(); // Close the popup after a successful update
+  } catch (error) {
+    console.error("Failed to update order status:", error);
   }
 };
 

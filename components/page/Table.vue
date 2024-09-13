@@ -5,7 +5,7 @@
       <button
         v-for="table in tables"
         :key="table.id"
-        class="max-w-30 flex h-32 w-32 flex-col items-center justify-center bg-gray-200 hover:bg-gray-400 shadow-md"
+        class="max-w-30 flex h-32 w-32 flex-col items-center justify-center bg-gray-200 shadow-md hover:bg-gray-400"
         :class="getTableClass(table)"
         @click="selectTable(table)"
       >
@@ -133,13 +133,13 @@
       <div class="flex justify-end">
         <button
           @click="createTable"
-          class="rounded-mb mr-2 border border-transparent  px-4 py-2 text-sm  bg-green-500  text-white hover:bg-green-700"
+          class="rounded-mb mr-2 border border-transparent bg-green-500 px-4 py-2 text-sm text-white hover:bg-green-700"
         >
           Create
         </button>
         <button
           @click="cancelCreateTable"
-          class="rounded-mb mr-2 rounded-md border  px-4 py-2 text-sm  bg-red-500  text-white hover:bg-red-02"
+          class="rounded-mb mr-2 rounded-md border bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-02"
         >
           Cancel
         </button>

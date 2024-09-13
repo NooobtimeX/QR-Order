@@ -4,7 +4,7 @@
     <div
       v-for="(order, index) in orders"
       :key="index"
-      class="my-2 rounded-lg border-2 bg-gray-100 p-4 border-gray-300 shadow-lg"
+      class="my-2 rounded-lg border-2 border-gray-300 bg-gray-100 p-4 shadow-lg"
     >
       <h3 class="font-semibold">Order: {{ order.name }}</h3>
       <p>Quantity: {{ order.quantity }}</p>

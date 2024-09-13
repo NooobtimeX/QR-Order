@@ -20,15 +20,15 @@ main {
 
 /* Headings Styling */
 h1 {
-  @apply text-center text-4xl font-bold ;
+  @apply text-center text-4xl font-bold;
 }
 
 h2 {
-  @apply text-3xl font-bold ;
+  @apply text-3xl font-bold;
 }
 
 h3 {
-  @apply text-2xl ;
+  @apply text-2xl;
 }
 
 /* Table Styling */
@@ -38,8 +38,6 @@ tbody,
 tr {
   @apply border-none text-center;
 }
-
-
 
 th {
   @apply p-2 text-white;
@@ -57,7 +55,6 @@ td {
   @apply px-3 py-2 text-sm;
 }
 
-
 /* Image Styling */
 img {
   @apply rounded-lg;
@@ -65,7 +62,7 @@ img {
 
 /* Button Styling */
 button {
-  @apply m-1 rounded-lg  px-4 py-2 font-bold text-white ;
+  @apply m-1 rounded-lg px-4 py-2 font-bold text-white;
 }
 
 /* Scale-Up Animation */
