@@ -1,7 +1,7 @@
 <template>
-  <div class="sm:mr-64">
+  <div>
     <h1 class="pb-6 text-center text-5xl font-bold text-orange-04">Table</h1>
-    <div class="grid grid-cols-4 gap-1 md:grid-cols-8">
+    <div class="grid grid-cols-2 gap-1 sm:grid-cols-4 md:grid-cols-6">
       <button
         v-for="table in tables"
         :key="table.id"
