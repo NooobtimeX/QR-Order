@@ -170,6 +170,12 @@
         </div>
         <div class="flex justify-end">
           <button
+            @click="cancelBranchCreation"
+            class="mr-2 bg-red-500 pl-2 pr-2 text-white hover:bg-red-02"
+          >
+            Cancel
+          </button>
+          <button
             @click="createBranch"
             class="bg-green-500 pl-2 pr-2 text-white hover:bg-green-700"
           >
