@@ -86,7 +86,7 @@
             <p v-else class="text-black">No branches available.</p>
           </div>
         </div>
-        <p v-else class="text-black">No restaurants available.</p>
+        <p v-else class="text-black text-xl">No restaurants available.</p>
       </div>
     </div>
 
@@ -191,7 +191,6 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import Cookies from "js-cookie";
 import CreateMenu from "../../components/popup/CreateMenu.vue"; // Import the Menu Popup component
 
 // Define types
@@ -228,8 +227,8 @@ const cancelBranchCreation = () => {
 };
 
 const goToDashboard = (restaurantId: number, branchId: number) => {
-  Cookies.set("restaurantId", restaurantId.toString()); // Save restaurantId in cookies
-  Cookies.set("branchId", branchId.toString()); // Save branchId in cookies
+  localStorage.setItem("restaurantId", restaurantId.toString()); // Save restaurantId in localStorage
+  localStorage.setItem("branchId", branchId.toString()); // Save branchId in localStorage
   router.push(`/restaurant/dashboard`); // Redirect to the dashboard
 };
 
@@ -267,7 +266,7 @@ const filteredRestaurants = computed(() => {
 const fetchRestaurants = async () => {
   try {
     const response = await axios.get("/api/restaurant/getAllRestaurants", {
-      params: { userId: Cookies.get("userId") },
+      params: { userId: localStorage.getItem("userId") },
     });
     ownerAccess.value = response.data.body.ownedRestaurants;
     staffAccess.value = response.data.body.staffRestaurants;
@@ -280,7 +279,7 @@ const createRestaurant = async () => {
   try {
     await axios.post("/api/restaurant/createRestaurant", {
       name: newRestaurant.value.name,
-      userId: Number(Cookies.get("userId")),
+      userId: Number(localStorage.getItem("userId")),
     });
     showRestaurantModal.value = false;
     await fetchRestaurants();
@@ -295,7 +294,7 @@ const createBranch = async () => {
       name: newBranch.value.name,
       phoneNumber: newBranch.value.phoneNumber,
       restaurantId: newBranch.value.restaurantId,
-      userId: Number(Cookies.get("userId")),
+      userId: Number(localStorage.getItem("userId")),
     });
     showBranchModal.value = false;
     await fetchRestaurants();

@@ -21,7 +21,7 @@
                 <div
                   v-for="(option, index) in menuItem?.options"
                   :key="index"
-                  class="mb-1"
+                  class="mb-1 text-black font-semibold "
                 >
                   <span class="mr-3">{{ option.optionName }}</span>
                   <div class="flex flex-wrap">
@@ -129,7 +129,6 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from "vue";
 import { useRoute, useFetch } from "#app";
-import Cookies from "js-cookie";
 
 // Types
 interface MenuItem {
@@ -185,7 +184,7 @@ const generateOptionIdentifier = () => {
 // Add item to the cart
 const addToCart = () => {
   if (menuItem.value) {
-    const cart = JSON.parse(Cookies.get("cart") || "[]");
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const itemKey = generateOptionIdentifier();
     const existingItemIndex = cart.findIndex(
       (item: any) => item.key === itemKey,
@@ -209,7 +208,7 @@ const addToCart = () => {
       });
     }
 
-    Cookies.set("cart", JSON.stringify(cart), { expires: 1 });
+    localStorage.setItem("cart", JSON.stringify(cart));
     window.location.replace(`/${qrCodeId}`);
   }
 };

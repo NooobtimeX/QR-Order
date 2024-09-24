@@ -92,7 +92,6 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 // Reactive state variables
 const errorMessage = ref<string | null>(null);
@@ -138,8 +137,8 @@ const handleSignin = async () => {
       email: email.value,
       password: password.value,
     });
-    // Save userId to cookie
-    Cookies.set("userId", response.data.body.userId, { expires: 7 }); // Cookie expires in 7 days
+    // Save userId to localStorage
+    localStorage.setItem("userId", response.data.body.userId); // Save userId to localStorage
     errorMessage.value = null;
     // Redirect to home or another route
     console.log("Redirecting to /");
@@ -149,11 +148,11 @@ const handleSignin = async () => {
   }
 };
 
-// Check for existing userId cookie on component mount
+// Check for existing userId in localStorage on component mount
 onMounted(() => {
-  const userId = Cookies.get("userId");
+  const userId = localStorage.getItem("userId");
   if (userId) {
-    // Redirect to / if userId cookie is found
+    // Redirect to / if userId is found in localStorage
     router.push("/restaurant");
   }
 });

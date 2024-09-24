@@ -174,13 +174,13 @@
       <div class="mt-4 flex justify-end">
         <button
           @click="submitOrder"
-          class="mr-2 rounded bg-green-600 px-4 py-2 text-white"
+          class="mr-2 rounded  px-4 py-2  bg-green-500 text-white hover:bg-green-700"
         >
           สั่งอาหาร
         </button>
         <button
           @click="cancelOrder"
-          class="rounded bg-red-600 px-4 py-2 text-white"
+          class="rounded px-4 py-2  bg-red-500 text-white hover:bg-red-02"
         >
           ยกเลิก
         </button>
@@ -191,7 +191,6 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import Cookies from "js-cookie";
 import axios from "axios";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 
@@ -202,9 +201,9 @@ const isCreateTableFormVisible = ref(false);
 const newTableName = ref("");
 const newTableCapacity = ref(4);
 
-// Fetch `restaurantId` and `branchId` from cookies
-const restaurantId = Cookies.get("restaurantId");
-const branchId = Cookies.get("branchId");
+// Fetch `restaurantId` and `branchId` from localStorage
+const restaurantId = localStorage.getItem("restaurantId");
+const branchId = localStorage.getItem("branchId");
 
 // Current URL for QR code generation
 const currentUrl = computed(() => {

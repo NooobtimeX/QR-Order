@@ -103,11 +103,11 @@
     </div>
   </section>
 </template>
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 // Define the Staff interface
 interface Staff {
@@ -128,9 +128,9 @@ const searchQuery = ref("");
 // Router
 const router = useRouter();
 
-// Cookies
-const restaurantId = parseInt(Cookies.get("restaurantId") || "0", 10);
-const userId = parseInt(Cookies.get("userId") || "0", 10);
+// Local Storage
+const restaurantId = parseInt(localStorage.getItem("restaurantId") || "0", 10);
+const userId = parseInt(localStorage.getItem("userId") || "0", 10);
 
 // Fetch Staffs
 const fetchStaffs = async () => {

@@ -80,11 +80,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import Cookies from "js-cookie";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import useFetchOrders from "~/components/useFetchOrders.vue";
 import axios from "axios";
-const router = useRouter();
 
 interface CartItem {
   menuId: string;
@@ -103,7 +101,7 @@ interface CartItem {
 const cart = ref<CartItem[]>([]);
 
 onMounted(() => {
-  const cartData = Cookies.get("cart");
+  const cartData = localStorage.getItem("cart");
   if (cartData) {
     try {
       const parsedCart = JSON.parse(cartData);
@@ -132,7 +130,7 @@ const updateQuantity = (index: number, amount: number) => {
   } else {
     cart.value[index].quantity = newQuantity;
   }
-  Cookies.set("cart", JSON.stringify(cart.value), { expires: 7 });
+  localStorage.setItem("cart", JSON.stringify(cart.value));
 };
 
 const calculateProductPrice = (product: CartItem) => {
@@ -150,6 +148,7 @@ const cartTotal = computed(() => {
 });
 
 const route = useRoute();
+const router = useRouter();
 const qrCodeId = route.params.table || "defaultTable";
 
 const orderMore = () => {
@@ -180,16 +179,16 @@ const confirmOrder = async () => {
     });
     if (response.status === 201) {
       console.log("All orders placed successfully");
-      Cookies.remove("cart");
+      localStorage.removeItem("cart");
       window.location.reload(); // Refresh the page
     } else {
       console.error(`Error placing orders: ${response.statusText}`);
-      Cookies.remove("cart");
+      localStorage.removeItem("cart");
       window.location.reload(); // Refresh the page
     }
   } catch (error) {
     console.error("Error placing orders:", error);
-    Cookies.remove("cart");
+    localStorage.removeItem("cart");
     window.location.reload(); // Refresh the page
   }
 };

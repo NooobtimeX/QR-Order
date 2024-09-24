@@ -60,8 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import Cookies from "js-cookie";
+import { ref, computed, onMounted } from "vue";
 
 // Define the type for a cart item
 interface CartItem {
@@ -78,9 +77,9 @@ interface CartItem {
 
 const cart = ref<CartItem[]>([]);
 
-// Fetch the cart data from the cookie
+// Fetch the cart data from localStorage
 onMounted(() => {
-  const cartData = Cookies.get("cart");
+  const cartData = localStorage.getItem("cart");
   if (cartData) {
     try {
       const parsedCart = JSON.parse(cartData);
@@ -102,7 +101,7 @@ onMounted(() => {
   }
 });
 
-// Update quantity and update the cookie
+// Update quantity and update localStorage
 const updateQuantity = (index: number, amount: number) => {
   const newQuantity = cart.value[index].quantity + amount;
   if (newQuantity < 1) {
@@ -110,7 +109,7 @@ const updateQuantity = (index: number, amount: number) => {
   } else {
     cart.value[index].quantity = newQuantity;
   }
-  Cookies.set("cart", JSON.stringify(cart.value), { expires: 7 });
+  localStorage.setItem("cart", JSON.stringify(cart.value));
 };
 
 // Calculate total price for each product

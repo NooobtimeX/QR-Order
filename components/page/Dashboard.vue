@@ -1,5 +1,5 @@
 <template>
-  <h1>แดชบอร์ดสาขา</h1>
+  <h1 class="  pb-6 text-center text-4xl font-bold text-orange-04">Dashboard</h1>
   <div class="py-5 lg:col-span-6">
     <!-- Status Cards -->
     <div class="grid gap-5 md:grid-cols-2">

@@ -54,7 +54,7 @@
   >
     <div class="w-64 rounded-lg bg-white p-4 text-black">
       {{ selectedOrder.id }}
-      <h2 class="text-center">Table: {{ selectedOrder.table }}</h2>
+      <h2 class="text-center pb-4">Table: {{ selectedOrder.table }}</h2>
       <select
         v-model="selectedOrder.status"
         class="mb-1 w-full rounded-xl border-2 bg-gray-200"
@@ -78,7 +78,7 @@
       <div
         v-for="(item, index) in selectedOrder.items || []"
         :key="index"
-        class="mb-1 rounded-xl border border-gray-500 bg-green-03 p-2 transition duration-150"
+        class="mb-1 rounded-xl border  bg-gray-100 border-gray-300 p-2 transition duration-150"
       >
         <div>
           <strong>{{ item.optionName }}</strong> - {{ item.choicePrice }}฿
@@ -89,7 +89,7 @@
       <!-- OK button to update order status -->
       <button
         @click="updateOrderStatus"
-        class="mt-2 w-full rounded-xl bg-blue-500 p-2 hover:bg-blue-700"
+        class="mt-2 w-full rounded-xl  bg-green-500 text-white hover:bg-green-700"
       >
         OK
       </button>
@@ -97,7 +97,7 @@
       <!-- Close button -->
       <button
         @click="closePopup"
-        class="mt-2 w-full rounded-xl bg-red-500 p-2 hover:bg-red-700"
+        class="mt-2 w-full rounded-xl p-2  bg-red-500 text-white hover:bg-red-02"
       >
         Close
       </button>
@@ -106,9 +106,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 type OrderStatus = "pending" | "finish" | "cancel";
 
@@ -142,8 +141,8 @@ const availableStatuses: OrderStatus[] = ["pending", "finish", "cancel"];
 const selectedOrder = ref<Order | null>(null);
 const selectedStatuses = ref<OrderStatus[]>([]);
 
-// Fetch branchId from cookies
-const branchId = Cookies.get("branchId");
+// Fetch branchId from localStorage
+const branchId = localStorage.getItem("branchId");
 
 // Fetch orders from API on component mount
 const fetchOrders = async () => {
@@ -159,8 +158,17 @@ const fetchOrders = async () => {
   }
 };
 
+// Polling mechanism to fetch orders periodically
+const startPolling = () => {
+  const intervalId = setInterval(fetchOrders, 5000); // Fetch orders every 5 seconds
+  onUnmounted(() => clearInterval(intervalId)); // Clear interval on component unmount
+};
+
 // Run on component mount
-onMounted(fetchOrders);
+onMounted(() => {
+  fetchOrders();
+  startPolling();
+});
 
 const selectOrder = (order: Order) => {
   selectedOrder.value = order;
@@ -180,6 +188,7 @@ const updateOrderStatus = async () => {
 
     console.log("Order status updated successfully:", response.data);
     closePopup(); // Close the popup after a successful update
+    fetchOrders();
   } catch (error) {
     console.error("Failed to update order status:", error);
   }

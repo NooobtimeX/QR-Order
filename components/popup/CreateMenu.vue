@@ -247,9 +247,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, onMounted } from "vue";
+import { ref, defineEmits, onMounted, watch } from "vue";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 // Define interfaces for restaurants, categories, sections, and options
 interface Restaurant {
@@ -298,7 +297,7 @@ const newCategoryName = ref("");
 const fetchRestaurants = async () => {
   try {
     const response = await axios.get("/api/restaurant/getAllRestaurants", {
-      params: { userId: Number(Cookies.get("userId")) },
+      params: { userId: Number(localStorage.getItem("userId")) },
     });
     restaurants.value = response.data.body.ownedRestaurants;
   } catch (error) {

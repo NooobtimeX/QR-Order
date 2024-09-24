@@ -100,7 +100,6 @@
 import { ref, defineAsyncComponent, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 // Interfaces
 interface MenuItem {
@@ -218,11 +217,11 @@ onMounted(() => {
     },
   ];
 
-  const restaurantId = Cookies.get("restaurantId");
-  const branchId = Cookies.get("branchId");
+  const restaurantId = localStorage.getItem("restaurantId");
+  const branchId = localStorage.getItem("branchId");
 
   if (!restaurantId || !branchId) {
-    alert("Missing restaurant or branch ID in cookies");
+    alert("Missing restaurant or branch ID in localStorage");
     signOut();
     return;
   }
