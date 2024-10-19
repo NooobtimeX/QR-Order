@@ -1,49 +1,57 @@
 <template>
-  <h1 class="  pb-6 text-center text-4xl font-bold text-orange-04">Dashboard</h1>
-  <div class="py-5 lg:col-span-6">
-    <!-- Status Cards -->
-    <div class="grid gap-5 md:grid-cols-2">
-      <div
-        v-for="sale in salesData"
-        :key="sale.label"
-        class="bg-card rounded-lg border border-green-03 p-6"
-      >
-        <div class="flex items-center justify-between">
-          <p class="text-sm font-medium">{{ sale.label }}</p>
-        </div>
-        <p class="mt-1.5 text-xl font-extrabold">{{ sale.amount }}</p>
-        <p class="text-muted-foreground text-xs">{{ sale.increase }}</p>
-      </div>
-    </div>
+  <div class="p-6">
+    <h1 class="pb-6 text-center text-4xl font-bold text-orange-500">
+      Dashboard
+    </h1>
 
-    <!-- Sales Chart -->
-    <div class="mt-5">
-      <div class="flex items-center justify-start">
-        <div class="flex flex-col items-start">
-          <div class="mb-3 font-bold">ยอดขาย</div>
-          <select
-            v-model="selectedYear"
-            @change="fetchChartData"
-            class="border p-2"
-          >
-            <option v-for="year in years" :key="year" :value="year">
-              {{ year }}
-            </option>
-          </select>
+    <div class="py-5">
+      <!-- Status Cards -->
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div
+          v-for="sale in salesData"
+          :key="sale.label"
+          class="rounded-lg border border-orange-500 bg-white p-6 shadow-md transition-transform duration-300 hover:scale-105"
+        >
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-700">{{ sale.label }}</p>
+          </div>
+          <p class="mt-2 text-2xl font-extrabold text-gray-900">
+            {{ sale.amount }}
+          </p>
+          <p class="mt-1 text-sm text-orange-600">{{ sale.increase }}</p>
         </div>
       </div>
 
-      <!-- Chart container -->
-      <div class="mt-5 rounded-lg border md:p-3">
-        <Line :data="chartData" :options="chartOptions" />
+      <!-- Sales Chart -->
+      <div class="mt-8">
+        <div class="mb-5 flex items-center justify-between">
+          <div class="flex flex-col">
+            <h3 class="text-lg font-bold text-gray-800">ยอดขาย</h3>
+            <select
+              v-model="selectedYear"
+              @change="fetchChartData"
+              class="mt-2 w-40 rounded border border-gray-300 p-2 text-gray-700 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            >
+              <option v-for="year in years" :key="year" :value="year">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="rounded-lg border border-gray-200 p-4 shadow-md">
+          <Line :data="chartData" :options="chartOptions" class="h-64" />
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import { Line } from "vue-chartjs";
 import { ref, computed, onMounted, watch } from "vue";
-import { useRoute } from "vue-router"; // For dynamic route params
+import { useRoute } from "vue-router";
 import axios from "axios";
 import {
   Chart,
@@ -66,7 +74,6 @@ Chart.register(
   Legend,
 );
 
-// Get branchId from the route params
 const route = useRoute();
 const branchId = ref(route.params.branchId);
 
@@ -149,20 +156,7 @@ function getSalesData(year: number): number[] {
 }
 
 async function fetchChartData() {
-  // You can replace this function with an API call
   chartData.value.datasets[0].data = getSalesData(selectedYear.value);
-
-  // If using API:
-  /*
-  try {
-    const response = await axios.get(`/api/branch/${branchId.value}/sales`, {
-      params: { year: selectedYear.value },
-    });
-    chartData.value.datasets[0].data = response.data.salesData;
-  } catch (error) {
-    console.error("Error fetching sales data:", error);
-  }
-  */
 }
 
 onMounted(() => {

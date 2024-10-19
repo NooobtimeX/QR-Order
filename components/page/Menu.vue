@@ -1,67 +1,116 @@
 <template>
   <div class="p-4">
-    <h1 class="mb-4  pb-6 text-center text-4xl font-bold text-orange-04">Branch Menus</h1>
-    <div v-if="menus.length === 0" class="text-gray-500">
+    <h1 class="mb-4 pb-6 text-center text-4xl font-bold text-orange-500">
+      Branch Menus
+    </h1>
+
+    <!-- Search Input -->
+    <div class="mb-4">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search menu..."
+        class="w-full rounded-lg border border-gray-300 p-2 shadow-sm focus:border-orange-500 focus:outline-none"
+      />
+    </div>
+
+    <!-- No Menus Message -->
+    <div v-if="filteredMenus.length === 0" class="text-gray-500">
       No menus available.
     </div>
-    <div v-else class="space-y-4">
-      <div
-        v-for="menu in menus"
-        :key="menu.id"
-        class="flex items-center justify-between rounded bg-white p-4 shadow-lg border"
-      >
-        <div>
-          <h2 class="text-xl font-semibold">{{ menu.name }}</h2>
-          <p class="text-gray-600">{{ menu.description }}</p>
+
+    <!-- Menus Grouped by Category -->
+    <div v-else class="space-y-8">
+      <div v-for="(menus, category) in groupedMenus" :key="category">
+        <h2 class="mb-4 text-2xl font-bold text-gray-800">{{ category }}</h2>
+
+        <!-- Responsive Flexbox for Menus -->
+        <div class="flex flex-wrap gap-4">
+          <div
+            v-for="menu in menus"
+            :key="menu.id"
+            class="flex w-full max-w-full flex-col items-start justify-between rounded-lg border bg-white p-4 shadow-md transition-transform hover:scale-105 sm:max-w-[calc(50%-1rem)] md:max-w-[calc(33.333%-1rem)] lg:max-w-[calc(25%-1rem)]"
+          >
+            <div>
+              <h3 class="mb-2 text-xl font-semibold text-gray-900">
+                {{ menu.name }}
+              </h3>
+              <p class="text-gray-600">{{ menu.description }}</p>
+              <!-- Price Display -->
+              <p class="mt-2 font-bold text-gray-800">
+                ฿{{ menu.price.toFixed(2) }}
+              </p>
+            </div>
+            <!-- Toggle Status -->
+            <label
+              class="relative mt-4 inline-flex cursor-pointer items-center"
+            >
+              <input
+                type="checkbox"
+                class="peer sr-only"
+                :checked="menu.isActive"
+                @change="toggleMenuStatus(menu.id, !menu.isActive)"
+              />
+              <div
+                class="h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-focus:ring-4 peer-focus:ring-green-300"
+              ></div>
+              <span class="ml-3 text-sm font-medium text-gray-900">
+                {{ menu.isActive ? "On" : "Off" }}
+              </span>
+            </label>
+          </div>
         </div>
-        <button
-          @click="toggleMenuStatus(menu.id, !menu.isActive)"
-          :class="menu.isActive ? 'bg-green-500 text-white hover:bg-green-700' : 'bg-red-500 text-white hover:bg-red-02'"
-          class="rounded px-4 py-2 text-white"
-        >
-          {{ menu.isActive ? "Disable" : "Enable" }}
-        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 
 const menus = ref([]);
+const searchQuery = ref("");
 
 const fetchMenus = async () => {
   const branchId = localStorage.getItem("branchId");
-  console.log("Fetching menus for branchId:", branchId); // Debugging
   const response = await axios.post("/api/branchMenu", {
     branchId: parseInt(branchId, 10),
   });
-  console.log("API Response:", response); // Debugging
   if (response.status === 200) {
     menus.value = response.data.body.menus;
-    console.log("Menus:", menus.value); // Debugging
   }
 };
 
 const toggleMenuStatus = async (menuId, isActive) => {
   const branchId = localStorage.getItem("branchId");
-  console.log("Toggling menu status:", { branchId, menuId, isActive }); // Debugging
-  const response = await axios.post("/api/branchMenu", {
+  await axios.post("/api/branchMenu", {
     branchId: parseInt(branchId, 10),
     menuId,
     isActive,
   });
-  console.log("Toggle Response:", response); // Debugging
-  if (response.status === 200) {
-    await fetchMenus();
-  }
+  await fetchMenus();
 };
+
+// Filter menus by search query
+const filteredMenus = computed(() => {
+  if (!searchQuery.value) return menus.value;
+  return menus.value.filter((menu) =>
+    menu.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
+  );
+});
+
+// Group menus by category
+const groupedMenus = computed(() => {
+  return filteredMenus.value.reduce((groups, menu) => {
+    const category = menu.category.name || "Uncategorized";
+    if (!groups[category]) {
+      groups[category] = [];
+    }
+    groups[category].push(menu);
+    return groups;
+  }, {});
+});
 
 onMounted(fetchMenus);
 </script>
-
-<style scoped>
-/* Add any additional styling here */
-</style>

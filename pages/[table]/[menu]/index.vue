@@ -21,7 +21,7 @@
                 <div
                   v-for="(option, index) in menuItem?.options"
                   :key="index"
-                  class="mb-1 text-black font-semibold "
+                  class="mb-1 font-semibold text-black"
                 >
                   <span class="mr-3">{{ option.optionName }}</span>
                   <div class="flex flex-wrap">

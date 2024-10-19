@@ -65,6 +65,7 @@
             <vue-qrcode
               :value="`http://localhost:4000/${selectedTable.qrCodeId}`"
               :size="128"
+              class="mx-auto"
             />
           </div>
           <span>{{ "http://localhost:4000/" + selectedTable.qrCodeId }}</span>
@@ -174,13 +175,13 @@
       <div class="mt-4 flex justify-end">
         <button
           @click="submitOrder"
-          class="mr-2 rounded  px-4 py-2  bg-green-500 text-white hover:bg-green-700"
+          class="mr-2 rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700"
         >
           สั่งอาหาร
         </button>
         <button
           @click="cancelOrder"
-          class="rounded px-4 py-2  bg-red-500 text-white hover:bg-red-02"
+          class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-02"
         >
           ยกเลิก
         </button>

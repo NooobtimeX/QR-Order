@@ -1,40 +1,41 @@
 <template>
   <div>
-    <h1 class="pb-6 text-center text-5xl font-bold text-orange-04">Order</h1>
-    <div class="mb-4 flex flex-wrap items-center">
-      <label
+    <h1 class="pb-6 text-center text-5xl font-bold text-orange-500">Order</h1>
+
+    <!-- Status Filter -->
+    <div class="mb-4 flex flex-wrap items-center space-x-4">
+      <div
         v-for="status in availableStatuses"
         :key="status"
-        class="mr-4 inline-flex items-center"
+        @click="toggleStatusFilter(status)"
+        :class="statusFilterClass(status)"
+        class="cursor-pointer rounded-lg px-4 py-2 transition duration-200"
       >
-        <input
-          type="checkbox"
-          v-model="selectedStatuses"
-          :value="status"
-          class="mr-2"
-        />
         {{ status }}
-      </label>
+      </div>
     </div>
-    <table class="min-w-full rounded-md bg-gray-300">
-      <thead>
+
+    <!-- Orders Table -->
+    <table class="min-w-full table-auto border-collapse rounded-md">
+      <thead class="bg-orange-500 text-white">
         <tr>
-          <th class="text-lg text-black">Table</th>
-          <th class="text-lg text-black">Menu</th>
-          <th class="text-lg text-black">Date</th>
-          <th class="text-lg text-black">Status</th>
+          <th class="px-4 py-2 text-center text-lg font-medium">Table</th>
+          <th class="px-4 py-2 text-center text-lg font-medium">Menu</th>
+          <th class="px-4 py-2 text-center text-lg font-medium">Date</th>
+          <th class="px-4 py-2 text-center text-lg font-medium">Status</th>
         </tr>
       </thead>
-      <tbody class="bg-gray-200 text-black">
+      <tbody class="bg-gray-100 text-black">
         <tr
           v-for="order in filteredOrders"
           :key="order.id"
           @click="selectOrder(order)"
+          class="border-b border-gray-200 transition duration-200 hover:bg-gray-200"
         >
-          <td class="text-base">{{ order.table }}</td>
-          <td class="text-base">{{ order.menuName }}</td>
-          <td class="text-base">{{ formatDate(order.time) }}</td>
-          <td class="text-base">
+          <td class="px-4 py-2 text-base">{{ order.table }}</td>
+          <td class="px-4 py-2 text-base">{{ order.menuName }}</td>
+          <td class="px-4 py-2 text-base">{{ formatDate(order.time) }}</td>
+          <td class="px-4 py-2 text-base">
             <span
               class="rounded-xl px-2 py-1"
               :class="statusClass(order.status)"
@@ -54,7 +55,7 @@
   >
     <div class="w-64 rounded-lg bg-white p-4 text-black">
       {{ selectedOrder.id }}
-      <h2 class="text-center pb-4">Table: {{ selectedOrder.table }}</h2>
+      <h2 class="pb-4 text-center">Table: {{ selectedOrder.table }}</h2>
       <select
         v-model="selectedOrder.status"
         class="mb-1 w-full rounded-xl border-2 bg-gray-200"
@@ -78,7 +79,7 @@
       <div
         v-for="(item, index) in selectedOrder.items || []"
         :key="index"
-        class="mb-1 rounded-xl border  bg-gray-100 border-gray-300 p-2 transition duration-150"
+        class="mb-1 rounded-xl border border-gray-300 bg-gray-100 p-2 transition duration-150"
       >
         <div>
           <strong>{{ item.optionName }}</strong> - {{ item.choicePrice }}฿
@@ -89,7 +90,7 @@
       <!-- OK button to update order status -->
       <button
         @click="updateOrderStatus"
-        class="mt-2 w-full rounded-xl  bg-green-500 text-white hover:bg-green-700"
+        class="mt-2 w-full rounded-xl bg-green-500 text-white hover:bg-green-700"
       >
         OK
       </button>
@@ -97,7 +98,7 @@
       <!-- Close button -->
       <button
         @click="closePopup"
-        class="mt-2 w-full rounded-xl p-2  bg-red-500 text-white hover:bg-red-02"
+        class="mt-2 w-full rounded-xl bg-red-500 p-2 text-white hover:bg-red-700"
       >
         Close
       </button>
@@ -194,6 +195,23 @@ const updateOrderStatus = async () => {
   }
 };
 
+// Toggle status filter on click
+const toggleStatusFilter = (status: OrderStatus) => {
+  if (selectedStatuses.value.includes(status)) {
+    selectedStatuses.value = selectedStatuses.value.filter((s) => s !== status);
+  } else {
+    selectedStatuses.value.push(status);
+  }
+};
+
+// Define CSS classes for selected/unselected statuses
+const statusFilterClass = (status: OrderStatus) => {
+  return selectedStatuses.value.includes(status)
+    ? "bg-orange-500 text-white"
+    : "bg-gray-200 text-gray-700";
+};
+
+// Sort orders by status priority
 const sortOrders = () => {
   const orderPriority: Record<OrderStatus, number> = {
     pending: 1,
@@ -205,6 +223,7 @@ const sortOrders = () => {
   );
 };
 
+// Filter orders based on selected statuses
 const filteredOrders = computed(() => {
   return selectedStatuses.value.length === 0
     ? orders.value
@@ -213,6 +232,7 @@ const filteredOrders = computed(() => {
       );
 });
 
+// Define CSS classes for order statuses
 const statusClass = (status: OrderStatus) => {
   return {
     "bg-green-400 text-green-900": status === "finish",
@@ -221,6 +241,7 @@ const statusClass = (status: OrderStatus) => {
   };
 };
 
+// Format date
 const formatDate = (time: string) => {
   const date = new Date(time);
   return date.toLocaleString("th-TH", {
@@ -229,6 +250,7 @@ const formatDate = (time: string) => {
   });
 };
 
+// Close popup
 const closePopup = () => {
   selectedOrder.value = null;
 };

@@ -9,9 +9,9 @@
           :key="category.name"
           class="px-2 py-4"
         >
-          <a :href="'#' + category.name" class="font-bold text-black">
-            {{ category.name }}
-          </a>
+          <a :href="'#' + category.name" class="font-bold text-black">{{
+            category.name
+          }}</a>
         </div>
       </nav>
       <div class="mt-4">
@@ -23,7 +23,7 @@
         >
           <h2 class="text-2xl font-bold">{{ category.name }}</h2>
           <div class="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-            <router-link
+            <nuxt-link
               :to="`/${qrCodeId}/${menu.id}`"
               class="block rounded-xl border-2 border-gray-300 bg-white p-2 shadow-sm transition-shadow duration-300 hover:shadow-lg"
               v-for="menu in category.menus"
@@ -34,7 +34,7 @@
                 <h2 class="text-xl font-semibold">{{ menu.name }}</h2>
                 <p class="text-black">{{ menu.price }}฿</p>
               </div>
-            </router-link>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -42,80 +42,45 @@
   </NuxtLayout>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router"; // Import useRoute to get the qrCodeId from the URL
+import { useRoute } from "vue-router";
 import axios from "axios";
 
-// Define interfaces for Menu and Category
-interface Menu {
-  id: number;
-  name: string;
-  price: number;
-  src: string;
-}
+const categories = ref([]);
+const qrCodeId = ref(null);
 
-interface Category {
-  name: string;
-  menus: Menu[];
-}
-
-const categories = ref<Category[]>([]);
-
-// Ensure qrCodeId is either string or null
-const qrCodeId = ref<string | null>(null);
-
-// Fetch the route information when the component is mounted
 onMounted(async () => {
   const route = useRoute();
-
-  // Handle dynamic params.table safely
-  const routeTableParam = route.params.table;
-  qrCodeId.value = Array.isArray(routeTableParam)
-    ? routeTableParam[0]
-    : routeTableParam;
+  qrCodeId.value = route.params.table;
 
   if (qrCodeId.value) {
     try {
-      // Step 1: Get the restaurantId from the Table based on qrCodeId
-      const tableResponse = await axios.get(`/api/table/${qrCodeId.value}`);
-      const restaurantId = tableResponse.data.restaurantId;
+      const response = await axios.get(
+        `/api/getMenusByQRCodeId/${qrCodeId.value}`,
+      );
+      const { menus } = response.data.body;
 
-      if (restaurantId) {
-        // Step 2: Fetch all menus for the restaurantId
-        const menuResponse = await axios.post(
-          "/api/restaurant/getMenusByQRCodeId",
-          { restaurantId },
-        );
-        const menus = menuResponse.data.body;
-
-        // Map menus to categories
-        const categoryMap = new Map<string, Menu[]>();
-        menus.forEach((menu: any) => {
-          if (!categoryMap.has(menu.category.name)) {
-            categoryMap.set(menu.category.name, []);
-          }
-          categoryMap.get(menu.category.name)?.push({
-            id: menu.id,
-            name: menu.name,
-            price: menu.price,
-            src: menu.imageUrl,
-          });
+      const categoryMap = new Map();
+      menus.forEach((menu) => {
+        if (!categoryMap.has(menu.category.name)) {
+          categoryMap.set(menu.category.name, []);
+        }
+        categoryMap.get(menu.category.name).push({
+          id: menu.id,
+          name: menu.name,
+          price: menu.price,
+          src: menu.imageUrl,
         });
+      });
 
-        // Update the categories array with the mapped categories and menus
-        categories.value = Array.from(categoryMap, ([name, menus]) => ({
-          name,
-          menus,
-        }));
-      } else {
-        console.error("Restaurant ID not found for the given QR Code");
-      }
+      categories.value = Array.from(categoryMap, ([name, menus]) => ({
+        name,
+        menus,
+      }));
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
-  } else {
-    console.error("QR Code ID not found in URL");
   }
 });
 </script>

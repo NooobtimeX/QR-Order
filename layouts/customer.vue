@@ -29,8 +29,18 @@
     >
       <div class="rounded-xl bg-white p-4 shadow-lg">
         <p class="text-gray-800">Call the staff?</p>
-        <button @click="showPopup = false" class="mt-2 bg-green-500 text-white hover:bg-green-700">Confirm</button>
-        <button @click="showPopup = false" class="mt-2 bg-red-500 text-white hover:bg-red-02">Cancel</button>
+        <button
+          @click="showPopup = false"
+          class="mt-2 bg-green-500 text-white hover:bg-green-700"
+        >
+          Confirm
+        </button>
+        <button
+          @click="showPopup = false"
+          class="mt-2 bg-red-500 text-white hover:bg-red-02"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </div>

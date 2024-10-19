@@ -86,7 +86,7 @@
             <p v-else class="text-black">No branches available.</p>
           </div>
         </div>
-        <p v-else class="text-black text-xl">No restaurants available.</p>
+        <p v-else class="text-xl text-black">No restaurants available.</p>
       </div>
     </div>
 
