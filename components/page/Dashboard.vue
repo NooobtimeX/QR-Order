@@ -1,12 +1,12 @@
 <template>
-  <div class="p-6">
+  <div>
     <h1 class="pb-6 text-center text-4xl font-bold text-orange-500">
       Dashboard
     </h1>
 
     <div class="py-5">
       <!-- Status Cards -->
-      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+      <div class="grid gap-5 md:grid-cols-2">
         <div
           v-for="sale in salesData"
           :key="sale.label"
@@ -135,7 +135,7 @@ const chartData = ref({
       borderColor: "#0F803D",
       borderWidth: 2,
       pointBackgroundColor: "#0F803D",
-      data: [],
+      data: [] as number[],
     },
   ],
 });

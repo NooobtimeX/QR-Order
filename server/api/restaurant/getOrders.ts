@@ -30,8 +30,11 @@ export default defineEventHandler(async (event) => {
       },
     });
 
+    // Filter out orders that are not connected to any table
+    const ordersWithTable = orders.filter((order) => order.bill?.table);
+
     // Map and return only the important data
-    const importantData = orders.map((order) => ({
+    const importantData = ordersWithTable.map((order) => ({
       id: order.id,
       table: order.bill?.table?.name || "Unknown", // Get table name, default to 'Unknown' if not found
       status: order.status,

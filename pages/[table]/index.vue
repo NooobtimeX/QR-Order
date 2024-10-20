@@ -1,6 +1,7 @@
 <template>
   <NuxtLayout name="customer">
     <div>
+      <!-- Category Navigation -->
       <nav
         class="sticky top-0 z-50 flex overflow-x-auto rounded-xl border-2 border-gray-300 bg-white shadow-md"
       >
@@ -14,6 +15,8 @@
           }}</a>
         </div>
       </nav>
+
+      <!-- Categories and Menus -->
       <div class="mt-4">
         <div
           v-for="category in categories"
@@ -23,32 +26,51 @@
         >
           <h2 class="text-2xl font-bold">{{ category.name }}</h2>
           <div class="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-            <nuxt-link
-              :to="`/${qrCodeId}/${menu.id}`"
-              class="block rounded-xl border-2 border-gray-300 bg-white p-2 shadow-sm transition-shadow duration-300 hover:shadow-lg"
+            <div
+              class="block cursor-pointer rounded-xl border-2 border-gray-300 bg-white p-2 shadow-sm transition-shadow duration-300 hover:shadow-lg"
               v-for="menu in category.menus"
               :key="menu.id"
+              @click="openMenuModal(menu.id)"
             >
               <img :src="menu.src" class="c-t-lg h-32 w-full object-cover" />
               <div class="p-1">
                 <h2 class="text-xl font-semibold">{{ menu.name }}</h2>
                 <p class="text-black">{{ menu.price }}฿</p>
               </div>
-            </nuxt-link>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Modal for Menu Details -->
+      <MenuModal
+        v-if="isModalOpen"
+        :menuId="selectedMenuId"
+        :qrCodeId="qrCodeId"
+        @close="closeMenuModal"
+      />
     </div>
   </NuxtLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
 import axios from "axios";
+import MenuModal from "../../components/customer/MenuModal.vue"; // Import the modal component
 
 const categories = ref([]);
 const qrCodeId = ref(null);
+const isModalOpen = ref(false); // State to manage modal visibility
+const selectedMenuId = ref(null); // State to track selected menu
+
+const openMenuModal = (menuId) => {
+  selectedMenuId.value = menuId;
+  isModalOpen.value = true;
+};
+
+const closeMenuModal = () => {
+  isModalOpen.value = false;
+};
 
 onMounted(async () => {
   const route = useRoute();

@@ -5,7 +5,7 @@
   <div class="mx-auto max-w-5xl items-center">
     <slot />
   </div>
-  <div class="fixed bottom-4 right-4 z-50 grid grid-cols-1 gap-2">
+  <div class="fixed bottom-4 right-4 z-10 grid grid-cols-1 gap-2">
     <!-- Notification Button -->
     <button
       @click="showPopup = true"
@@ -25,7 +25,7 @@
     <!-- Popup -->
     <div
       v-if="showPopup"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75"
+      class="fixed inset-0 z-10 flex items-center justify-center bg-white bg-opacity-75"
     >
       <div class="rounded-xl bg-white p-4 shadow-lg">
         <p class="text-gray-800">Call the staff?</p>

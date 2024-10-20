@@ -141,7 +141,6 @@
     status       String        @default("pending")
     billId       Int? // Link to a Bill (Int type to match Bill.id)
     orderOptions OrderOption[] // One-to-many relation to OrderOption
-
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div>
     <h1 class="mb-4 pb-6 text-center text-4xl font-bold text-orange-500">
       Branch Menus
     </h1>
@@ -25,11 +25,11 @@
         <h2 class="mb-4 text-2xl font-bold text-gray-800">{{ category }}</h2>
 
         <!-- Responsive Flexbox for Menus -->
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap justify-center gap-4">
           <div
             v-for="menu in menus"
             :key="menu.id"
-            class="flex w-full max-w-full flex-col items-start justify-between rounded-lg border bg-white p-4 shadow-md transition-transform hover:scale-105 sm:max-w-[calc(50%-1rem)] md:max-w-[calc(33.333%-1rem)] lg:max-w-[calc(25%-1rem)]"
+            class="flex w-full flex-col items-start justify-between rounded-lg border bg-white p-4 shadow-md transition-transform hover:scale-105 sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)]"
           >
             <div>
               <h3 class="mb-2 text-xl font-semibold text-gray-900">

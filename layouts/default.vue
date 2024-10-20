@@ -28,7 +28,7 @@
         '-translate-x-full': !isSidebarOpen,
         'translate-x-0': isSidebarOpen,
       }"
-      class="fixed left-0 top-0 z-40 h-screen w-64 transition-transform md:translate-x-0"
+      class="fixed left-0 top-0 z-10 h-screen w-64 transition-transform md:translate-x-0"
       aria-label="Sidebar"
     >
       <div class="relative h-full overflow-y-auto bg-green-05 px-3 py-4">
@@ -65,7 +65,7 @@
             </button>
             <router-link
               v-else
-              :to="item.link"
+              :to="item.link || '/'"
               class="group flex items-center rounded-xl p-2 text-white hover:bg-green-03"
             >
               <img width="25px" height="25px" :src="item.icon" />
@@ -141,14 +141,6 @@ onMounted(() => {
       ),
     },
     {
-      text: "Bill",
-      link: "/restaurant/receipt",
-      icon: "/icon/receipt.svg",
-      component: defineAsyncComponent(
-        () => import("@/components/page/Receipt.vue"),
-      ),
-    },
-    {
       text: "Staff",
       link: "/restaurant/staff",
       icon: "/icon/staff.svg",
@@ -218,8 +210,12 @@ async function signOut() {
 }
 
 onMounted(async () => {
-  const resId = route.params.restaurantId;
-  const branchId = route.params.branchId;
+  const resId = Array.isArray(route.params.restaurantId)
+    ? route.params.restaurantId[0]
+    : route.params.restaurantId;
+  const branchId = Array.isArray(route.params.branchId)
+    ? route.params.branchId[0]
+    : route.params.branchId;
 
   if (!resId || !branchId) {
     alert("Missing restaurant or branch ID in route");

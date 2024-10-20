@@ -1,96 +1,114 @@
 <template>
   <div>
-    <!-- Sidebar Toggle Button -->
-    <button
-      @click="toggleSidebar"
-      aria-controls="default-sidebar"
-      type="button"
-      class="ms-3 mt-2 inline-flex items-center rounded-xl p-2 text-sm focus:outline-none focus:ring-2"
+    <!-- Navbar -->
+    <nav
+      class="bg-background/90 sticky top-0 z-40 mb-1 rounded-b-xl shadow-xl backdrop-blur"
     >
-      <span class="sr-only">Open sidebar</span>
-      <svg
-        class="h-6 w-6"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          clip-rule="evenodd"
-          fill-rule="evenodd"
-          d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-        />
-      </svg>
-    </button>
-
-    <!-- Sidebar -->
-    <aside
-      id="default-sidebar"
-      :class="{
-        '-translate-x-full': !isSidebarOpen,
-        'translate-x-0': isSidebarOpen,
-      }"
-      class="fixed left-0 top-0 z-40 h-screen w-64 transition-transform md:translate-x-0"
-      aria-label="Sidebar"
-    >
-      <div
-        class="relative h-full overflow-y-auto bg-white px-3 py-4 shadow-2xl"
-      >
-        <!-- Logo -->
-        <div class="flex items-center justify-center text-white">
-          <img width="50px" src="/logo/logo.png" />
-        </div>
-
-        <!-- Restaurant Info -->
-        <div
-          class="flex flex-col items-center justify-center text-2xl text-black"
-        >
-          <div>{{ restaurantName }}</div>
-          <div>{{ branchName }}</div>
-        </div>
-        <!-- Close Button (Mobile) -->
-        <button
-          type="button"
-          class="absolute right-4 top-4 inline-flex items-center rounded-xl p-2 text-sm focus:outline-none focus:ring-2 md:hidden"
-          @click="toggleSidebar"
-        >
-          <img src="/icon/close.svg" alt="Close" class="h-6 w-6" />
-        </button>
-
-        <!-- Menu Items -->
-        <ul class="mt-2 space-y-2 font-medium">
-          <li v-for="item in menuItems" :key="item.text">
-            <div
-              v-if="item.component"
-              @click="selectComponent(item)"
-              class="group flex items-center rounded-xl p-2 text-black hover:bg-orange-04 active:bg-orange-03"
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+          <!-- Mobile menu button -->
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <button
+              @click="toggleMobileMenu"
+              class="bg-800 inline-flex items-center justify-center p-2 text-black focus:outline-none focus:ring-2 focus:ring-inset"
             >
-              <img width="25px" height="25px" :src="item.icon" />
-              <span class="ms-3">{{ item.text }}</span>
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="h-6 w-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  fill-rule="evenodd"
+                  d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Logo and Restaurant Info -->
+          <div
+            class="flex w-full flex-shrink-0 items-center justify-center sm:w-auto sm:justify-start"
+          >
+            <img src="/logo/logo.png" alt="Logo" width="50px" />
+            <div class="ml-3 hidden sm:block">
+              <div class="text-lg font-bold">{{ restaurantName }}</div>
+              <div class="text-sm">{{ branchName }}</div>
             </div>
-            <router-link
-              v-else-if="item.link"
-              :to="item.link"
-              class="group flex items-center rounded-xl p-2 text-black hover:bg-orange-04"
-            >
-              <img width="25px" height="25px" :src="item.icon" />
-              <span class="ms-3">{{ item.text }}</span>
-            </router-link>
-          </li>
-        </ul>
+          </div>
 
-        <!-- Sign Out Button -->
-        <button
-          @click="signOut"
-          class="mt-6 rounded-xl bg-red-500 p-2 text-white hover:bg-red-02"
-        >
-          ออกจากระบบ
-        </button>
+          <!-- Desktop Menu -->
+          <div class="hidden sm:ml-6 sm:block">
+            <div class="flex space-x-4">
+              <a
+                v-for="item in menuItems"
+                :key="item.text"
+                @click="selectComponent(item)"
+                :class="{
+                  'bg-orange-600 text-white':
+                    currentComponentText === item.text,
+                  'text-gray-500 hover:text-orange-600':
+                    currentComponentText !== item.text,
+                }"
+                class="mx-auto flex cursor-pointer flex-col items-center rounded-md px-3 py-2 text-sm font-medium"
+              >
+                <img width="25px" height="25px" :src="item.icon" class="mb-1" />
+                {{ item.text }}
+              </a>
+            </div>
+          </div>
+
+          <!-- Sign Out Button (Visible on larger screens) -->
+          <button
+            @click="changerestaurant"
+            class="hidden rounded-xl bg-red-500 p-2 text-white hover:bg-red-02 sm:block"
+          >
+            เปลี่ยนร้านอาหาร
+          </button>
+        </div>
       </div>
-    </aside>
+
+      <!-- Mobile Menu -->
+      <div v-if="isMobileMenuOpen" class="sm:hidden">
+        <div class="px-2 pb-3 pt-2">
+          <!-- Restaurant Info (Visible on smaller screens) -->
+          <div class="mb-2 text-center">
+            <div class="text-lg font-bold">{{ restaurantName }}</div>
+            <div class="text-sm">{{ branchName }}</div>
+          </div>
+
+          <div class="space-y-1">
+            <a
+              v-for="item in menuItems"
+              :key="item.text"
+              @click="selectComponent(item)"
+              :class="{
+                'bg-orange-600 text-white': currentComponentText === item.text,
+                'text-gray-500 hover:text-orange-600':
+                  currentComponentText !== item.text,
+              }"
+              class="flex cursor-pointer items-center rounded-md px-3 py-2 text-base font-medium"
+            >
+              <img width="25px" height="25px" :src="item.icon" class="mr-3" />
+              {{ item.text }}
+            </a>
+
+            <!-- Sign Out Button (Visible on smaller screens) -->
+            <button
+              @click="changerestaurant"
+              class="mt-2 block w-full rounded-md bg-red-500 p-2 text-white hover:bg-red-02"
+            >
+              เปลี่ยนร้านอาหาร
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
     <!-- Dynamic Component -->
-    <div
-      class="ml-0 overflow-hidden p-2 px-6 sm:ml-2 md:ml-56 lg:ml-60 xl:ml-64"
-    >
+    <div class="mx-auto max-w-7xl p-4">
       <component v-if="currentComponent" :is="currentComponent" />
     </div>
   </div>
@@ -104,37 +122,44 @@ import axios from "axios";
 // Interfaces
 interface MenuItem {
   text: string;
-  link?: string;
   icon: string;
   component?: any;
 }
 
 // Data and Methods
 const menuItems = ref<MenuItem[]>([]);
-const isSidebarOpen = ref(false);
+const isMobileMenuOpen = ref(false);
 const restaurantName = ref("Loading...");
 const branchName = ref("Loading...");
-const currentComponent = ref<any>(null); // Initialize as null for now
+const currentComponent = ref<any>(null);
+const currentComponentText = ref<string>(""); // Track the active component text
 const router = useRouter();
 
-// Functions
-function toggleSidebar() {
-  isSidebarOpen.value = !isSidebarOpen.value;
+// Toggle mobile menu
+function toggleMobileMenu() {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
 }
 
-function closeSidebarOnMobile() {
-  if (window.innerWidth < 640) isSidebarOpen.value = false;
+// Sign out function
+function signOut() {
+  router.push("/"); // Redirect to home or login
 }
-
+function changerestaurant() {
+  router.push("/restaurant");
+}
+// Function to select component
 function selectComponent(item: MenuItem) {
   if (item.component) {
     currentComponent.value = item.component;
-    // Save selected component text in localStorage
-    localStorage.setItem("lastSelectedComponent", item.text);
+    currentComponentText.value = item.text; // Set the active component text
+    localStorage.setItem("lastSelectedComponent", item.text); // Store the selected component in localStorage
   }
-  closeSidebarOnMobile();
+  if (isMobileMenuOpen.value) {
+    toggleMobileMenu(); // Close mobile menu after selecting
+  }
 }
 
+// Async function to check restaurant and branch
 async function checkRestaurantAndBranch(
   restaurantId: string,
   branchId: string,
@@ -155,16 +180,11 @@ async function checkRestaurantAndBranch(
   return false;
 }
 
-function signOut() {
-  router.push("/"); // Redirect to home or login
-}
-
 // On Mounted
 onMounted(() => {
   menuItems.value = [
     {
       text: "Dashboard",
-      link: "/restaurant/dashboard",
       icon: "/icon/dashboard.svg",
       component: defineAsyncComponent(
         () => import("@/components/page/Dashboard.vue"),
@@ -172,7 +192,6 @@ onMounted(() => {
     },
     {
       text: "Table",
-      link: "/restaurant/table",
       icon: "/icon/table.svg",
       component: defineAsyncComponent(
         () => import("@/components/page/Table.vue"),
@@ -180,7 +199,6 @@ onMounted(() => {
     },
     {
       text: "Order",
-      link: "/restaurant/order",
       icon: "/icon/order.svg",
       component: defineAsyncComponent(
         () => import("@/components/page/Order.vue"),
@@ -188,32 +206,24 @@ onMounted(() => {
     },
     {
       text: "Menu",
-      link: "/restaurant/menu",
       icon: "/icon/menu.svg",
       component: defineAsyncComponent(
         () => import("@/components/page/Menu.vue"),
       ),
     },
     {
-      text: "Bill",
-      link: "/restaurant/receipt",
-      icon: "/icon/receipt.svg",
+      text: "Bills",
+      icon: "/icon/bill.svg",
       component: defineAsyncComponent(
-        () => import("@/components/page/Receipt.vue"),
+        () => import("@/components/page/Bills.vue"),
       ),
     },
     {
       text: "Staff",
-      link: "/restaurant/staff",
       icon: "/icon/staff.svg",
       component: defineAsyncComponent(
         () => import("@/components/page/Staff.vue"),
       ),
-    },
-    {
-      text: "Switch Restaurant",
-      link: "/restaurant",
-      icon: "/icon/restaurant.svg",
     },
   ];
 
@@ -233,7 +243,6 @@ onMounted(() => {
     }
   });
 
-  // Load the last selected component from localStorage
   const lastSelectedComponent = localStorage.getItem("lastSelectedComponent");
   if (lastSelectedComponent) {
     const matchedItem = menuItems.value.find(
@@ -241,17 +250,18 @@ onMounted(() => {
     );
     if (matchedItem && matchedItem.component) {
       currentComponent.value = matchedItem.component;
+      currentComponentText.value = matchedItem.text; // Set the current component text as active
     } else {
-      // Default to Dashboard if no match
       currentComponent.value = defineAsyncComponent(
         () => import("@/components/page/Dashboard.vue"),
       );
+      currentComponentText.value = "Dashboard"; // Default to Dashboard
     }
   } else {
-    // Default to Dashboard if nothing is saved
     currentComponent.value = defineAsyncComponent(
       () => import("@/components/page/Dashboard.vue"),
     );
+    currentComponentText.value = "Dashboard"; // Default to Dashboard
   }
 });
 </script>

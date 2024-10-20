@@ -1,22 +1,20 @@
 <template>
   <div>
     <h1 class="pb-6 text-center text-5xl font-bold text-orange-04">Table</h1>
-    <div class="grid grid-cols-2 gap-1 sm:grid-cols-4 md:grid-cols-6">
+    <div class="flex flex-wrap justify-center gap-4">
       <button
         v-for="table in tables"
         :key="table.id"
-        class="max-w-30 flex h-32 w-32 flex-col items-center justify-center bg-gray-200 shadow-md hover:bg-gray-400"
+        class="flex h-32 w-32 max-w-xs flex-col items-center justify-center bg-gray-200 p-4 shadow-md hover:bg-gray-400"
         :class="getTableClass(table)"
         @click="selectTable(table)"
       >
-        <img src="/table.png" class="h-14 w-14" />
-        <p class="text-sm font-medium text-black">
-          <span class="text-sm font-bold text-black">Table:</span>
-          {{ table.name }}
+        <img src="/icon/table.svg" class="h-14 w-14" />
+        <p class="mt-2 text-sm font-medium text-black">
+          <span class="text-sm font-bold">Table:</span> {{ table.name }}
         </p>
         <p class="text-sm font-medium text-black">
-          <span class="text-sm font-bold text-black">Seat:</span>
-          {{ table.capacity }}
+          <span class="text-sm font-bold">Seat:</span> {{ table.capacity }}
         </p>
       </button>
     </div>
@@ -33,7 +31,7 @@
   <!-- Table Details Modal -->
   <div
     v-if="selectedTable"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
+    class="fixed inset-0 z-20 flex items-center justify-center bg-gray-800 bg-opacity-50"
   >
     <div class="w-96 rounded-lg bg-white p-4">
       <p class="text-center text-2xl text-black">
@@ -78,10 +76,13 @@
         </div>
 
         <button
-          @click="orderFood"
+          @click="
+            openOrderFood(selectedTable.qrCodeId);
+            selectedTable = false;
+          "
           class="rounded bg-orange-05 px-2 py-1 text-lg text-white hover:bg-yellow-600"
         >
-          สั้งอาหาร
+          สั่งอาหาร
         </button>
         <button
           @click="updateTable('isOpen')"
@@ -104,7 +105,10 @@
       <!-- Close Modal Button -->
       <div class="mt-4 flex justify-end">
         <button
-          @click="selectedTable = null"
+          @click="
+            selectedTable = null;
+            isOrderFoodVisible = false;
+          "
           class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-02"
         >
           Close
@@ -114,108 +118,39 @@
   </div>
 
   <!-- Create Table Modal -->
-  <div
+  <CreateTableModal
     v-if="isCreateTableFormVisible"
-    class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
-  >
-    <div class="rounded-lg bg-white p-4">
-      <h2 class="mb-4 text-lg font-bold text-black">Create New Table</h2>
-      <input
-        v-model="newTableName"
-        placeholder="Table Name"
-        class="mb-2 block w-full rounded-md border-gray-400 bg-white shadow-sm focus:outline-none focus:ring-2 sm:text-base"
-      />
-      <input
-        v-model.number="newTableCapacity"
-        placeholder="Capacity"
-        type="number"
-        class="mb-4 block w-full rounded-md border-gray-400 bg-white shadow-sm focus:outline-none focus:ring-2 sm:text-base"
-      />
-      <div class="flex justify-end">
-        <button
-          @click="createTable"
-          class="rounded-mb mr-2 border border-transparent bg-green-500 px-4 py-2 text-sm text-white hover:bg-green-700"
-        >
-          Create
-        </button>
-        <button
-          @click="cancelCreateTable"
-          class="rounded-mb mr-2 rounded-md border bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-02"
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Order Food Modal -->
-  <div
-    v-if="isOrderFoodModalVisible"
-    class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
-  >
-    <div class="rounded-lg bg-white p-4">
-      <h2 class="mb-4 text-lg font-bold">เลือกเมนูอาหาร</h2>
-      <div
-        v-for="item in menuItems"
-        :key="item.id"
-        class="flex items-center justify-between"
-      >
-        <p>{{ item.name }}</p>
-        <button
-          @click="toggleMenuItem(item)"
-          :class="{
-            'bg-blue-600 text-white': selectedMenuItems.includes(item.id),
-            'bg-gray-200 text-black': !selectedMenuItems.includes(item.id),
-          }"
-          class="rounded px-4 py-2"
-        >
-          {{ selectedMenuItems.includes(item.id) ? "ยกเลิก" : "เลือก" }}
-        </button>
-      </div>
-      <div class="mt-4 flex justify-end">
-        <button
-          @click="submitOrder"
-          class="mr-2 rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700"
-        >
-          สั่งอาหาร
-        </button>
-        <button
-          @click="cancelOrder"
-          class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-02"
-        >
-          ยกเลิก
-        </button>
-      </div>
-    </div>
-  </div>
+    @closeModal="isCreateTableFormVisible = false"
+    @tableCreated="addTable"
+  />
+  <OrderFood
+    v-if="isOrderFoodVisible"
+    :qrCodeId="qrCodeIdForOrderFood"
+    @close="isOrderFoodVisible = false"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
+import OrderFood from "./table/OrderFoodModal.vue";
+import CreateTableModal from "./table/CreateTableModal.vue"; // Import the modal component
 
 // State variables
 const tables = ref([]);
 const selectedTable = ref(null);
 const isCreateTableFormVisible = ref(false);
-const newTableName = ref("");
-const newTableCapacity = ref(4);
+const qrCodeIdForOrderFood = ref(null);
+const isOrderFoodVisible = ref(false);
 
+const openOrderFood = (qrCodeId) => {
+  qrCodeIdForOrderFood.value = qrCodeId;
+  isOrderFoodVisible.value = true;
+};
 // Fetch `restaurantId` and `branchId` from localStorage
 const restaurantId = localStorage.getItem("restaurantId");
 const branchId = localStorage.getItem("branchId");
-
-// Current URL for QR code generation
-const currentUrl = computed(() => {
-  const baseUrl = process.client ? window.location.origin : ""; // Ensure this runs only on the client-side
-  return `${baseUrl}/`; // Modify URL if needed
-});
-
-// New state variables for ordering food
-const isOrderFoodModalVisible = ref(false);
-const selectedMenuItems = ref([]);
-const menuItems = ref([]);
 
 const selectTable = (table) => {
   selectedTable.value = table;
@@ -233,27 +168,6 @@ const fetchTables = async () => {
     tables.value = response.data.body || [];
   } catch (error) {
     console.error("Error fetching tables:", error);
-  }
-};
-
-const createTable = async () => {
-  try {
-    const response = await axios.post(
-      `/api/restaurant/${restaurantId}/branch/${branchId}/createTable`,
-      {
-        name: newTableName.value,
-        capacity: newTableCapacity.value,
-      },
-    );
-
-    if (response.data.statusCode === 201) {
-      tables.value.push(response.data.body);
-      cancelCreateTable();
-    } else {
-      console.error("Unexpected response format:", response.data);
-    }
-  } catch (error) {
-    console.error("Error creating table:", error);
   }
 };
 
@@ -324,11 +238,8 @@ const canReserveTable = computed(
 const showCreateTableForm = () => {
   isCreateTableFormVisible.value = true;
 };
-
-const cancelCreateTable = () => {
-  isCreateTableFormVisible.value = false;
-  newTableName.value = "";
-  newTableCapacity.value = 4;
+const addTable = (newTable) => {
+  tables.value.push(newTable);
 };
 
 const getTableClass = (table) => {
@@ -370,62 +281,6 @@ const genQRCode = async () => {
   } catch (error) {
     console.error("Error generating QRCode:", error);
     selectedTable.value.qrCodeId = null;
-  }
-};
-
-const orderFood = () => {
-  isOrderFoodModalVisible.value = true;
-  fetchMenuItems(); // Fetch the menu items when the modal is opened
-};
-
-const fetchMenuItems = async () => {
-  try {
-    const response = await axios.post(
-      `/api/restaurant/${restaurantId}/branch/${branchId}/getAllMenu`,
-    );
-
-    if (response.status === 200 && response.data.body) {
-      menuItems.value = response.data.body;
-    } else {
-      console.error("Unexpected response format:", response.data);
-    }
-  } catch (error) {
-    console.error("Error fetching menu items:", error);
-  }
-};
-
-const toggleMenuItem = (item) => {
-  const index = selectedMenuItems.value.indexOf(item.id);
-  if (index === -1) {
-    selectedMenuItems.value.push(item.id);
-  } else {
-    selectedMenuItems.value.splice(index, 1);
-  }
-};
-
-const cancelOrder = () => {
-  isOrderFoodModalVisible.value = false;
-  selectedMenuItems.value = [];
-};
-
-const submitOrder = async () => {
-  try {
-    const response = await axios.post(
-      `/api/restaurant/${restaurantId}/branch/${branchId}/submitOrder`,
-      {
-        tableId: selectedTable.value.id,
-        menuItems: selectedMenuItems.value,
-      },
-    );
-
-    if (response.data.statusCode === 201) {
-      console.log("Order submitted successfully:", response.data);
-      cancelOrder();
-    } else {
-      console.error("Unexpected response format:", response.data);
-    }
-  } catch (error) {
-    console.error("Error submitting order:", error);
   }
 };
 </script>
