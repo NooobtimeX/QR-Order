@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
 
     return { message: "Notification cleared successfully" };
   } catch (error) {
+    console.error("Error clearing notification:", error); // Log the error
     return { error: "Failed to clear notification" };
   }
 });

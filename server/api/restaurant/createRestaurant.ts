@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     if (!body.name || !body.userId) {
       throw createError({
         statusCode: 400,
-        statusMessage: "Missing required fields: name, phoneNumber, or userId",
+        statusMessage: "Missing required fields: name, or userId",
       });
     }
 
@@ -41,13 +41,20 @@ export default defineEventHandler(async (event) => {
         restaurantId: restaurant.id,
       },
     };
-  } catch (error) {
+  } catch (error: unknown) {
     // Log the error for debugging
     console.error("Error during restaurant creation:", error);
 
-    throw createError({
-      statusCode: (error as any).statusCode || 500,
-      statusMessage: (error as any).statusMessage || "Internal Server Error",
-    });
+    if (error instanceof Error) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: error.message || "Internal Server Error",
+      });
+    } else {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "An unknown error occurred",
+      });
+    }
   }
 });

@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
       body: tables,
     };
   } catch (error) {
+    console.error("Error fetching tables:", error); // Log the error
     return { error: "Failed to fetch tables with notifications" };
   }
 });

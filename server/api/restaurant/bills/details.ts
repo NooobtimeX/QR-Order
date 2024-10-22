@@ -42,7 +42,12 @@ export default defineEventHandler(async (event) => {
       ...bill,
       totalFinishedOrders,
     };
-  } catch (error) {
-    return { error: "Failed to fetch bill details" };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error fetching bill details:", error.message);
+      return { error: error.message || "Failed to fetch bill details" };
+    }
+
+    return { error: "Unknown error occurred" };
   }
 });

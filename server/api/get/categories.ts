@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { defineEventHandler, createError } from "h3";
+import { defineEventHandler, createError, readBody } from "h3";
 
 const prisma = new PrismaClient();
 
@@ -26,10 +26,17 @@ export default defineEventHandler(async (event) => {
       id: category.id,
       name: category.name,
     }));
-  } catch (error: any) {
-    throw createError({
-      statusCode: 500,
-      message: error.message || "Failed to fetch categories",
-    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw createError({
+        statusCode: 500,
+        message: error.message || "Failed to fetch categories",
+      });
+    } else {
+      throw createError({
+        statusCode: 500,
+        message: "An unknown error occurred",
+      });
+    }
   }
 });

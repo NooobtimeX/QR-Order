@@ -5,9 +5,8 @@ const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   try {
-    // Extract restaurantId and branchId from the URL parameters
-    const { restaurantId, branchId } = event.context.params as {
-      restaurantId: string;
+    // Extract only branchId from the URL parameters
+    const { branchId } = event.context.params as {
       branchId: string;
     };
 

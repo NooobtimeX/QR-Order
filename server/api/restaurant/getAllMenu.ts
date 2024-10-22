@@ -45,20 +45,20 @@ export default defineEventHandler(async (event) => {
       statusCode: 200,
       body: menus,
     };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching menus:", error);
 
     if (error instanceof Error) {
       throw createError({
-        statusCode: (error as any).statusCode || 500,
+        statusCode: 500,
         statusMessage: error.message || "Internal Server Error",
       });
+    } else {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Server Error",
+      });
     }
-
-    throw createError({
-      statusCode: 500,
-      statusMessage: "Internal Server Error",
-    });
   } finally {
     await prisma.$disconnect();
   }

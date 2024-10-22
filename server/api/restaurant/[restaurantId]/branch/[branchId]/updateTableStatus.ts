@@ -6,12 +6,6 @@ const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   try {
-    // Extract parameters from the request
-    const { restaurantId, branchId } = event.context.params as {
-      restaurantId: string;
-      branchId: string;
-    };
-
     // Read the request body (tableId and new status)
     const body = await readBody(event);
     const { tableId, status } = body;

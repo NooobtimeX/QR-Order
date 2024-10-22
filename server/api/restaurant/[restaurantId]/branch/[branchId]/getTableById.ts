@@ -1,6 +1,6 @@
 // /server/api/restaurant/[restaurantId]/branch/[branchId]/getTableById.ts
 import { PrismaClient } from "@prisma/client";
-import { defineEventHandler, getQuery, sendError } from "h3";
+import { defineEventHandler, sendError } from "h3";
 
 const prisma = new PrismaClient();
 

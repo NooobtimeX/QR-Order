@@ -1,5 +1,5 @@
 import { defineEventHandler, createError, readBody } from "h3";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -40,11 +40,24 @@ export default defineEventHandler(async (event) => {
         userId: user.id,
       },
     };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error during user sign-in:", error);
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: `Database error: ${error.message}`,
+      });
+    } else if (error instanceof Error) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: error.message || "Internal Server Error",
+      });
+    }
+
     throw createError({
-      statusCode: (error as any).statusCode || 500,
-      statusMessage: (error as any).statusMessage || "Internal Server Error",
+      statusCode: 500,
+      statusMessage: "Unknown error occurred",
     });
   }
 });

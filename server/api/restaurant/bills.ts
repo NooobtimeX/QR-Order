@@ -24,7 +24,10 @@ export default defineEventHandler(async (event) => {
       },
     });
     return bills;
-  } catch (error) {
-    return { error: "Failed to fetch bills" };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { error: error.message || "Failed to fetch bills" };
+    }
+    return { error: "Unknown error occurred" };
   }
 });
