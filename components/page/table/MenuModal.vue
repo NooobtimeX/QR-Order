@@ -1,0 +1,178 @@
+<template>
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    @click.self="close"
+  >
+    <section
+      class="w-full max-w-lg overflow-hidden rounded-xl border-2 border-gray-300 bg-white p-6 shadow-xl"
+    >
+      <div v-if="menuItem">
+        <!-- Image -->
+        <img
+          alt="ecommerce"
+          class="m-auto w-full rounded-lg border border-gray-200 object-cover object-center"
+          :src="menuItem?.img"
+        />
+
+        <!-- Item Name and Price -->
+        <h1 class="mt-6 text-2xl font-bold text-gray-800">
+          {{ menuItem?.name }}
+        </h1>
+        <span class="mt-2 block text-xl font-semibold text-green-600"
+          >{{ totalPrice }} ฿</span
+        >
+
+        <!-- Options Section -->
+        <div v-if="menuItem?.options" class="mt-4">
+          <div
+            v-for="(option, index) in menuItem?.options"
+            :key="index"
+            class="mt-4"
+          >
+            <h2 class="font-semibold text-gray-700">{{ option.optionName }}</h2>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <label
+                v-for="(subOption, subIndex) in option.choices"
+                :key="subIndex"
+                class="relative flex cursor-pointer items-center justify-center rounded-lg border border-gray-300 p-2 text-sm font-medium text-gray-700 transition duration-300 hover:bg-green-500 hover:text-white"
+                :class="{
+                  'bg-green-500 text-white':
+                    selectedOptions[index] === subIndex,
+                }"
+              >
+                <input
+                  type="radio"
+                  :name="`option-${index}`"
+                  :value="subIndex"
+                  v-model="selectedOptions[index]"
+                  class="absolute inset-0 opacity-0"
+                />
+                <span> {{ subOption.name }} (+{{ subOption.price }} ฿) </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantity Control -->
+        <div class="mt-6 flex items-center justify-center space-x-4">
+          <button
+            @click="decrementQuantity"
+            class="flex h-10 w-10 items-center justify-center rounded-full border bg-gray-100 text-gray-700 transition hover:bg-red-500 hover:text-white"
+          >
+            -
+          </button>
+          <span class="text-lg font-bold">{{ quantity }}</span>
+          <button
+            @click="incrementQuantity"
+            class="flex h-10 w-10 items-center justify-center rounded-full border bg-gray-100 text-gray-700 transition hover:bg-green-500 hover:text-white"
+          >
+            +
+          </button>
+        </div>
+
+        <!-- Order Button -->
+        <div class="mt-8 flex justify-center">
+          <button
+            @click="orderNow"
+            class="w-full rounded-lg bg-green-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-green-600 disabled:opacity-50"
+          >
+            Order
+          </button>
+        </div>
+
+        <!-- Close Button -->
+        <div class="mt-4 flex justify-center">
+          <button
+            @click="close"
+            class="font-semibold text-gray-600 transition hover:text-red-500"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watchEffect } from "vue";
+import { useFetch } from "#app";
+import axios from "axios";
+
+// Props
+const props = defineProps({
+  menuId: String,
+  qrCodeId: String,
+});
+
+// Emit event
+const emit = defineEmits(["close"]);
+
+// States
+const menuItem = ref(null);
+const quantity = ref(1);
+const selectedOptions = ref([]);
+
+// Close modal
+const close = () => emit("close");
+
+// Fetch menu item
+const { data } = await useFetch(`/api/menu/${props.menuId}`);
+menuItem.value = data.value;
+
+// Initialize options
+watchEffect(() => {
+  if (menuItem.value?.options) {
+    selectedOptions.value = Array(menuItem.value.options.length).fill(0);
+  }
+});
+
+// Total price calculation
+const totalPrice = computed(() => {
+  let total = menuItem.value?.price || 0;
+  menuItem.value?.options.forEach((option, index) => {
+    const optionIndex = selectedOptions.value[index];
+    if (optionIndex !== undefined) {
+      total += option.choices[optionIndex]?.price || 0;
+    }
+  });
+  return total * quantity.value;
+});
+
+// Increment and decrement quantity
+const incrementQuantity = () => quantity.value++;
+const decrementQuantity = () => quantity.value > 1 && quantity.value--;
+
+const orderNow = async () => {
+  if (menuItem.value) {
+    const orderData = {
+      qrCodeId: props.qrCodeId,
+      menuId: props.menuId,
+      name: menuItem.value.name,
+      price: menuItem.value.price,
+      quantity: quantity.value,
+      options: menuItem.value.options.map((option, index) => ({
+        optionName: option.optionName,
+        selectedChoice: option.choices[selectedOptions.value[index]].name,
+        choicePrice: option.choices[selectedOptions.value[index]].price,
+      })),
+    };
+
+    try {
+      const response = await axios.post("/api/orderbystaff", {
+        qrCodeId: props.qrCodeId,
+        cart: [orderData], // Send as a single-item array to match API structure
+      });
+
+      if (response.status === 201 || response.status === 200) {
+        console.log("Order placed successfully");
+        emit("close"); // Close the popup after a successful order
+      } else {
+        console.error(`Error placing order: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
+  }
+};
+</script>

@@ -1,157 +1,157 @@
-  generator client {
-    provider = "prisma-client-js"
-  }
+generator client {
+  provider = "prisma-client-js"
+}
 
-  datasource db {
-    provider = "sqlite"
-    url      = "file:./dev.db"
-  }
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
 
-  model User {
-    id                  Int                  @id @default(autoincrement())
-    email               String               @unique
-    password            String
-    userRestaurantRoles UserRestaurantRole[]
-    userBranchRoles     UserBranchRole[] // Relation to UserBranchRole
-  }
+model User {
+  id                  Int                  @id @default(autoincrement())
+  email               String               @unique
+  password            String
+  userRestaurantRoles UserRestaurantRole[]
+  userBranchRoles     UserBranchRole[] // Relation to UserBranchRole
+}
 
-  model UserRestaurantRole {
-    restaurantId Int
-    userId       Int
-    role         String
-    restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-    user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+model UserRestaurantRole {
+  restaurantId Int
+  userId       Int
+  role         String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@id([restaurantId, userId]) // Composite key for many-to-many relation
-  }
+  @@id([restaurantId, userId]) // Composite key for many-to-many relation
+}
 
-  model UserBranchRole {
-    branchId Int
-    userId   Int
-    role     String // Role at the branch level
-    branch   Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
-    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+model UserBranchRole {
+  branchId Int
+  userId   Int
+  role     String // Role at the branch level
+  branch   Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@id([branchId, userId]) // Composite key for many-to-many relation
-  }
+  @@id([branchId, userId]) // Composite key for many-to-many relation
+}
 
-  model Restaurant {
-    id                  Int                  @id @default(autoincrement())
-    name                String
-    branches            Branch[] // Relation to Branch model
-    categories          Category[] // Relation to Category model
-    userRestaurantRoles UserRestaurantRole[]
-    menus               Menu[]
-  }
+model Restaurant {
+  id                  Int                  @id @default(autoincrement())
+  name                String
+  branches            Branch[] // Relation to Branch model
+  categories          Category[] // Relation to Category model
+  userRestaurantRoles UserRestaurantRole[]
+  menus               Menu[]
+}
 
-  model Branch {
-    id              Int              @id @default(autoincrement())
-    name            String
-    address         String
-    phoneNumber     String
-    restaurantId    Int
-    restaurant      Restaurant       @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-    tables          Table[]
-    menus           BranchMenu[] // Relation to BranchMenu model
-    userBranchRoles UserBranchRole[] // Relation to UserBranchRole
-    Bill            Bill[]
-  }
+model Branch {
+  id              Int              @id @default(autoincrement())
+  name            String
+  address         String
+  phoneNumber     String
+  restaurantId    Int
+  restaurant      Restaurant       @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  tables          Table[]
+  menus           BranchMenu[] // Relation to BranchMenu model
+  userBranchRoles UserBranchRole[] // Relation to UserBranchRole
+  Bill            Bill[]
+}
 
-  model Table {
-    id           Int     @id @default(autoincrement())
-    name         String
-    capacity     Int
-    status       String
-    notification String
-    qrCodeId     String? @unique
-    branchId     Int
-    branch       Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
-    bills        Bill[] // Relation to Bill
-  }
+model Table {
+  id           Int     @id @default(autoincrement())
+  name         String
+  capacity     Int
+  status       String
+  notification String
+  qrCodeId     String? @unique
+  branchId     Int
+  branch       Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  bills        Bill[] // Relation to Bill
+}
 
-  model Menu {
-    id           Int          @id @default(autoincrement())
-    name         String
-    description  String
-    price        Float
-    categoryId   Int
-    restaurantId Int
-    imageUrl     String? // Optional field
-    category     Category     @relation(fields: [categoryId], references: [id])
-    restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
-    sections     Section[]
-    branches     BranchMenu[] // Relation to BranchMenu model
-  }
+model Menu {
+  id           Int          @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  categoryId   Int
+  restaurantId Int
+  imageUrl     String? // Optional field
+  category     Category     @relation(fields: [categoryId], references: [id])
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
+  sections     Section[]
+  branches     BranchMenu[] // Relation to BranchMenu model
+}
 
-  model Section {
-    id      Int      @id @default(autoincrement())
-    name    String
-    menuId  Int
-    menu    Menu     @relation(fields: [menuId], references: [id])
-    options Option[]
-  }
+model Section {
+  id      Int      @id @default(autoincrement())
+  name    String
+  menuId  Int
+  menu    Menu     @relation(fields: [menuId], references: [id])
+  options Option[]
+}
 
-  model Option {
-    id        Int     @id @default(autoincrement())
-    name      String
-    price     Float
-    sectionId Int
-    section   Section @relation(fields: [sectionId], references: [id])
-  }
+model Option {
+  id        Int     @id @default(autoincrement())
+  name      String
+  price     Float
+  sectionId Int
+  section   Section @relation(fields: [sectionId], references: [id])
+}
 
-  model Category {
-    id           Int        @id @default(autoincrement())
-    name         String
-    restaurantId Int
-    restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-    menus        Menu[] // Relation to Menu
-  }
+model Category {
+  id           Int        @id @default(autoincrement())
+  name         String
+  restaurantId Int
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  menus        Menu[] // Relation to Menu
+}
 
-  model BranchMenu {
-    branchId Int
-    menuId   Int
-    isActive Boolean // New boolean field
-    branch   Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
-    menu     Menu    @relation(fields: [menuId], references: [id], onDelete: Cascade)
+model BranchMenu {
+  branchId Int
+  menuId   Int
+  isActive Boolean // New boolean field
+  branch   Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  menu     Menu    @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
-    @@id([branchId, menuId]) // Composite key for many-to-many relation
-  }
+  @@id([branchId, menuId]) // Composite key for many-to-many relation
+}
 
-  model Bill {
-    id            Int         @id @default(autoincrement())
-    qrCodeId      String      @unique
-    tableId       Int? // Nullable field to optionally link with a Table
-    branchId      Int
-    totalAmount   Float
-    paymentStatus String
-    createdAt     DateTime    @default(now())
-    updatedAt     DateTime    @updatedAt
-    orderMenus    OrderMenu[]
-    table         Table?      @relation(fields: [tableId], references: [id], onDelete: Cascade)
-    branch        Branch      @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  }
+model Bill {
+  id            Int         @id @default(autoincrement())
+  qrCodeId      String      @unique
+  tableId       Int? // Nullable field to optionally link with a Table
+  branchId      Int
+  totalAmount   Float
+  paymentStatus String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderMenus    OrderMenu[]
+  table         Table?      @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  branch        Branch      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+}
 
-  model OrderMenu {
-    id           Int           @id @default(autoincrement())
-    name         String
-    quantity     Int
-    totalPrice   Float
-    qrCodeId     String // Add qrCodeId here
-    note         String        @default("")
-    status       String        @default("pending")
-    billId       Int? // Link to a Bill (Int type to match Bill.id)
-    orderOptions OrderOption[] // One-to-many relation to OrderOption
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model OrderMenu {
+  id           Int           @id @default(autoincrement())
+  name         String
+  quantity     Int
+  totalPrice   Float
+  qrCodeId     String // Add qrCodeId here
+  note         String        @default("")
+  status       String        @default("pending")
+  whoOrdered   String        @default("customer")
+  billId       Int? // Link to a Bill (Int type to match Bill.id)
+  orderOptions OrderOption[] // One-to-many relation to OrderOption
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  bill         Bill?         @relation(fields: [billId], references: [id], onDelete: Cascade)
+}
 
-    bill Bill? @relation(fields: [billId], references: [id], onDelete: Cascade)
-  }
-
-  model OrderOption {
-    id             Int       @id @default(autoincrement())
-    orderMenuId    Int
-    name           String // Option name stored directly
-    selectedChoice String // Selected choice stored directly
-    choicePrice    Float // Price of the selected choice
-    orderMenu      OrderMenu @relation(fields: [orderMenuId], references: [id], onDelete: Cascade)
-  }
+model OrderOption {
+  id             Int       @id @default(autoincrement())
+  orderMenuId    Int
+  name           String // Option name stored directly
+  selectedChoice String // Selected choice stored directly
+  choicePrice    Float // Price of the selected choice
+  orderMenu      OrderMenu @relation(fields: [orderMenuId], references: [id], onDelete: Cascade)
+}

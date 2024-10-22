@@ -77,7 +77,7 @@
 
         <button
           @click="
-            openOrderFood(selectedTable.qrCodeId);
+            openCustomerMenu(selectedTable.qrCodeId);
             selectedTable = false;
           "
           class="rounded bg-orange-05 px-2 py-1 text-lg text-white hover:bg-yellow-600"
@@ -107,7 +107,7 @@
         <button
           @click="
             selectedTable = null;
-            isOrderFoodVisible = false;
+            isCustomerMenuVisible = false;
           "
           class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-02"
         >
@@ -123,10 +123,11 @@
     @closeModal="isCreateTableFormVisible = false"
     @tableCreated="addTable"
   />
-  <OrderFood
-    v-if="isOrderFoodVisible"
-    :qrCodeId="qrCodeIdForOrderFood"
-    @close="isOrderFoodVisible = false"
+  <CustomerMenu
+    v-if="isCustomerMenuVisible"
+    :qrCodeId="qrCodeIdForCustomerMenu"
+    :menus="menusData"
+    @close="isCustomerMenuVisible = false"
   />
 </template>
 
@@ -134,20 +135,32 @@
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-import OrderFood from "./table/OrderFoodModal.vue";
+import CustomerMenu from "./table/CustomerMenu.vue"; // Replaced OrderFood with CustomerMenu
 import CreateTableModal from "./table/CreateTableModal.vue"; // Import the modal component
 
 // State variables
 const tables = ref([]);
 const selectedTable = ref(null);
 const isCreateTableFormVisible = ref(false);
-const qrCodeIdForOrderFood = ref(null);
-const isOrderFoodVisible = ref(false);
+const qrCodeIdForCustomerMenu = ref(null);
+const isCustomerMenuVisible = ref(false);
+const menusData = ref([]); // For storing the menus to pass to CustomerMenu
 
-const openOrderFood = (qrCodeId) => {
-  qrCodeIdForOrderFood.value = qrCodeId;
-  isOrderFoodVisible.value = true;
+const openCustomerMenu = (qrCodeId) => {
+  qrCodeIdForCustomerMenu.value = qrCodeId;
+  fetchMenusForTable(qrCodeId); // Fetch menus for the selected table
+  isCustomerMenuVisible.value = true;
 };
+
+const fetchMenusForTable = async (qrCodeId) => {
+  try {
+    const response = await axios.get(`/api/getMenusByQRCodeId/${qrCodeId}`);
+    menusData.value = response.data.body.menus || [];
+  } catch (error) {
+    console.error("Error fetching menus:", error);
+  }
+};
+
 // Fetch `restaurantId` and `branchId` from localStorage
 const restaurantId = localStorage.getItem("restaurantId");
 const branchId = localStorage.getItem("branchId");
@@ -174,9 +187,27 @@ const fetchTables = async () => {
 const updateTable = async (newStatus) => {
   try {
     const oldStatus = selectedTable.value.status;
+
+    // If the new status is 'isOpen', check the order status first
+    if (newStatus === "isOpen") {
+      const confirmation = confirm(
+        "Are you sure you want to close this table?",
+      );
+      if (!confirmation) return;
+
+      const response = await axios.post(
+        `/api/restaurant/${restaurantId}/branch/${branchId}/checkPendingOrders`,
+        { tableId: selectedTable.value.id },
+      );
+
+      if (response.data.hasPendingOrders) {
+        alert("Cannot close the table because there are pending orders.");
+        return;
+      }
+    }
+
     selectedTable.value.status = newStatus;
 
-    // If closing the table, disconnect the bill
     if (newStatus === "isOpen" && oldStatus === "isReserved") {
       await disconnectBillFromTable();
     }

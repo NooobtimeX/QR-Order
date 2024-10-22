@@ -205,6 +205,13 @@ onMounted(() => {
       ),
     },
     {
+      text: "Notification",
+      icon: "/icon/notification.svg",
+      component: defineAsyncComponent(
+        () => import("@/components/page/Notification.vue"),
+      ),
+    },
+    {
       text: "Menu",
       icon: "/icon/menu.svg",
       component: defineAsyncComponent(

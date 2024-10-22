@@ -23,6 +23,7 @@
           <th class="px-4 py-2 text-center text-lg font-medium">Menu</th>
           <th class="px-4 py-2 text-center text-lg font-medium">Date</th>
           <th class="px-4 py-2 text-center text-lg font-medium">Status</th>
+          <th class="px-4 py-2 text-center text-lg font-medium">who Ordered</th>
         </tr>
       </thead>
       <tbody class="bg-gray-100 text-black">
@@ -43,6 +44,7 @@
               {{ order.status }}
             </span>
           </td>
+          <td class="px-4 py-2 text-base">{{ order.whoOrdered }}</td>
         </tr>
       </tbody>
     </table>
@@ -132,6 +134,7 @@ interface Order {
   table: string;
   status: OrderStatus;
   items?: OrderItem[];
+  whoOrdered: string;
   time: string;
   menuName?: string;
   menuPrice?: number;
