@@ -29,7 +29,7 @@
           {{ roleGroup.role === "owner" ? "Owners" : "Staff" }}
         </h3>
 
-        <div class="flex flex-wrap justify-center gap-4">
+        <div class="flex flex-wrap justify-start gap-4">
           <div
             v-for="staff in roleGroup.staffs"
             :key="staff.id"

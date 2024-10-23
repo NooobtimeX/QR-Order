@@ -1,11 +1,11 @@
 <template>
   <div>
     <h1 class="pb-6 text-center text-5xl font-bold text-orange-04">Table</h1>
-    <div class="flex flex-wrap justify-center gap-4">
+    <div class="flex flex-wrap justify-start gap-4">
       <button
         v-for="table in tables"
         :key="table.id"
-        class="flex h-32 w-32 max-w-xs flex-col items-center justify-center bg-gray-200 p-4 shadow-md hover:bg-gray-400"
+        class="flex h-32 w-32 max-w-xs flex-col items-center justify-center bg-gray-100 p-4 shadow-md hover:bg-gray-300"
         :class="getTableClass(table)"
         @click="selectTable(table)"
       >

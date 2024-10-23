@@ -6,7 +6,7 @@
       </h1>
       <button
         @click="signOut"
-        class="rounded-xl bg-orange-04 p-2 text-white shadow-xl hover:bg-orange-03"
+        class="rounded-xl  shadow-xl 3 bg-red-500 p-2 text-white hover:bg-red-02 "
       >
         Log out
       </button>
