@@ -12,7 +12,7 @@
           alt="ecommerce"
           class="m-auto w-full rounded-lg border border-gray-200 object-cover object-center"
           :src="menuItem?.img"
-        />
+        >
 
         <!-- Item Name and Price -->
         <h1 class="mt-6 text-2xl font-bold text-gray-800">
@@ -41,12 +41,12 @@
                 }"
               >
                 <input
+                  v-model="selectedOptions[index]"
                   type="radio"
                   :name="`option-${index}`"
                   :value="subIndex"
-                  v-model="selectedOptions[index]"
                   class="absolute inset-0 opacity-0"
-                />
+                >
                 <span> {{ subOption.name }} (+{{ subOption.price }} ฿) </span>
               </label>
             </div>
@@ -56,15 +56,15 @@
         <!-- Quantity Control -->
         <div class="mt-6 flex items-center justify-center space-x-4">
           <button
-            @click="decrementQuantity"
             class="flex h-10 w-10 items-center justify-center rounded-full border bg-gray-100 text-gray-700 transition hover:bg-red-500 hover:text-white"
+            @click="decrementQuantity"
           >
             -
           </button>
           <span class="text-lg font-bold">{{ quantity }}</span>
           <button
-            @click="incrementQuantity"
             class="flex h-10 w-10 items-center justify-center rounded-full border bg-gray-100 text-gray-700 transition hover:bg-green-500 hover:text-white"
+            @click="incrementQuantity"
           >
             +
           </button>
@@ -73,8 +73,8 @@
         <!-- Order Button -->
         <div class="mt-8 flex justify-center">
           <button
-            @click="orderNow"
             class="w-full rounded-lg bg-green-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-green-600 disabled:opacity-50"
+            @click="orderNow"
           >
             Order
           </button>
@@ -83,8 +83,8 @@
         <!-- Close Button -->
         <div class="mt-4 flex justify-center">
           <button
-            @click="close"
             class="font-semibold text-gray-600 transition hover:text-red-500"
+            @click="close"
           >
             Close
           </button>

@@ -48,7 +48,7 @@
                 placeholder="Enter menu name"
                 aria-required="true"
                 required
-              />
+              >
             </div>
             <div class="w-1/5">
               <label
@@ -64,10 +64,26 @@
                 placeholder="Enter price"
                 aria-required="true"
                 required
-              />
+              >
             </div>
           </div>
-
+          <div class="w-full">
+              <label for="photo" class="block text-sm font-bold text-black"
+                >Photo</label
+              >
+              <input
+                id="photo"
+                ref="photoInput"
+                type="file"
+                accept="image/*"
+                class="mt-1 block w-full text-black"
+                @change="handlePhotoUpload"
+              />
+              <div v-if="previewUrl" class="mt-2">
+    <p class="text-sm text-black">File: {{ selectedPhoto?.name }}</p>
+    <img :src="previewUrl" alt="Photo preview" class="mt-2 max-h-40 mx-auto" />
+  </div>
+            </div>
           <!-- Category Selection -->
           <div>
             <label for="category" class="block text-sm font-bold text-black"
@@ -92,8 +108,8 @@
               </select>
               <button
                 type="button"
-                @click="openAddCategoryPopup"
                 class="bg-green-500 text-white hover:bg-green-700"
+                @click="openAddCategoryPopup"
               >
                 Add Category
               </button>
@@ -112,7 +128,7 @@
               placeholder="Enter description e.g. Have shrimp"
               aria-required="true"
               required
-            ></textarea>
+            />
           </div>
 
           <!-- Sections -->
@@ -131,11 +147,11 @@
                   placeholder="Section Name"
                   aria-required="true"
                   requiredw
-                />
+                >
                 <button
                   type="button"
-                  @click="removeSection(sectionIndex)"
                   class="bg-red-500 p-1 text-white hover:bg-red-02"
+                  @click="removeSection(sectionIndex)"
                 >
                   Remove
                 </button>
@@ -153,7 +169,7 @@
                   placeholder="Option Name"
                   aria-required="true"
                   required
-                />
+                >
                 <input
                   v-model.number="option.price"
                   type="number"
@@ -161,27 +177,27 @@
                   placeholder="Option Price"
                   aria-required="true"
                   required
-                />
+                >
                 <button
                   type="button"
-                  @click="removeOption(sectionIndex, optionIndex)"
                   class="w-2/12 bg-red-500 text-white hover:bg-red-02"
+                  @click="removeOption(sectionIndex, optionIndex)"
                 >
                   Remove
                 </button>
               </div>
               <button
                 type="button"
-                @click="addOption(sectionIndex)"
                 class="5 mt-2 w-full bg-green-500 p-2 text-white hover:bg-green-700"
+                @click="addOption(sectionIndex)"
               >
                 Add Option
               </button>
             </div>
             <button
               type="button"
-              @click="addSection"
               class="w-full bg-green-500 p-2 text-white hover:bg-green-700"
+              @click="addSection"
             >
               Add Section
             </button>
@@ -196,8 +212,8 @@
               Create Menu
             </button>
             <button
-              @click="closeModal"
               class="w-1/3 bg-red-500 p-2 text-white hover:bg-red-02"
+              @click="closeModal"
             >
               Cancel
             </button>
@@ -226,17 +242,17 @@
           placeholder="Enter category name"
           aria-required="true"
           required
-        />
+        >
         <div class="mt-4 flex justify-end space-x-2">
           <button
-            @click="submitCategory"
             class="bg-green-500 text-white hover:bg-green-700"
+            @click="submitCategory"
           >
             Add Category
           </button>
           <button
-            @click="closeAddCategoryPopup"
             class="bg-red-500 text-white hover:bg-red-02"
+            @click="closeAddCategoryPopup"
           >
             Cancel
           </button>
@@ -292,6 +308,9 @@ const selectedCategory = ref<number | null>(null);
 const selectedRestaurant = ref<number | null>(null);
 const showAddCategoryPopup = ref(false);
 const newCategoryName = ref("");
+const tags = ref<string[]>([]);
+  const previewUrl = ref<string | null>(null);
+    const selectedPhoto = ref<File | null>(null);
 
 // Fetch all restaurants owned by the user
 const fetchRestaurants = async () => {
@@ -304,7 +323,31 @@ const fetchRestaurants = async () => {
     console.error("Error fetching restaurants:", error);
   }
 };
+// Handle photo upload
+const handlePhotoUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files[0]) {
+    selectedPhoto.value = target.files[0];
+    previewUrl.value = URL.createObjectURL(target.files[0]);
+  }
+};
+const uploadPhoto = async () => {
+  if (!selectedPhoto.value) return;
 
+  const formData = new FormData();
+  formData.append("file", selectedPhoto.value);
+
+  try {
+    const response = await axios.post("/api/uploadPhoto", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data.photoUrl; // Return the uploaded photo URL
+  } catch (error) {
+    console.error("Error uploading photo:", error);
+  }
+};
 // Fetch categories for the selected restaurant
 const fetchCategories = async () => {
   if (!selectedRestaurant.value) return;
@@ -348,6 +391,8 @@ const submitForm = async () => {
     return;
   }
 
+  const photoUrl = await uploadPhoto();
+
   const data = {
     name: menuName.value,
     description: description.value,
@@ -355,6 +400,8 @@ const submitForm = async () => {
     categoryId: selectedCategory.value,
     restaurantId: selectedRestaurant.value,
     sections: sections.value,
+    tags: tags.value,
+    photoUrl, // Attach the uploaded photo URL
   };
 
   try {

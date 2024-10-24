@@ -9,7 +9,7 @@
         :class="getTableClass(table)"
         @click="selectTable(table)"
       >
-        <img src="/icon/table.svg" class="h-14 w-14" />
+        <img src="/icon/table.svg" class="h-14 w-14" >
         <p class="mt-2 text-sm font-medium text-black">
           <span class="text-sm font-bold">Table:</span> {{ table.name }}
         </p>
@@ -20,8 +20,8 @@
     </div>
     <div class="mt-4">
       <button
-        @click="showCreateTableForm"
         class="rounded-lg bg-green-500 px-4 text-base text-white hover:bg-green-700"
+        @click="showCreateTableForm"
       >
         Add Table
       </button>
@@ -40,15 +40,15 @@
       <div class="ms-auto mt-2 grid justify-center gap-1">
         <button
           v-if="canReserveTable"
-          @click="updateTable('isReserved')"
           class="rounded bg-green-500 px-2 py-1 text-lg text-white hover:bg-green-700"
+          @click="updateTable('isReserved')"
         >
           จองโต๊ะอาหาร
         </button>
         <button
           v-if="selectedTable.status === 'isOpen'"
-          @click="updateTable('isUnavailable')"
           class="rounded bg-red-500 p-2 px-2 py-1 text-lg text-white hover:bg-red-02"
+          @click="updateTable('isUnavailable')"
         >
           ใช้การไม่ได้
         </button>
@@ -68,25 +68,25 @@
           </div>
           <span>{{ "http://localhost:4000/" + selectedTable.qrCodeId }}</span>
           <button
-            @click="printQRCode"
             class="mt-2 rounded bg-green-500 px-2 py-1 text-lg text-white hover:bg-green-700"
+            @click="printQRCode"
           >
             Print QR Code
           </button>
         </div>
 
         <button
+          class="rounded bg-orange-05 px-2 py-1 text-lg text-white hover:bg-yellow-600"
           @click="
             openCustomerMenu(selectedTable.qrCodeId);
             selectedTable = false;
           "
-          class="rounded bg-orange-05 px-2 py-1 text-lg text-white hover:bg-yellow-600"
         >
           สั่งอาหาร
         </button>
         <button
-          @click="updateTable('isOpen')"
           class="rounded bg-red-500 p-2 px-2 py-1 text-lg text-white hover:bg-red-02"
+          @click="updateTable('isOpen', 'closeTable')"
         >
           ปิดโต๊ะอาหาร
         </button>
@@ -96,8 +96,8 @@
         class="ms-auto mt-2 grid justify-center gap-1"
       >
         <button
-          @click="updateTable('isOpen')"
           class="rounded bg-green-600 px-2 py-1 text-lg text-white"
+          @click="updateTable('isOpen', 'makeAvailable')"
         >
           Make available
         </button>
@@ -105,11 +105,11 @@
       <!-- Close Modal Button -->
       <div class="mt-4 flex justify-end">
         <button
+          class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-02"
           @click="
             selectedTable = null;
             isCustomerMenuVisible = false;
           "
-          class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-02"
         >
           Close
         </button>
@@ -120,12 +120,12 @@
   <!-- Create Table Modal -->
   <CreateTableModal
     v-if="isCreateTableFormVisible"
-    @closeModal="isCreateTableFormVisible = false"
-    @tableCreated="addTable"
+    @close-modal="isCreateTableFormVisible = false"
+    @table-created="addTable"
   />
   <CustomerMenu
     v-if="isCustomerMenuVisible"
-    :qrCodeId="qrCodeIdForCustomerMenu"
+    :qr-code-id="qrCodeIdForCustomerMenu"
     :menus="menusData"
     @close="isCustomerMenuVisible = false"
   />
@@ -138,7 +138,6 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 import CustomerMenu from "./table/CustomerMenu.vue"; // Replaced OrderFood with CustomerMenu
 import CreateTableModal from "./table/CreateTableModal.vue"; // Import the modal component
 
-// State variables
 const tables = ref([]);
 const selectedTable = ref(null);
 const isCreateTableFormVisible = ref(false);
@@ -184,12 +183,12 @@ const fetchTables = async () => {
   }
 };
 
-const updateTable = async (newStatus) => {
+const updateTable = async (newStatus, intent) => {
   try {
     const oldStatus = selectedTable.value.status;
 
-    // If the new status is 'isOpen', check the order status first
-    if (newStatus === "isOpen") {
+    // If the intent is 'closeTable', confirm with the user and check pending orders
+    if (intent === "closeTable") {
       const confirmation = confirm(
         "Are you sure you want to close this table?",
       );
@@ -206,6 +205,7 @@ const updateTable = async (newStatus) => {
       }
     }
 
+    // Update the table status
     selectedTable.value.status = newStatus;
 
     if (newStatus === "isOpen" && oldStatus === "isReserved") {
@@ -231,9 +231,12 @@ const updateTable = async (newStatus) => {
       if (tableIndex !== -1) {
         tables.value[tableIndex] = updatedTable;
       }
-
+      await fetchTables();
       if (newStatus === "isReserved") {
         await genQRCode();
+      }
+      if (newStatus === "isOpen" && intent === "closeTable") {
+        window.location.href = `/restaurant/bill/${selectedTable.value.qrCodeId}`;
       }
     }
   } catch (error) {
@@ -313,5 +316,6 @@ const genQRCode = async () => {
     console.error("Error generating QRCode:", error);
     selectedTable.value.qrCodeId = null;
   }
+  await fetchTables();
 };
 </script>

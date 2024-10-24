@@ -12,35 +12,35 @@
             type="text"
             placeholder="Search Restaurants..."
             class="w-full max-w-md rounded-xl border border-black p-3 focus:outline-none focus:ring-2"
-          />
+          >
         </div>
 
         <!-- Buttons for creating restaurant or branch -->
         <div class="mb-8 flex justify-center">
           <button
-            @click="showRestaurantModal = true"
             class="rounded-lg bg-orange-04 pl-3 pr-3 text-white shadow-xl hover:bg-orange-03"
+            @click="showRestaurantModal = true"
           >
             + New Restaurant
           </button>
           <button
-            @click="showBranchModal = true"
             class="rounded-lg bg-orange-04 pl-3 pr-3 text-white shadow-xl hover:bg-orange-03"
             :disabled="!ownerAccess.length"
+            @click="showBranchModal = true"
           >
             + New Branch
           </button>
           <button
-            @click="showMenuModal = true"
             class="rounded-lg bg-orange-04 pl-3 pr-3 text-white shadow-xl hover:bg-orange-03"
             :disabled="!ownerAccess.length"
+            @click="showMenuModal = true"
           >
             + New Menu
           </button>
         </div>
 
         <!-- Menu Popup Component -->
-        <CreateMenu :isOpen="showMenuModal" @close="showMenuModal = false" />
+        <CreateMenu :is-open="showMenuModal" @close="showMenuModal = false" />
 
         <!-- Restaurant and branch display -->
         <div v-if="filteredRestaurants.length" class="space-y-8">
@@ -106,18 +106,18 @@
             type="text"
             class="w-full rounded-lg border border-gray-400 p-3 focus:ring"
             required
-          />
+          >
         </div>
         <div class="flex justify-end">
           <button
-            @click="cancelRestaurantCreation"
             class="mr-2 bg-red-500 pl-2 pr-2 text-white hover:bg-red-02"
+            @click="cancelRestaurantCreation"
           >
             Cancel
           </button>
           <button
-            @click="createRestaurant"
             class="bg-green-500 pl-2 pr-2 text-white hover:bg-green-700"
+            @click="createRestaurant"
           >
             Create
           </button>
@@ -141,7 +141,7 @@
             type="text"
             class="w-full rounded-lg border border-gray-400 p-3 focus:outline-none focus:ring-2"
             required
-          />
+          >
         </div>
         <div class="mb-4">
           <label class="block font-bold text-black">Phone Number</label>
@@ -150,7 +150,7 @@
             type="text"
             class="w-full rounded-lg border border-gray-400 p-3 focus:outline-none focus:ring-2"
             required
-          />
+          >
         </div>
         <div class="mb-4">
           <label class="block font-bold text-black">Select Restaurant</label>
@@ -170,14 +170,14 @@
         </div>
         <div class="flex justify-end">
           <button
-            @click="cancelBranchCreation"
             class="mr-2 bg-red-500 pl-2 pr-2 text-white hover:bg-red-02"
+            @click="cancelBranchCreation"
           >
             Cancel
           </button>
           <button
-            @click="createBranch"
             class="bg-green-500 pl-2 pr-2 text-white hover:bg-green-700"
+            @click="createBranch"
           >
             Create
           </button>

@@ -9,8 +9,8 @@
           <!-- Mobile menu button -->
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <button
-              @click="toggleMobileMenu"
               class="bg-800 inline-flex items-center justify-center p-2 text-black focus:outline-none focus:ring-2 focus:ring-inset"
+              @click="toggleMobileMenu"
             >
               <span class="sr-only">Open main menu</span>
               <svg
@@ -32,7 +32,7 @@
           <div
             class="flex w-full flex-shrink-0 items-center justify-center sm:w-auto sm:justify-start"
           >
-            <img src="/logo/logo.png" alt="Logo" width="50px" />
+            <img src="/logo/logo.png" alt="Logo" width="50px" >
             <div class="ml-3 hidden sm:block">
               <div class="text-lg font-bold">{{ restaurantName }}</div>
               <div class="text-sm">{{ branchName }}</div>
@@ -45,7 +45,6 @@
               <a
                 v-for="item in menuItems"
                 :key="item.text"
-                @click="selectComponent(item)"
                 :class="{
                   'bg-orange-600 text-white':
                     currentComponentText === item.text,
@@ -53,8 +52,9 @@
                     currentComponentText !== item.text,
                 }"
                 class="mx-auto flex cursor-pointer flex-col items-center rounded-md px-3 py-2 text-sm font-medium"
+                @click="selectComponent(item)"
               >
-                <img width="25px" height="25px" :src="item.icon" class="mb-1" />
+                <img width="25px" height="25px" :src="item.icon" class="mb-1" >
                 {{ item.text }}
               </a>
             </div>
@@ -62,8 +62,8 @@
 
           <!-- Sign Out Button (Visible on larger screens) -->
           <button
-            @click="changerestaurant"
             class="hidden rounded-xl bg-red-500 p-2 text-white hover:bg-red-02 sm:block"
+            @click="changerestaurant"
           >
             เปลี่ยนร้านอาหาร
           </button>
@@ -83,22 +83,22 @@
             <a
               v-for="item in menuItems"
               :key="item.text"
-              @click="selectComponent(item)"
               :class="{
                 'bg-orange-600 text-white': currentComponentText === item.text,
                 'text-gray-500 hover:text-orange-600':
                   currentComponentText !== item.text,
               }"
               class="flex cursor-pointer items-center rounded-md px-3 py-2 text-base font-medium"
+              @click="selectComponent(item)"
             >
-              <img width="25px" height="25px" :src="item.icon" class="mr-3" />
+              <img width="25px" height="25px" :src="item.icon" class="mr-3" >
               {{ item.text }}
             </a>
 
             <!-- Sign Out Button (Visible on smaller screens) -->
             <button
-              @click="changerestaurant"
               class="mt-2 block w-full rounded-md bg-red-500 p-2 text-white hover:bg-red-02"
+              @click="changerestaurant"
             >
               เปลี่ยนร้านอาหาร
             </button>
@@ -109,7 +109,7 @@
 
     <!-- Dynamic Component -->
     <div class="mx-auto max-w-7xl p-4">
-      <component v-if="currentComponent" :is="currentComponent" />
+      <component :is="currentComponent" v-if="currentComponent" />
     </div>
   </div>
 </template>

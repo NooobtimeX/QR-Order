@@ -14,11 +14,16 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-
+  runtimeConfig: {
+    public: {
+      BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
+    },
+  },
   devServer: {
     port: 4000,
   },
 
-  modules: [],
+  modules: [
+  ],
   compatibilityDate: "2024-08-27",
 });

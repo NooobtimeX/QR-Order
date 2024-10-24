@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
@@ -76,7 +77,7 @@ model Menu {
   price        Float
   categoryId   Int
   restaurantId Int
-  imageUrl     String? // Optional field
+  photoUrl     String? // Optional field
   category     Category     @relation(fields: [categoryId], references: [id])
   restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
   sections     Section[]

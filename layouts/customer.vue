@@ -8,10 +8,10 @@
   <div class="fixed bottom-4 right-4 z-10 grid grid-cols-1 gap-2">
     <!-- Notification Button -->
     <button
-      @click="showPopup = true"
       class="flex h-12 w-12 items-center justify-center rounded-full bg-orange-04"
+      @click="showPopup = true"
     >
-      <img src="/icon/notification.svg" class="h-7 w-7" />
+      <img src="/icon/notification.svg" class="h-7 w-7" >
     </button>
     <!-- Cart Button -->
     <a :href="`/${tableNo}/cart`">
@@ -19,7 +19,7 @@
       <button
         class="flex h-12 w-12 items-center justify-center rounded-full bg-orange-04"
       >
-        <img src="/icon/clipboard.svg" class="h-7 w-7" />
+        <img src="/icon/clipboard.svg" class="h-7 w-7" >
       </button>
     </a>
     <!-- Popup -->
@@ -33,8 +33,8 @@
         <!-- Preset Options -->
         <select
           v-model="selectedOption"
-          @change="clearCustomMessage"
           class="mt-2 w-full rounded border-gray-300 p-2"
+          @change="clearCustomMessage"
         >
           <option value="">Select an option...</option>
           <option value="Request more water">Request more water</option>
@@ -52,20 +52,20 @@
             type="text"
             placeholder="Enter your message"
             class="w-full rounded border-gray-300 p-2"
-          />
+          >
         </div>
 
         <!-- Buttons -->
         <div class="mt-4 flex justify-between">
           <button
-            @click="confirmNotification"
             class="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700"
+            @click="confirmNotification"
           >
             Confirm
           </button>
           <button
-            @click="closePopup"
             class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700"
+            @click="closePopup"
           >
             Cancel
           </button>
@@ -84,7 +84,7 @@ const route = useRoute(); // Get the route object
 
 const restaurantName = "Res Name";
 const address = "bababa";
-const tableNo = ref("");
+const tableNo = ref(route.params.table); // Set tableNo from route params
 
 // Popup control
 const showPopup = ref(false);

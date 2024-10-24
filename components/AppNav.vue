@@ -5,8 +5,8 @@
         QR Food<span class="text-3xl text-orange-04">.</span>
       </h1>
       <button
+        class="rounded-xl bg-red-500 p-2 text-white shadow-xl hover:bg-red-02"
         @click="signOut"
-        class="rounded-xl  shadow-xl 3 bg-red-500 p-2 text-white hover:bg-red-02 "
       >
         Log out
       </button>

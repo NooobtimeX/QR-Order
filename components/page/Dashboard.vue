@@ -29,8 +29,8 @@
             <h3 class="text-lg font-bold text-gray-800">ยอดขาย</h3>
             <select
               v-model="selectedYear"
-              @change="fetchChartData"
               class="mt-2 w-40 rounded border border-gray-300 p-2 text-gray-700 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              @change="fetchChartData"
             >
               <option v-for="year in years" :key="year" :value="year">
                 {{ year }}

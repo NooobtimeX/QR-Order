@@ -6,11 +6,11 @@
       <!-- Search Input -->
       <div class="mb-6 flex items-center justify-center space-x-4">
         <input
-          type="text"
           v-model="searchQuery"
+          type="text"
           placeholder="Search by email..."
           class="w-3/5 rounded-xl border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-        />
+        >
         <button
           class="rounded-lg bg-green-500 px-4 py-2 text-white transition duration-300 hover:bg-green-700"
           @click="showAddModal = true"
@@ -42,8 +42,8 @@
               Role: {{ roleGroup.role === "owner" ? "Owner" : "Staff" }}
             </span>
             <button
-              @click="deleteStaff(staff.id)"
               class="mt-3 rounded bg-red-500 px-4 py-1 text-white transition duration-300 hover:bg-red-700"
+              @click="deleteStaff(staff.id)"
             >
               Delete
             </button>
@@ -53,8 +53,8 @@
 
       <!-- Add Employee Modal -->
       <div
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         v-if="showAddModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         @keydown.escape="showAddModal = false"
       >
         <div
@@ -67,13 +67,13 @@
                 >Email</label
               >
               <input
-                type="email"
                 id="email"
                 v-model="newEmployee.email"
+                type="email"
                 required
                 placeholder="name@company.com"
                 class="mt-1 w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
+              >
             </div>
             <div class="mb-4">
               <label for="role" class="block text-base font-bold text-gray-700"
@@ -91,8 +91,8 @@
             <div class="flex justify-end">
               <button
                 type="button"
-                @click="showAddModal = false"
                 class="mr-2 rounded-md border bg-red-500 px-4 py-2 text-white transition duration-300 hover:bg-red-700"
+                @click="showAddModal = false"
               >
                 Cancel
               </button>

@@ -11,7 +11,7 @@
         type="text"
         placeholder="Search menu..."
         class="w-full rounded-lg border border-gray-300 p-2 shadow-sm focus:border-orange-500 focus:outline-none"
-      />
+      >
     </div>
 
     <!-- No Menus Message -->
@@ -50,10 +50,10 @@
                 class="peer sr-only"
                 :checked="menu.isActive"
                 @change="toggleMenuStatus(menu.id, !menu.isActive)"
-              />
+              >
               <div
                 class="h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-focus:ring-4 peer-focus:ring-green-300"
-              ></div>
+              />
               <span class="ml-3 text-sm font-medium text-gray-900">
                 {{ menu.isActive ? "On" : "Off" }}
               </span>

@@ -4,8 +4,8 @@
   >
     <div class="relative w-full max-w-4xl rounded-lg bg-white p-4 shadow-lg">
       <button
-        @click="$emit('close')"
         class="absolute right-4 top-4 text-black hover:text-gray-700"
+        @click="$emit('close')"
       >
         <span class="text-2xl">&times;</span>
       </button>
@@ -29,19 +29,19 @@
       <div class="mt-4">
         <div
           v-for="category in categories"
+          :id="category.name"
           :key="category.name"
           class="mb-2 rounded-xl border-2 border-gray-300 p-2 shadow-md"
-          :id="category.name"
         >
           <h2 class="text-2xl font-bold">{{ category.name }}</h2>
           <div class="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4">
             <div
-              class="block cursor-pointer rounded-xl border-2 border-gray-300 bg-white p-2 shadow-sm transition-shadow duration-300 hover:shadow-lg"
               v-for="menu in category.menus"
               :key="menu.id"
+              class="block cursor-pointer rounded-xl border-2 border-gray-300 bg-white p-2 shadow-sm transition-shadow duration-300 hover:shadow-lg"
               @click="selectMenu(menu.id)"
             >
-              <img :src="menu.src" class="c-t-lg h-32 w-full object-cover" />
+              <img :src="menu.src" class="c-t-lg h-32 w-full object-cover" >
               <div class="p-1">
                 <h2 class="text-xl font-semibold">{{ menu.name }}</h2>
                 <p class="text-black">{{ menu.price }}฿</p>
@@ -54,8 +54,8 @@
       <!-- Additional Close Button -->
       <div class="mt-6 flex justify-end">
         <button
-          @click="$emit('close')"
           class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700"
+          @click="$emit('close')"
         >
           Close
         </button>
@@ -64,8 +64,8 @@
       <!-- Modal for Menu Details -->
       <MenuModal
         v-if="isModalOpen"
-        :menuId="selectedMenuId"
-        :qrCodeId="qrCodeId"
+        :menu-id="selectedMenuId"
+        :qr-code-id="qrCodeId"
         @close="closeMenuModal"
       />
     </div>

@@ -57,16 +57,16 @@
 
         <!-- Accept Button -->
         <button
-          @click="acceptNotification"
           class="mb-4 w-full rounded-lg bg-green-500 px-4 py-2 text-lg text-white hover:bg-green-700"
+          @click="acceptNotification"
         >
           Accept & Clear Notification
         </button>
 
         <!-- Close Button -->
         <button
-          @click="closeModal"
           class="w-full rounded-lg bg-red-500 px-4 py-2 text-lg text-white hover:bg-red-700"
+          @click="closeModal"
         >
           Close
         </button>

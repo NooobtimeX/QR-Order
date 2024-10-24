@@ -7,9 +7,9 @@
       <div
         v-for="status in availableStatuses"
         :key="status"
-        @click="toggleStatusFilter(status)"
         :class="statusFilterClass(status)"
         class="cursor-pointer rounded-lg px-4 py-2 transition duration-200"
+        @click="toggleStatusFilter(status)"
       >
         {{ status }}
       </div>
@@ -30,8 +30,8 @@
         <tr
           v-for="order in filteredOrders"
           :key="order.id"
-          @click="selectOrder(order)"
           class="border-b border-gray-200 transition duration-200 hover:bg-gray-200"
+          @click="selectOrder(order)"
         >
           <td class="px-4 py-2 text-base">{{ order.table }}</td>
           <td class="px-4 py-2 text-base">{{ order.menuName }}</td>
@@ -56,7 +56,6 @@
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
     <div class="w-64 rounded-lg bg-white p-4 text-black">
-      {{ selectedOrder.id }}
       <h2 class="pb-4 text-center">Table: {{ selectedOrder.table }}</h2>
       <select
         v-model="selectedOrder.status"
@@ -91,16 +90,16 @@
 
       <!-- OK button to update order status -->
       <button
-        @click="updateOrderStatus"
         class="mt-2 w-full rounded-xl bg-green-500 text-white hover:bg-green-700"
+        @click="updateOrderStatus"
       >
         OK
       </button>
 
       <!-- Close button -->
       <button
-        @click="closePopup"
         class="mt-2 w-full rounded-xl bg-red-500 p-2 text-white hover:bg-red-700"
+        @click="closePopup"
       >
         Close
       </button>

@@ -21,10 +21,11 @@ export default defineEventHandler(async (event) => {
         totalAmount: true,
         paymentStatus: true,
         createdAt: true,
+        qrCodeId: true, // Include qrCodeId in the response
       },
     });
     return bills;
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof Error) {
       return { error: error.message || "Failed to fetch bills" };
     }

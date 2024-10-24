@@ -5,7 +5,6 @@
         <div class="flex gap-1 text-lg md:text-2xl">
           <!-- Register Button -->
           <button
-            @click="showSignUp = true"
             class="m-0 flex-1 p-2"
             :class="{
               'rounded-lg border-2 border-black bg-orange-04 text-white hover:bg-orange-03':
@@ -13,12 +12,12 @@
               'rounded-lg bg-white text-black hover:bg-white hover:text-orange-03':
                 !showSignUp,
             }"
+            @click="showSignUp = true"
           >
             REGISTER
           </button>
           <!-- Login Button -->
           <button
-            @click="showSignUp = false"
             class="m-0 flex-1 p-2"
             :class="{
               'rounded-lg border-2 border-black bg-orange-04 text-white hover:bg-orange-03':
@@ -26,6 +25,7 @@
               'rounded-lg bg-white text-black hover:bg-white hover:text-orange-03':
                 showSignUp,
             }"
+            @click="showSignUp = false"
           >
             LOGIN
           </button>
@@ -33,11 +33,11 @@
 
         <hr
           class="mx-auto my-4 h-1 w-full rounded border-0 shadow-sm dark:bg-gray-300"
-        />
+        >
 
         <form
-          @submit.prevent="showSignUp ? handleSignup() : handleSignin()"
           class="p-2"
+          @submit.prevent="showSignUp ? handleSignup() : handleSignin()"
         >
           <h1 class="my-2 mt-1 text-center text-lg text-black md:text-2xl">
             {{ showSignUp ? "REGISTER" : "LOGIN" }}
@@ -48,12 +48,12 @@
               >Email</label
             >
             <input
-              placeholder="name@company.com"
               v-model="email"
+              placeholder="name@company.com"
               type="email"
               class="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm"
               required
-            />
+            >
           </div>
 
           <div class="mb-4 shadow-md">
@@ -61,12 +61,12 @@
               >Password</label
             >
             <input
-              placeholder="••••••••"
               v-model="password"
+              placeholder="••••••••"
               type="password"
               class="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm"
               required
-            />
+            >
           </div>
 
           <button
